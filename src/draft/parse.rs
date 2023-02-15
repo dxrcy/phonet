@@ -3,22 +3,23 @@ use std::collections::HashMap;
 use fancy_regex::Regex;
 use fancy_regex_macro::regex;
 
-use crate::{Error, REGEX_MATCH_FAIL};
-
 use super::{
     statements::split_statements, substitute::substitute_classes, Draft, Message, Mode, Note, Rule,
     TestDraft,
 };
+use crate::{Error, REGEX_MATCH_FAIL};
 
-type RawClasses = HashMap<String, String>;
+/// Alias for `HashMap` of `String` and `String`, for raw classes
+type Classes = HashMap<String, String>;
 
+/// Mirrors `Rule` struct, but with `String` instead of `Regex`
 struct RawRule {
     intent: bool,
     pattern: String,
     note: Option<Note>,
 }
 
-/// Parse Phonet `Draft` from file
+/// Parse *Phonet* `Draft` from file
 /// TODO Tests!
 pub fn parse_draft(file: &str) -> Result<Draft, Error> {
     // Split file into statements
@@ -210,7 +211,7 @@ pub fn parse_draft(file: &str) -> Result<Draft, Error> {
 
 /// Parse each rule in list
 /// TODO Tests!
-fn parse_rules(rules: Vec<RawRule>, classes: &RawClasses) -> Result<Vec<Rule>, Error> {
+fn parse_rules(rules: Vec<RawRule>, classes: &Classes) -> Result<Vec<Rule>, Error> {
     let mut new = Vec::new();
 
     for RawRule {
@@ -231,7 +232,7 @@ fn parse_rules(rules: Vec<RawRule>, classes: &RawClasses) -> Result<Vec<Rule>, E
 
 /// Substitute class names and parse as regex
 /// TODO Tests!
-fn parse_regex(pattern: &str, classes: &RawClasses) -> Result<Regex, Error> {
+fn parse_regex(pattern: &str, classes: &Classes) -> Result<Regex, Error> {
     // Substitute class names
     let pattern = substitute_classes(pattern, classes)?;
 

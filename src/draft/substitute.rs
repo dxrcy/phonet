@@ -4,7 +4,16 @@ use fancy_regex_macro::regex;
 
 use crate::Error;
 
-
+/// Replace ascii `<` and `>` with `⟨` and `⟩` respectively, for classes
+///
+/// Does not replace `<` and `>` with use in look-behinds or named group definitions or references
+///
+/// Uses `fancy_regex` `replace_all` method, with with capture preservation
+fn replace_angle_brackets(pattern: &str) -> String {
+    regex!(r"(?<!\(\?)(?<!\(\?P)(?<!\\k)<([^>]*)>")
+        .replace_all(pattern, r"⟨$1⟩")
+        .to_string()
+}
 
 /// Substitute class names regex rule with class values (recursively)
 ///
@@ -79,17 +88,6 @@ pub fn substitute_classes(
     }
 
     Ok(output)
-}
-
-/// Replace ascii `<` and `>` with `⟨` and `⟩` respectively, for classes
-///
-/// Does not replace `<` and `>` with use in look-behinds or named group definitions or references
-///
-/// Uses `fancy_regex` `replace_all` method, with with capture preservation
-fn replace_angle_brackets(pattern: &str) -> String {
-    regex!(r"(?<!\(\?)(?<!\(\?P)(?<!\\k)<([^>]*)>")
-        .replace_all(pattern, r"⟨$1⟩")
-        .to_string()
 }
 
 #[cfg(test)]
