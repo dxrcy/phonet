@@ -7,7 +7,7 @@ mod error;
 /// Running and displaying of *Phonet* `Draft`
 mod outcome;
 
-pub use draft::{Draft, Mode};
+pub use draft::{Draft, Mode, Rule, Note, Message, TestDraft};
 pub use error::Error;
 pub use outcome::{DisplayLevel, Outcome};
 

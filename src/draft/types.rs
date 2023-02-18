@@ -18,6 +18,16 @@ pub struct Rule {
     pub note: Option<Note>,
 }
 
+// Scuffed equality check for `Rule`
+impl PartialEq for Rule {
+    fn eq(&self, other: &Self) -> bool {
+        self.intent == other.intent
+            && self.note == other.note
+            // Regex must be stringified
+            && self.pattern.to_string() == other.pattern.to_string()
+    }
+}
+
 /// Mirrors `Rule` struct, but with `String` instead of `Regex`
 pub(super) struct RawRule {
     /// Whether pattern should match or not, for a test to be valid
@@ -46,7 +56,7 @@ pub enum Message<T> {
 pub struct Note(pub String);
 
 /// Test that has not ran
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct TestDraft {
     /// String to test
     pub word: String,
@@ -55,7 +65,7 @@ pub struct TestDraft {
 }
 
 /// Transcription mode of file
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Mode {
     /// Use `~<>`
     Romanized,

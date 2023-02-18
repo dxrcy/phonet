@@ -14,16 +14,6 @@ macro_rules! classes {
     }};
 }
 
-// Scuffed equality check for `Rule`
-impl PartialEq for Rule {
-    fn eq(&self, other: &Self) -> bool {
-        self.intent == other.intent
-            && self.note == other.note
-            // Regex must be stringified
-            && self.pattern.to_string() == other.pattern.to_string()
-    }
-}
-
 #[test]
 fn parse_rules_works() {
     let classes = classes!();

@@ -17,7 +17,7 @@ use self::{parse::parse_rules, statements::split_statements};
 use crate::{outcome::Outcome, Error, REGEX_MATCH_FAIL};
 
 /// Parsed *Phonet* file
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Draft {
     /// List of defined rules
     pub rules: Vec<Rule>,
