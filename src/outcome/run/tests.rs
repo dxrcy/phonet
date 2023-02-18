@@ -1,8 +1,7 @@
 use fancy_regex_macro::regex;
 
-use crate::draft::Message;
-
 use super::*;
+use crate::draft::Message;
 
 /// Get example list of rules for testing
 fn get_example_rules() -> Vec<Rule> {

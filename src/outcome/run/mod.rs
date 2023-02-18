@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests;
 
+use self::Validity::*;
 use super::{
     FailKind::*,
     Outcome,
@@ -11,8 +12,6 @@ use crate::{
     draft::{Draft, Message::*, Note, Rule, TestDraft},
     REGEX_MATCH_FAIL,
 };
-
-use Validity::*;
 
 /// Whether test *matches* or not
 ///
