@@ -9,7 +9,7 @@ mod outcome;
 
 pub use draft::{Draft, Mode, Rule, Note, Message, TestDraft};
 pub use error::Error;
-pub use outcome::{DisplayLevel, Outcome};
+pub use outcome::{DisplayLevel, Outcome, PassStatus, TestOutcome, FailKind};
 
 /// Message for failed matching of static regex
 const REGEX_MATCH_FAIL: &str = "Regex failed on 'match' method. This should never happen";

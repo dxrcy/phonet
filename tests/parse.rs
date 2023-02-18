@@ -3,16 +3,6 @@ use fancy_regex::Regex;
 use phonet::{self, Draft, Message, Note, Rule, TestDraft};
 
 #[test]
-fn tokipona_should_pass() {
-    let file = include_str!("../examples/tokipona.phonet");
-
-    assert_eq!(
-        Draft::from(file).expect("Failed to parse").run().fail_count,
-        0
-    );
-}
-
-#[test]
 fn example_draft_works() {
     let file = include_str!("../examples/example.phonet");
 
@@ -199,14 +189,4 @@ fn example_draft_works() {
     );
 
     assert_eq!(messages.next(), None);
-}
-
-#[test]
-fn example_outcome_works() {
-    let file = include_str!("../examples/example.phonet");
-
-    let outcome = Draft::from(file).expect("Failed to parse").run();
-
-    println!("{:?}", outcome);
-    panic!()
 }

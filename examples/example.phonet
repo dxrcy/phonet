@@ -5,7 +5,7 @@ $_ = [ptkmnswjlaeiou] ;# Any / all letters (required for generating words)
 $C = [ptkmnswjl]      ;# Consonants
 $V = [aeiou]          ;# Vowels
 
-* Invalid letters    ;# Noted reason - Prints like a note to standard output
+* Invalid letters     ;# Note - Prints to standard output, and used as reason if test fails
   + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' group
     ?+ taso
     ?! tyxo
@@ -19,7 +19,7 @@ $V = [aeiou]          ;# Vowels
     ?+ taso kili
     ?! ano taaso
 
-* Some more tests     ;# Note - Prints to standard output
+* Some more tests
     ?+ silo tila
     ?! aka axe
 
