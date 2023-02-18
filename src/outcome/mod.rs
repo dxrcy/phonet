@@ -13,8 +13,8 @@ pub struct Outcome {
 
 #[derive(Debug, PartialEq)]
 pub struct TestOutcome {
-    pub intent: bool,
     pub word: String,
+    pub intent: bool,
     pub status: PassStatus,
 }
 

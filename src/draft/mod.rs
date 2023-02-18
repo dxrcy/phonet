@@ -1,9 +1,5 @@
 /// All parse functions for `Draft` struct
 mod parse;
-/// Split file into statements
-mod statements;
-/// Substitute class names recursively
-mod substitute;
 
 use fancy_regex::Regex;
 
@@ -29,10 +25,10 @@ pub struct Draft {
 /// Pattern rule
 #[derive(Debug)]
 pub struct Rule {
-    /// Whether pattern should match or not, for a test to be valid
-    pub intent: bool,
     /// Regex pattern
     pub pattern: Regex,
+    /// Whether pattern should match or not, for a test to be valid
+    pub intent: bool,
     /// Note for rule
     ///
     /// Reason given, if test fails from this rule
@@ -42,7 +38,7 @@ pub struct Rule {
 /// Single message to be displayed
 ///
 /// May be a `Info` (`Note`) and `Test`
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Message<T> {
     /// Plain text `Note`
     Info(Note),
@@ -57,10 +53,10 @@ pub struct Note(pub String);
 /// Test that has not ran
 #[derive(Debug)]
 pub struct TestDraft {
-    /// Whether test should be valid or not, to pass
-    pub intent: bool,
     /// String to test
     pub word: String,
+    /// Whether test should be valid or not, to pass
+    pub intent: bool,
 }
 
 /// Transcription mode of file

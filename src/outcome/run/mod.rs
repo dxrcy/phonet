@@ -76,6 +76,24 @@ fn run_test(test: TestDraft, rules: &Vec<Rule>) -> TestOutcome {
     }
 }
 
+/// Check if test is valid against rules
+fn validate_test(word: &str, rules: &Vec<Rule>) -> Validity {
+    // Check for match with every rule, if not, return fail
+    for Rule {
+        intent,
+        pattern,
+        note,
+    } in rules
+    {
+        // Check if rule matches, and whether match signifies returning invalid or continuing
+        if intent ^ pattern.is_match(word).expect(REGEX_MATCH_FAIL) {
+            return Invalid(note.clone());
+        }
+    }
+
+    Valid
+}
+
 /// Get `PassStatus` from `Validity` and test `intent`
 fn get_status(validity: Validity, intent: bool) -> PassStatus {
     // Check if validity status matches test intent
@@ -100,22 +118,4 @@ fn get_status(validity: Validity, intent: bool) -> PassStatus {
             },
         })
     }
-}
-
-/// Check if test is valid against rules
-fn validate_test(word: &str, rules: &Vec<Rule>) -> Validity {
-    // Check for match with every rule, if not, return fail
-    for Rule {
-        intent,
-        pattern,
-        note,
-    } in rules
-    {
-        // Check if rule matches, and whether match signifies returning invalid or continuing
-        if intent ^ pattern.is_match(word).expect(REGEX_MATCH_FAIL) {
-            return Invalid(note.clone());
-        }
-    }
-
-    Valid
 }

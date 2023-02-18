@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use std::collections::HashMap;
 
 use fancy_regex_macro::regex;
@@ -88,75 +91,4 @@ pub fn substitute_classes(
     }
 
     Ok(output)
-}
-
-#[cfg(test)]
-mod tests {
-    use std::collections::HashMap;
-
-    use super::*;
-
-    #[test]
-    fn swap_angle_brackets_works() {
-        assert_eq!(replace_angle_brackets("<abc>"), "⟨abc⟩");
-        assert_eq!(replace_angle_brackets("(?<=abc)"), "(?<=abc)");
-        assert_eq!(replace_angle_brackets("(?<!abc)"), "(?<!abc)");
-        assert_eq!(replace_angle_brackets("(?<abc>)"), "(?<abc>)");
-        assert_eq!(replace_angle_brackets("(?P<abc>)"), "(?P<abc>)");
-        assert_eq!(replace_angle_brackets(r"\k<abc>"), r"\k<abc>");
-        assert_eq!(replace_angle_brackets(r"(?<a>.)\k<a>"), r"(?<a>.)\k<a>");
-        assert_eq!(replace_angle_brackets("(?:<abc>)"), "(?:⟨abc⟩)");
-        assert_eq!(replace_angle_brackets("?<abc>"), "?⟨abc⟩");
-        assert_eq!(replace_angle_brackets("<abc><def>"), "⟨abc⟩⟨def⟩");
-        assert_eq!(replace_angle_brackets("<abc><"), "⟨abc⟩<");
-        assert_eq!(replace_angle_brackets("<abc>>"), "⟨abc⟩>");
-    }
-
-    #[test]
-    fn substitute_classes_works() {
-        let classes = HashMap::from([
-            ("C".to_string(), "[ptk]".to_string()),
-            ("Vowels".to_string(), "[aio]".to_string()),
-            ("_".to_string(), "[<C><Vowels>]".to_string()),
-        ]);
-
-        assert_eq!(
-            substitute_classes("<C>", &classes).unwrap(),
-            "[ptk]".to_string()
-        );
-
-        assert_eq!(
-            substitute_classes("<C>-<Vowels>", &classes).unwrap(),
-            "[ptk]-[aio]".to_string()
-        );
-
-        assert_eq!(
-            substitute_classes("<_>", &classes).unwrap(),
-            "[[ptk][aio]]".to_string()
-        );
-
-        assert_eq!(
-            substitute_classes("(?<=1)", &classes).unwrap(),
-            "(?<=1)".to_string()
-        );
-
-        assert_eq!(
-            substitute_classes("(?<abc><C>)", &classes).unwrap(),
-            "(?<abc>[ptk])".to_string()
-        );
-
-        assert_eq!(substitute_classes("a>b", &classes).unwrap(), "a>b");
-        assert_eq!(substitute_classes("a<b", &classes).unwrap(), "a<b");
-
-        //TODO After implemented error kinds
-        // assert!(match substitute_classes("<c>", &classes) {
-        //     Err(Error::ClassNotFound { .. }) => true,
-        //     _ => false,
-        // });
-
-        // assert!(match substitute_classes("<a<b>c>", &classes) {
-        //     Err(Error::ClassNotFound { .. }) => true,
-        //     _ => false,
-        // });
-    }
 }

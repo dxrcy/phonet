@@ -1,25 +1,182 @@
 use fancy_regex_macro::regex;
 
+use crate::draft::Message;
+
 use super::*;
 
+/// Get example list of rules for testing
 fn get_example_rules() -> Vec<Rule> {
     vec![
         Rule {
-            intent: true,
             pattern: regex!("a").clone(),
+            intent: true,
             note: Some(Note("Should contain ⟨a⟩".to_string())),
         },
         Rule {
-            intent: false,
             pattern: regex!("x").clone(),
+            intent: false,
             note: None,
         },
     ]
 }
 
+/// All tests should pass
+#[test]
+fn run_all_successful() {
+    let draft = Draft {
+        messages: vec![
+            //s
+            Info(Note("this is a note".to_string())),
+            //
+            Test(TestDraft {
+                word: "abc".to_string(),
+                intent: true,
+            }),
+            //
+            Info(Note("another note".to_string())),
+            //
+            Test(TestDraft {
+                word: "ax".to_string(),
+                intent: false,
+            }),
+            //
+            Test(TestDraft {
+                word: "hello".to_string(),
+                intent: false,
+            }),
+        ],
+        //
+        rules: get_example_rules(),
+        mode: crate::Mode::Romanized,
+        test_count: 3,
+    };
+
+    let outcome = draft.run();
+
+    assert_eq!(outcome.fail_count, 0);
+
+    let mut list = outcome.list.iter();
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Info(Note("this is a note".to_string())))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "abc".to_string(),
+            intent: true,
+            status: Pass
+        }))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Info(Note("another note".to_string())))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "ax".to_string(),
+            intent: false,
+            status: Pass
+        }))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "hello".to_string(),
+            intent: false,
+            status: Pass
+        }))
+    );
+
+    assert_eq!(list.next(), None);
+}
+
+/// All tests should fail
+#[test]
+fn run_all_failing() {
+    let draft = Draft {
+        messages: vec![
+            //s
+            Info(Note("this is a note".to_string())),
+            //
+            Test(TestDraft {
+                word: "abc".to_string(),
+                intent: false,
+            }),
+            //
+            Info(Note("another note".to_string())),
+            //
+            Test(TestDraft {
+                word: "ax".to_string(),
+                intent: true,
+            }),
+            //
+            Test(TestDraft {
+                word: "hello".to_string(),
+                intent: true,
+            }),
+        ],
+        //
+        rules: get_example_rules(),
+        mode: crate::Mode::Romanized,
+        test_count: 3,
+    };
+
+    let outcome = draft.run();
+
+    assert_eq!(outcome.fail_count, 3);
+
+    let mut list = outcome.list.iter();
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Info(Note("this is a note".to_string())))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "abc".to_string(),
+            intent: false,
+            status: Fail(ShouldBeInvalid)
+        }))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Info(Note("another note".to_string())))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "ax".to_string(),
+            intent: true,
+            status: Fail(NoReasonGiven)
+        }))
+    );
+
+    assert_eq!(
+        list.next(),
+        Some(&Message::Test(TestOutcome {
+            word: "hello".to_string(),
+            intent: true,
+            status: Fail(CustomReason(Note("Should contain ⟨a⟩".to_string())))
+        }))
+    );
+
+    assert_eq!(list.next(), None);
+}
+
 /// Tests that should match (valid)
 #[test]
-fn run_valid_tests() {
+fn run_test_all_valid() {
     let rules = get_example_rules();
 
     assert_eq!(
@@ -70,7 +227,7 @@ fn run_valid_tests() {
 
 /// Tests that should not match (invalid)
 #[test]
-fn run_invalid_tests() {
+fn run_test_all_invalid() {
     let rules = get_example_rules();
 
     assert_eq!(
@@ -138,7 +295,7 @@ fn validate_test_works() {
 
 /// Tests that should match (valid)
 #[test]
-fn get_status_valid_tests() {
+fn get_status_all_valid() {
     let my_note = Note("Some reason".to_string());
 
     // Valid test matches (pass)
@@ -156,7 +313,7 @@ fn get_status_valid_tests() {
 
 /// Tests that should not match (invalid)
 #[test]
-fn get_status_invalid_tests() {
+fn get_status_all_invalid() {
     let my_note = Note("Some reason".to_string());
 
     // Invalid test does not match (pass)

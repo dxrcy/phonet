@@ -1,13 +1,21 @@
+/// Split file into statements
+mod statements;
+/// Substitute class names recursively
+mod substitute;
+
+#[cfg(test)]
+mod tests;
+
 use std::collections::HashMap;
 
 use fancy_regex::Regex;
 use fancy_regex_macro::regex;
 
-use super::{
-    statements::split_statements, substitute::substitute_classes, Draft, Message, Mode, Note, Rule,
-    TestDraft,
-};
+use super::{Draft, Message, Mode, Note, Rule, TestDraft};
 use crate::{Error, REGEX_MATCH_FAIL};
+
+use statements::split_statements;
+use substitute::substitute_classes;
 
 /// Alias for `HashMap` of `String` and `String`, for raw classes
 type Classes = HashMap<String, String>;
@@ -213,7 +221,6 @@ pub fn parse_draft(file: &str) -> Result<Draft, Error> {
 }
 
 /// Parse each rule in list
-/// TODO Tests!
 fn parse_rules(rules: Vec<RawRule>, classes: &Classes) -> Result<Vec<Rule>, Error> {
     let mut new = Vec::new();
 
@@ -234,7 +241,6 @@ fn parse_rules(rules: Vec<RawRule>, classes: &Classes) -> Result<Vec<Rule>, Erro
 }
 
 /// Substitute class names and parse as regex
-/// TODO Tests!
 fn parse_regex(pattern: &str, classes: &Classes) -> Result<Regex, Error> {
     // Substitute class names
     let pattern = substitute_classes(pattern, classes)?;
