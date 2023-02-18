@@ -1,12 +1,29 @@
+use std::collections::HashMap;
+
 use fancy_regex::Regex;
+
+/// Alias for `HashMap` of `String` and `String`, for raw classes
+pub(super) type Classes = HashMap<String, String>;
 
 /// Pattern rule
 #[derive(Debug)]
 pub struct Rule {
-    /// Regex pattern
+    /// Whether pattern should match or not, for a test to be valid
     pub pattern: Regex,
+    /// Regex pattern
+    pub intent: bool,
+    /// Note for rule
+    ///
+    /// Reason given, if test fails from this rule
+    pub note: Option<Note>,
+}
+
+/// Mirrors `Rule` struct, but with `String` instead of `Regex`
+pub(super) struct RawRule {
     /// Whether pattern should match or not, for a test to be valid
     pub intent: bool,
+    /// Regex pattern, as `String`
+    pub pattern: String,
     /// Note for rule
     ///
     /// Reason given, if test fails from this rule

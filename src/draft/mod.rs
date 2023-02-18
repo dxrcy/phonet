@@ -1,10 +1,9 @@
-/// All parse functions for `Draft` struct
+/// Parse functions
 mod parse;
-/// Split file into statements
-/// TODO Rename
-mod statements;
 /// Substitute class names recursively
-mod substitute;
+mod replace;
+/// Split file into statements
+mod statements;
 /// Holds types for `Draft` struct
 mod types;
 
@@ -14,10 +13,7 @@ use std::collections::HashMap;
 
 use fancy_regex_macro::regex;
 
-use self::{
-    parse::{parse_rules, RawRule},
-    statements::split_statements,
-};
+use self::{parse::parse_rules, statements::split_statements};
 use crate::{outcome::Outcome, Error, REGEX_MATCH_FAIL};
 
 /// Parsed *Phonet* file
@@ -33,6 +29,7 @@ pub struct Draft {
     pub mode: Mode,
     /// Amount of tests in `messages` field
     pub test_count: usize,
+    //TODO Add minified
     // minified: Minified,
 }
 
@@ -226,7 +223,7 @@ impl Draft {
             .filter(|msg| matches!(msg, Message::Test(_)))
             .count();
 
-        Ok(Draft {
+        Ok(Self {
             rules: parse_rules(rules_raw, &classes_raw)?,
             messages,
             mode: mode.unwrap_or_default(),

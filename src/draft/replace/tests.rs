@@ -31,7 +31,7 @@ fn swap_angle_brackets_works() {
 }
 
 #[test]
-fn substitute_classes_works() {
+fn replace_classes_works() {
     let classes = HashMap::from([
         ("C".to_string(), "[ptk]".to_string()),
         ("Vowels".to_string(), "[aio]".to_string()),
@@ -39,46 +39,46 @@ fn substitute_classes_works() {
     ]);
 
     assert_eq!(
-        substitute_classes("<C>", &classes).unwrap(),
+        replace_classes("<C>", &classes).unwrap(),
         "[ptk]".to_string()
     );
 
     assert_eq!(
-        substitute_classes("<C>-<Vowels>", &classes).unwrap(),
+        replace_classes("<C>-<Vowels>", &classes).unwrap(),
         "[ptk]-[aio]".to_string()
     );
 
     assert_eq!(
-        substitute_classes("<_>", &classes).unwrap(),
+        replace_classes("<_>", &classes).unwrap(),
         "[[ptk][aio]]".to_string()
     );
 
     assert_eq!(
-        substitute_classes("(?<=1)", &classes).unwrap(),
+        replace_classes("(?<=1)", &classes).unwrap(),
         "(?<=1)".to_string()
     );
 
     assert_eq!(
-        substitute_classes("(?<abc><C>)", &classes).unwrap(),
+        replace_classes("(?<abc><C>)", &classes).unwrap(),
         "(?<abc>[ptk])".to_string()
     );
 
-    assert_eq!(substitute_classes("a>b", &classes).unwrap(), "a>b");
-    assert_eq!(substitute_classes("a<b", &classes).unwrap(), "a<b");
+    assert_eq!(replace_classes("a>b", &classes).unwrap(), "a>b");
+    assert_eq!(replace_classes("a<b", &classes).unwrap(), "a<b");
 }
 
 //TODO Use error kinds
 #[test]
-fn substitute_classes_returns_error() {
+fn replace_classes_returns_error() {
     let classes = classes!();
 
     assert!(matches!(
-        substitute_classes("<c>", &classes),
+        replace_classes("<c>", &classes),
         Err(Error::Generic(..))
     ));
 
     assert!(matches!(
-        substitute_classes("<a<b>c>", &classes),
+        replace_classes("<a<b>c>", &classes),
         Err(Error::Generic(..))
     ));
 }
