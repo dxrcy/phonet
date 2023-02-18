@@ -90,7 +90,7 @@ pub fn parse_draft(file: &str) -> Result<Draft, Error> {
                 let name = name.trim();
 
                 // Check if name is valid
-                if !regex!(r"^\w+$").is_match(&name).expect(REGEX_MATCH_FAIL) {
+                if !regex!(r"^\w+$").is_match(name).expect(REGEX_MATCH_FAIL) {
                     return Err(Error::Generic(
                         line,
                         format!("Invalid class name '{}'", name),
@@ -198,15 +198,18 @@ pub fn parse_draft(file: &str) -> Result<Draft, Error> {
         }
     }
 
-    let draft = Draft {
+    // Get amount of tests in messages
+    let test_count = messages
+        .iter()
+        .filter(|msg| matches!(msg, Message::Test(_)))
+        .count();
+
+    Ok(Draft {
         rules: parse_rules(rules_raw, &classes_raw)?,
         messages,
         mode: mode.unwrap_or_default(),
-    };
-
-    println!("{:#?}", draft);
-
-    Ok(draft)
+        test_count,
+    })
 }
 
 /// Parse each rule in list

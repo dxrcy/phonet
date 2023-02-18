@@ -83,7 +83,7 @@ pub fn substitute_classes(
     if name_build.is_some() {
         return Err(Error::Generic(
             0,
-            format!("Unexpected end of pattern for class name"),
+            String::from("Unexpected end of pattern for class name"),
         ));
     }
 

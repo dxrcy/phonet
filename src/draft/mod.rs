@@ -21,6 +21,8 @@ pub struct Draft {
     pub messages: Vec<Message<TestDraft>>,
     /// Transcription mode of file
     pub mode: Mode,
+    /// Amount of tests in `messages` field
+    pub test_count: usize,
     // minified: Minified,
 }
 
@@ -49,8 +51,8 @@ pub enum Message<T> {
 }
 
 /// Wrapper for `String`
-#[derive(Debug, Clone)]
-pub struct Note(String);
+#[derive(Debug, Clone, PartialEq)]
+pub struct Note(pub String);
 
 /// Test that has not ran
 #[derive(Debug)]
@@ -84,16 +86,8 @@ impl Draft {
         parse_draft(file)
     }
 
-    /// Get amount of tests in `messages` field
-    pub fn test_count(&self) -> usize {
-        self.messages
-            .iter()
-            .filter(|msg| matches!(msg, Message::Test(_)))
-            .count()
-    }
-
-    /// Run tests
-    pub fn run(&self) -> Outcome {
+    /// Run drafted tests
+    pub fn run(self) -> Outcome {
         Outcome::run(self)
     }
 }

@@ -1,3 +1,5 @@
+#![allow(clippy::useless_format)] //TODO until error handling is implemented
+
 /// Parsing of *Phonet* `Draft`
 mod draft;
 /// Error type for *Phonet*
