@@ -1,11 +1,13 @@
-use phonet::Draft;
+use phonet::{DisplayLevel, Draft};
 
 #[test]
 fn tokipona_should_pass() {
     let file = include_str!("../examples/tokipona.phonet");
 
-    assert_eq!(
-        Draft::from(file).expect("Failed to parse").run().fail_count,
-        0
-    );
+    let outcome = Draft::from(file).expect("Failed to parse").run();
+
+    assert_eq!(outcome.fail_count, 0);
+
+    // Should only panic if there is a stdout problem
+    outcome.display(DisplayLevel::OnlyFails, true);
 }

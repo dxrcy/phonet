@@ -44,8 +44,6 @@ impl Outcome {
     /// Display results to standard output
     ///
     /// This can be implemented manually
-    ///
-    /// TODO Use config struct for `display_level` and `do_color` ??
     pub fn display(self, display_level: DisplayLevel, do_color: bool) {
         self.display_with(&mut std::io::stdout(), display_level, do_color)
             .expect("Could not write to stdout");
