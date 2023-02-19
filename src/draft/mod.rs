@@ -218,10 +218,7 @@ impl Draft {
         }
 
         // Get amount of tests in messages
-        let test_count = messages
-            .iter()
-            .filter(|msg| msg.is_test())
-            .count();
+        let test_count = messages.iter().filter(|msg| msg.is_test()).count();
 
         Ok(Self {
             rules: parse_rules(rules_raw, &classes_raw)?,
