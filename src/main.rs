@@ -1,17 +1,27 @@
+mod args;
+
 use std::fs;
 
+use args::Args;
+use clap::Parser;
+
+use phonet::Draft;
+
 fn main() {
-    let path = "./phonet";
+    let args = Args::parse();
 
-    let file = fs::read_to_string(path).expect("Could not read file");
+    // Read file
+    let file = fs::read_to_string(&args.file).expect("Could not read phonet file");
 
-    let draft = phonet::Draft::from(&file).expect("Failed to parse file");
+    // Parse file
+    let draft = Draft::from(&file).expect("Failed to parse file");
 
-    println!("{:#?}", draft);
+    //TODO Minify
 
-    let outcome = draft.run();
+    //TODO Custom tests
 
-    println!("{:#?}", outcome);
+    // Run tests and display
+    draft.run().display(args.display_level, !args.no_color);
 
-    outcome.display(Default::default(), true);
+    //TODO Generate words
 }

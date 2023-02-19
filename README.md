@@ -15,3 +15,4 @@
 - - Conditional items? (rules, tests, notes, ect)
 - Use config struct for `display` function
 - - Holds `DisplayLevel` and `do_color`
+- Only use `clap` dependency for binary
