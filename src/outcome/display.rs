@@ -14,12 +14,11 @@ use crate::{
 impl Outcome {
     /// Get maximum length of all test words
     ///
-    /// TODO Clean this
     /// TODO Test !
     pub fn max_word_len(&self, display_level: DisplayLevel) -> usize {
         self.list
             .iter()
-            .map(|x| match x {
+            .map(|msg| match msg {
                 // Test - Check display level
                 Test(TestOutcome { word, status, .. }) => match display_level {
                     // Always include
@@ -85,12 +84,10 @@ impl Outcome {
         )?;
 
         // Get maximum length of all test words
-        #[allow(unused_variables)]
         let max_word_len = self.max_word_len(display_level);
 
         // Loop result list
         for msg in &self.list {
-            // ? match (msg, display_level) {
             match msg {
                 // Display note
                 Info(Note(note)) => match display_level {
@@ -104,7 +101,6 @@ impl Outcome {
                 },
 
                 // Display test
-                #[allow(unused_variables)]
                 Test(TestOutcome {
                     word,
                     intent,
