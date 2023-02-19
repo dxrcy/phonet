@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use super::{
     colorize::{color, colors::*},
     Outcome,
@@ -13,8 +16,6 @@ use crate::{
 
 impl Outcome {
     /// Get maximum length of all test words
-    ///
-    /// TODO Test !
     pub fn max_word_len(&self, display_level: DisplayLevel) -> usize {
         self.list
             .iter()
@@ -32,8 +33,7 @@ impl Outcome {
                 Info(_) => 0,
             })
             .max()
-            // Default value
-            .unwrap_or(10)
+            .unwrap_or(0)
     }
 
     /// Get count of tests in list
