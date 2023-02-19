@@ -1,18 +1,331 @@
-# Phoner (new)
+# Phoner
+
+_Phonet_ is a CLI tool and library to validate phonotactic patterns for constructed languages.
+It is compatible with either romanization and phonetic transcription.
+Words can be randomly generated (see [Argument Syntax](#argument-syntax)).
+
+[Syntax Highlighting Extension for VSCode](https://github.com/darccyy/phonet-syntax)
+
+> Formerly named 'Phoner'
+
+# Usage
+
+This project can be used as a rust library, or as a binary.
+
+## Binary use
+
+[Download latest version here](https://github.com/darccyy/phonet/releases/latest)
+
+### Argument Syntax
+
+[[help message]]
+
+### Example
+
+```bash
+# Runs ./phonet
+phonet
+
+# Runs ./phonet, with tests: 'some', 'words' (instead of tests in file)
+phonet -t some,words
+
+# Runs ./myfile.phonet
+phonet -f myfile.phonet
+
+# Runs ./phonet, only showing fails
+phonet -df
+# Alternatives:
+phonet -d just-fails
+phonet -d fails
+
+# Runs ./phonet, and minifies to ./min.phonet without tests
+phonet -m
+
+# Runs ./myfile.phonet, without outputting any results, and minifies to ./myfile.min.phonet with tests
+phonet -f myfile.phonet -dh -mt
+
+# Runs ./phonet, and generates 1 random word
+phonet -g
+
+# Runs ./myfile.phonet, and generates 10 random words
+phonet -g10 -g myfile.phonet
+
+# Runs ./phonet, with no color, and writes output to ./phonet.txt
+phonet -n > phonet.txt
+
+# Runs ./myfile.phonet, with all test output hidden, and generates 3 random words with length 6-8, writes output to ./phonet.txt (with no color)
+phonet -f myfile.phonet -nd h -g 3 --gmin 6 --gmax 8 > ./phonet.txt
+```
+
+### Create Alias / Path
+
+Replace `<path_to_file>` with the directory of the downloaded binary.
+
+#### Bash
+
+Add alias in `.bashrc` in user directory
+
+```bash
+# ~/.bashrc
+alias phonet="<path_to_file>/phonet.exe"
+```
+
+#### Powershell
+
+Add to `$env:PATH`
+
+```ps1
+$env:Path = "$env:Path;<path_to_file>\phonet.exe"
+```
+
+## Library use
+
+Add `phonet = "0.9.0"` to your `Crates.toml` file
+
+- [Docs.rs](https://docs.rs/phonet/latest/phonet)
+- [Crates.io](https://crates.io/crates/phonet)
+
+Short example:
+
+[[short example]]
+
+Long example:
+
+[[long example]]
+
+# File syntax
+
+A _Phonet_ file is used to define the rules, classes, and tests for the program.
+
+The file should either be called `phonet`, or end in `.phonet`
+
+[Syntax Highlighting Extension for VSCode](https://github.com/darccyy/phonet-syntax)
+
+## Statements
+
+The syntax is a statements, each separated by a semicolon `;` or a linebreak.
+
+Use a _Ampersand_ `&` to denote a multi-line statement. This can only be ended with a semicolon `;`.
+
+Comments will only end with a linebreak.
+
+All whitespace is ignored, except to separate words in [_tests_](#tests).
+
+> Note! This will replace spaces in Regex as well! Use `\s` if you need a space
+
+Each statement must begin with an operator:
+
+- `#` _Hashtag_: A whole line comment. A linebreak (not a semicolon) ends the comment
+- `$` _Dollar_: Define a [_class_](#classes)
+- `+` **_Plus_** or `!` **_Bang_**: Define a [_rule_](#rule)
+- `*` _Star_: Create a test [_note_](#notes), and define a _reason_ if a test fails
+- `?` _Question_: Create a [_test_](#tests)
+- `~` _Tilde_: Define the [_mode_](#mode) of the file
+
+## Classes
+
+Classes are used as shorthand Regular Expressions, substituted into [_rules_](#rules) at runtime.
+
+> **Note:** Angle brackets will not parse as class names directly after:
+>
+> - An opening round bracket and a question mark: `(?`
+> - An opening round bracket, question mark, and letter 'P': `(?P`
+> - A backslash and letter 'k': `\k`
+>
+> This is the syntax used for look-behinds and named groups
+
+_Syntax:_
+
+- `$` _Dollar_
+- Name - Must be only characters from [a-zA-Z0-9_]
+- `=` _Equals_
+- Value - Regular Expression, may contain other _classes_ in angle brackets `<>` or `⟨⟩` (as with [_rules_](#rules))
+
+The `any` class, defined with `$_ = ...`, is used for random word generation.
+
+_Example:_
+
+```phonet
+# Some consonants
+$C = [ptksmn]
+
+# Some vowels
+$V = [iueoa]
+
+# Only sibilant consonants
+$C_s = [sz]
+```
+
+## Rules
+
+Rules are Regular Expressions used to test if a word is valid.
+
+Rules are defined with an _intent_, either `+` for _positive_, or `!` for _negative_.
+
+- A _positive_ rule must be followed for a word to be valid
+- A _negative_ rule must **not** be followed for a word to be valid
+
+To use a [_class_](#classes), use the class name, surrounded by angle brackets `<>` or `⟨⟩`.
+
+_Syntax:_
+
+- `+` **_Plus_** or `!` **_Bang_** - Plus for _positive_ rule, Bang for _negative_ rule
+- Pattern - Regular Expression, may contain [_classes_](#classes) in angle brackets `<>` or `⟨⟩`
+
+_Example (with predefined [*classes*](#classes)):_
+
+```phonet
+# Must be (C)V syllable structure
++ ^ (<C>? <V>)+ $
+
+# Must not have two vowels in a row
+! <V>{2}
+```
+
+## Tests
+
+Tests are checked against all rules, and the result is displayed in the output.
+
+Tests are ran in the order of definition.
+
+Like [_rules_](#rules), tests must have a defined _intent_, either `+` for _positive_, or `!` for _negative_.
+
+- A _positive_ test will pass if it is valid
+- A _negative_ test will **fail** if it is valid
+
+_Syntax:_
+
+- `?` _Question mark_
+- `+` **_Plus_** or `!` **_Bang_** - Plus for _positive_ test, Bang for _negative_ test
+- Tests - A word, or multiple words separated by a space
+
+_Example (with predefined [*rules*](#rules)):_
+
+```phonet
+# This should match, to pass
+?+ taso
+# This test should NOT match, to pass
+?! tax
+# Each word is a test, all should match to pass
+?+ taso sato tasa
+```
+
+## Notes
+
+Notes are printed to the terminal output, alongside tests.
+
+They are used as a _reason_ for any proceeding rules, as an explanation if a test fails.
+
+_Syntax:_
+
+- `*` _Star_
+- Text to print, and define reason as
+
+_Example:_
+
+```phonet
+* Syllable structure
++ ^ (<C>? <V>)+ $
+
+# This test will NOT match, however it SHOULD (due to the Plus), so it will FAIL, with the above note as the reason
+?+ tasto
+
+* Must not have two vowels in a row
+! <V>{2}
+
+?+ taso
+```
+
+## Mode
+
+The mode of a _Phonet_ file can be one of these:
+
+- _Romanized_: Using `<>` (not `⟨⟩`)
+- _Broad transcription_: Using `//`
+- _Narrow transcription_: Using `[]`
+
+This can optionally be specified in a file, although it does not add any functionality.
+
+_Syntax:_
+
+- `~` _Tilde_
+- `<.>`, `/./`, or `[.]` - Mode identifier, with `.` being any string, or blank
+
+_Examples:_
+
+```phonet
+# Specify romanized mode (fish icon)
+~<>
+```
+
+```phonet
+# Specify broad transcription
+~ / this is the mode /
+```
+
+## Examples
+
+See the [examples](./examples/) folder for _Phonet_ file examples.
+
+- [Good Syntax Example](./examples/example.phonet)
+- [Toki Pona](./examples/tokipona.phonet)
+- [Ivalingo](./examples/ivalingo.phonet)
+
+## Recommended Syntax Patterns
+
+These formatting tips are not required, but recommended to make the file easier to read.
+
+1. Specify the mode at the very top of the file
+2. Define all classes at the top of the file
+   - Also define an `any` class first, for word generation
+3. Group related rules and tests, using a note
+   - Define rules first, then positive tests, then negative tests
+4. Indent rules and tests under note
+   - Rules should use 1 intent, tests use 2
+
+_Example (this is from [example.phonet](./examples/example.phonet)):_
+
+[[example phonet file]]
+
+![Phonet Icon](./icon.png)
 
 # TODO
 
-- Implement `run` functionality
-- Tests
-- - More unit tests
-- - Add details to asserts
-- Clean code
-- - Add comments
-- API
-- - Expose useful items
-- - Group items
-- Features
-- - Conditional items? (rules, tests, notes, ect)
+## Major Features
+
+- Minify file
+- Custom tests
+- Generate words
+
+## Code
+
+### Documentation
+
+- Add docs to readme !!!
+- Add doc comments !!!
+
+### Tests
+
+- More unit tests
+- Add details to asserts
+
+### Clean code
+
+- Add comments
+- Only use `clap` dependency for binary
+
+### API
+
+- Add error variants !!!
+- Expose useful items
+- Group items
+- Move word generation to optional feature
+
+## Minor / Future Features
+
 - Use config struct for `display` function
 - - Holds `DisplayLevel` and `do_color`
-- Only use `clap` dependency for binary
+
+- Print generated words one by one
+
+- Conditional items? (rules, tests, notes, ect)
