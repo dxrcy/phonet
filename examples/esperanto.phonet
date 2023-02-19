@@ -4,7 +4,7 @@ $C = [pbtdkgmnfvszŝĵcĉĝĥhwjlr]
 $V = [iueoa]
 $_ = [⟨C⟩⟨V⟩]
 
-@* Invalid letters
+* Invalid letters
   + ^ ⟨_⟩+ $
     ?+ scii ekssklavo
     ?! axa
