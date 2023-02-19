@@ -42,17 +42,15 @@ pub enum DisplayLevel {
     HideAll,
 }
 
-// TODO Replace all references of `matches!(status, ...)` with these functions
-// TODO Implement similar for `Message`
 impl PassStatus {
     /// Returns `true` if self is `Pass`
     pub fn is_pass(&self) -> bool {
-        matches!(self, PassStatus::Pass)
+        matches!(self, Self::Pass)
     }
 
     /// Returns `true` if self is `Fail`
     pub fn is_fail(&self) -> bool {
-        matches!(self, PassStatus::Fail(_))
+        matches!(self, Self::Fail(_))
     }
 }
 

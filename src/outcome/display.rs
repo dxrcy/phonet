@@ -7,7 +7,7 @@ use crate::{
     FailKind::*,
     Message::*,
     Note,
-    PassStatus::{self, *},
+    PassStatus::*,
     TestOutcome,
 };
 
@@ -25,9 +25,7 @@ impl Outcome {
                     // Always include
                     ShowAll => word.chars().count(),
                     // Only include if failed
-                    IgnorePasses | OnlyFails if matches!(status, PassStatus::Fail(_)) => {
-                        word.chars().count()
-                    }
+                    IgnorePasses | OnlyFails if status.is_fail() => word.chars().count(),
                     // Don't include
                     _ => 0,
                 },
@@ -41,10 +39,7 @@ impl Outcome {
 
     /// Get count of tests in list
     pub fn test_count(&self) -> usize {
-        self.list
-            .iter()
-            .filter(|item| matches!(item, Test(_)))
-            .count()
+        self.list.iter().filter(|item| item.is_test()).count()
     }
 
     /// Display results to standard output

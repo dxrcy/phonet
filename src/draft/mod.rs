@@ -220,7 +220,7 @@ impl Draft {
         // Get amount of tests in messages
         let test_count = messages
             .iter()
-            .filter(|msg| matches!(msg, Message::Test(_)))
+            .filter(|msg| msg.is_test())
             .count();
 
         Ok(Self {

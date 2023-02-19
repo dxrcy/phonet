@@ -47,7 +47,7 @@ impl Outcome {
                     let outcome = run_test(test, &draft.rules);
 
                     // Increase fail count if failed
-                    if matches!(outcome.status, Fail(_)) {
+                    if outcome.status.is_fail() {
                         fail_count += 1;
                     }
 

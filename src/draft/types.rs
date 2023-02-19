@@ -18,16 +18,6 @@ pub struct Rule {
     pub note: Option<Note>,
 }
 
-// Scuffed equality check for `Rule`
-impl PartialEq for Rule {
-    fn eq(&self, other: &Self) -> bool {
-        self.intent == other.intent
-            && self.note == other.note
-            // Regex must be stringified
-            && self.pattern.to_string() == other.pattern.to_string()
-    }
-}
-
 /// Mirrors `Rule` struct, but with `String` instead of `Regex`
 pub(super) struct RawRule {
     /// Whether pattern should match or not, for a test to be valid
@@ -75,8 +65,30 @@ pub enum Mode {
     Narrow,
 }
 
+// Scuffed equality check for `Rule`
+impl PartialEq for Rule {
+    fn eq(&self, other: &Self) -> bool {
+        self.intent == other.intent
+            && self.note == other.note
+            // Regex must be stringified
+            && self.pattern.to_string() == other.pattern.to_string()
+    }
+}
+
 impl Default for Mode {
     fn default() -> Self {
         Self::Romanized
+    }
+}
+
+impl<T> Message<T> {
+    /// Returns `true` if self is `Info`
+    pub fn is_note(&self) -> bool {
+        matches!(self, Self::Info(_))
+    }
+
+    /// Returns `true` if self is `Test`
+    pub fn is_test(&self) -> bool {
+        matches!(self, Self::Test(_))
     }
 }
