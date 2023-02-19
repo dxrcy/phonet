@@ -12,4 +12,6 @@ fn main() {
     let outcome = draft.run();
 
     println!("{:#?}", outcome);
+
+    outcome.display(Default::default(), true);
 }

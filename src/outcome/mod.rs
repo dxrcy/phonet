@@ -1,3 +1,5 @@
+/// Color styles for stdout
+mod colorize;
 /// Display function for `Outcome` struct
 mod display;
 /// Run function for `Outcome` struct
@@ -7,6 +9,7 @@ use crate::draft::{Message, Note};
 
 #[derive(Debug)]
 pub struct Outcome {
+    /// TODO Rename to `messages` ?
     pub list: Vec<Message<TestOutcome>>,
     pub fail_count: usize,
 }
@@ -31,9 +34,30 @@ pub enum FailKind {
     CustomReason(Note),
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum DisplayLevel {
     ShowAll,
     IgnorePasses,
     OnlyFails,
     HideAll,
+}
+
+// TODO Replace all references of `matches!(status, ...)` with these functions
+// TODO Implement similar for `Message`
+impl PassStatus {
+    /// Returns `true` if self is `Pass`
+    pub fn is_pass(&self) -> bool {
+        matches!(self, PassStatus::Pass)
+    }
+
+    /// Returns `true` if self is `Fail`
+    pub fn is_fail(&self) -> bool {
+        matches!(self, PassStatus::Fail(_))
+    }
+}
+
+impl Default for DisplayLevel {
+    fn default() -> Self {
+        Self::ShowAll
+    }
 }
