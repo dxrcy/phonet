@@ -18,7 +18,69 @@ This project can be used as a rust library, or as a binary.
 
 ### Argument Syntax
 
-[[help message]]
+```
+Usage: phonet.exe [OPTIONS]
+
+Options:
+  -t, --tests <TESTS>
+          Custom test, separate with comma (Ignores tests in file)
+
+  -f, --file <FILE>
+          Name and path of file to run and test
+
+          Eg. `phonet -f ./myfile.phonet`
+
+          [default: phonet]
+
+  -d, --display-level <DISPLAY_LEVEL>
+          What types of outputs to display
+
+          Options can be single letter
+
+          Eg. `phonet -d only-fails` or `phonet -do`
+
+          [default: show-all]
+
+          Possible values:
+          - show-all:      Show everything: passed or failed tests, and notes
+          - ignore-passes: Show failed tests and notes, but not passes
+          - only-fails:    Show only failed tests, not passed tests or notes
+          - hide-all:      Show nothing: not passed or failed tests, or notes
+
+  -m, --minify [<MINIFY>]
+          Minify file and save
+
+          Possible values:
+          - tests: Include tests
+
+  -g, --generate [<GENERATE>]
+          Generate random words
+
+          Default count 1, specify with number
+
+      --gmin <GENERATE_MIN_LEN>
+          Set minimum length for generated words
+
+          Use with the `--generate` or `-g` flag
+
+          Note: This increases generation time exponentially
+
+      --gmax <GENERATE_MAX_LEN>
+          Set maximum length for generated words
+
+          Use with the `--generate` or `-g` flag
+
+  -n, --no-color
+          Display output in default color
+
+          Use for piping standard output to a file
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+```
 
 ### Example
 
@@ -87,7 +149,20 @@ Add `phonet = "0.9.0"` to your `Crates.toml` file
 
 Short example:
 
-[[short example]]
+```rs
+use phonet::Draft;
+
+fn main() {
+    let file = std::fs::read_to_string("phonet").unwrap();
+
+    // Parse draft
+    Draft::from(&file).unwrap()
+        // Run tests
+        .run()
+        // Display results
+        .display(Default::default())
+}
+```
 
 Long example:
 
@@ -285,6 +360,42 @@ These formatting tips are not required, but recommended to make the file easier 
 
 _Example (this is from [example.phonet](./examples/example.phonet)):_
 
-[[example phonet file]]
+```phonet
+~<> ;# Mode (optional) - This file uses romanized letters
+
+# Class definitions
+$_ = [ptkmnswjlaeiou] ;# Any / all letters (required for generating words)
+$C = [ptkmnswjl]      ;# Consonants
+$V = [aeiou]          ;# Vowels
+
+* Invalid letters     ;# Note - Prints to standard output, and used as reason if test fails
+  + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' group
+    ?+ taso
+    ?! tyxo
+
+* Examples of failing tests
+    ?+ tyxo           ;# This test will fail - with the reason 'Invalid Letters' (above)
+    ?! taso           ;# This test will fail, as a false positive
+
+* Syllable structure
+  + ^ ( ⟨C⟩ ⟨V⟩ )+ $  ;# Check that word is Consonant + Vowel, repeating at least once
+    ?+ taso kili
+    ?! ano taaso
+
+* Some more tests
+    ?+ silo tila
+    ?! aka axe
+
+* No repeated letters
+  ! (.)\1             ;# This is an unnamed back-reference
+  ! (?<x> .) \k<x>    ;# This is a named back-reference (NOT a class)
+    ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
+    ?! &
+      taaso
+      ttaso
+    ;
+
+* 2 tests *should* have failed!
+```
 
 ![Phonet Icon](./icon.png)
