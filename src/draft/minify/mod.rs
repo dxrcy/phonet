@@ -11,6 +11,7 @@ pub(super) fn minify(
     classes: &Classes,
     rules: &[RawRule],
     messages: &[Message<TestDraft>],
+    with_tests: bool,
 ) -> Result<String, Error> {
     let (positive, negative) = minify_tests(messages);
 
@@ -21,12 +22,15 @@ pub(super) fn minify(
         rules = minify_rules(rules, classes)?.join(";"),
     );
 
-    // Add tests, if each intent is not empty
-    if !positive.is_empty() {
-        minified += &format!(";?+{}", positive.join(" "));
-    }
-    if !negative.is_empty() {
-        minified += &format!(";?!{}", negative.join(" "));
+    // If tests are enabled
+    if with_tests {
+        // Add tests, if each intent is not empty
+        if !positive.is_empty() {
+            minified += &format!(";?+{}", positive.join(" "));
+        }
+        if !negative.is_empty() {
+            minified += &format!(";?!{}", negative.join(" "));
+        }
     }
 
     Ok(minified)

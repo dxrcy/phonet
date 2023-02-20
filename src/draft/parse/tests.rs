@@ -45,7 +45,7 @@ fn parse_rules_works() {
         },
     ];
 
-    assert_eq!(parse_rules(rules_raw, &classes).unwrap(), rules);
+    assert_eq!(parse_rules(&rules_raw, &classes).unwrap(), rules);
 }
 
 #[test]

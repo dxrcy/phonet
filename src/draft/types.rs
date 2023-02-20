@@ -19,7 +19,8 @@ pub struct Rule {
 }
 
 /// Mirrors `Rule` struct, but with `String` instead of `Regex`
-pub(super) struct RawRule {
+#[derive(Debug, PartialEq)]
+pub(crate) struct RawRule {
     /// Whether pattern should match or not, for a test to be valid
     pub intent: bool,
     /// Regex pattern, as `String`

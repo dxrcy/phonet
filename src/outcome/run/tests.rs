@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use fancy_regex_macro::regex;
 
 use super::*;
@@ -48,7 +50,9 @@ fn run_all_successful() {
         rules: get_example_rules(),
         mode: crate::Mode::Romanized,
         test_count: 3,
-        minified: String::new(),
+        //
+        classes_raw: HashMap::new(),
+        rules_raw: vec![],
     };
 
     let outcome = draft.run();
@@ -126,7 +130,9 @@ fn run_all_failing() {
         rules: get_example_rules(),
         mode: crate::Mode::Romanized,
         test_count: 3,
-        minified: String::new(),
+        //
+        classes_raw: HashMap::new(),
+        rules_raw: vec![],
     };
 
     let outcome = draft.run();

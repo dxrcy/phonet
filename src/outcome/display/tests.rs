@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use fancy_regex::Regex;
 
 use crate::{DisplayLevel, Draft, Message::*, Note, Rule, TestDraft};
@@ -25,7 +27,9 @@ fn max_word_len_works() {
         ],
         mode: Default::default(),
         test_count: 2,
-        minified: String::new(),
+        //
+        classes_raw: HashMap::new(),
+        rules_raw: vec![],
     }
     .run();
 

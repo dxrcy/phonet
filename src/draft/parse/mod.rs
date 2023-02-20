@@ -7,7 +7,7 @@ use super::{replace::replace_classes, types::*, Rule};
 use crate::Error;
 
 /// Parse each rule in list
-pub(super) fn parse_rules(rules: Vec<RawRule>, classes: &Classes) -> Result<Vec<Rule>, Error> {
+pub(super) fn parse_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<Rule>, Error> {
     let mut new = Vec::new();
 
     for RawRule {
@@ -18,8 +18,8 @@ pub(super) fn parse_rules(rules: Vec<RawRule>, classes: &Classes) -> Result<Vec<
     {
         new.push(Rule {
             pattern: parse_regex(&pattern, classes)?,
-            intent,
-            note,
+            intent: *intent,
+            note: note.clone(),
         })
     }
 

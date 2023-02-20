@@ -57,7 +57,7 @@ fn minify_works() {
         }),
     ];
 
-    let minified = minify(mode, &classes, &rules_raw, &messages).unwrap();
+    let minified = minify(mode, &classes, &rules_raw, &messages, true).unwrap();
 
     assert_eq!(
         minified,
@@ -78,7 +78,7 @@ fn minify_works() {
         Info(Note("another note".to_string())),
     ];
 
-    let minified = minify(mode, &classes, &rules_raw, &messages).unwrap();
+    let minified = minify(mode, &classes, &rules_raw, &messages, true).unwrap();
 
     assert_eq!(minified, "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou];?+abc");
 
@@ -97,7 +97,7 @@ fn minify_works() {
         }),
     ];
 
-    let minified = minify(mode, &classes, &rules_raw, &messages).unwrap();
+    let minified = minify(mode, &classes, &rules_raw, &messages, true).unwrap();
 
     assert_eq!(
         minified,
@@ -111,7 +111,7 @@ fn minify_works() {
         Info(Note("another note".to_string())),
     ];
 
-    let minified = minify(mode, &classes, &[], &messages).unwrap();
+    let minified = minify(mode, &classes, &[], &messages, true).unwrap();
 
     assert_eq!(minified, "~//;");
 }

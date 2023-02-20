@@ -31,8 +31,9 @@ pub struct Draft {
     pub mode: Mode,
     /// Amount of tests in `messages` field
     pub test_count: usize,
-    /// Minified file
-    pub minified: String,
+
+    pub(crate) rules_raw: Vec<RawRule>,
+    pub(crate) classes_raw: Classes,
 }
 
 impl Draft {
@@ -221,14 +222,25 @@ impl Draft {
         // Use default mode if none specified
         let mode = mode.unwrap_or_default();
 
-        let minified = minify(mode, &classes_raw, &rules_raw, &messages)?;
+        // let minified = minify(mode, &classes_raw, &rules_raw, &messages)?;
 
         Ok(Self {
-            rules: parse_rules(rules_raw, &classes_raw)?,
+            rules: parse_rules(&rules_raw, &classes_raw)?,
+            rules_raw,
             messages,
             mode,
             test_count,
-            minified,
+            classes_raw,
         })
+    }
+
+    pub fn minify(&self, with_tests: bool) -> Result<String, Error> {
+        minify(
+            self.mode,
+            &self.classes_raw,
+            &self.rules_raw,
+            &self.messages,
+            with_tests,
+        )
     }
 }
