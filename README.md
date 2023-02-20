@@ -47,11 +47,11 @@ Options:
           - only-fails:    Show only failed tests, not passed tests or notes
           - hide-all:      Show nothing: not passed or failed tests, or notes
 
-  -m, --minify [<MINIFY>]
+  -m, --minify
           Minify file and save
 
-          Possible values:
-          - tests: Include tests
+  -w, --with-tests
+          Include tests in minified file
 
   -g, --generate [<GENERATE>]
           Generate random words
@@ -104,7 +104,7 @@ phonet -d fails
 phonet -m
 
 # Runs ./myfile.phonet, without outputting any results, and minifies to ./myfile.min.phonet with tests
-phonet -f myfile.phonet -dh -mt
+phonet -f myfile.phonet -dh -mw
 
 # Runs ./phonet, and generates 1 random word
 phonet -g

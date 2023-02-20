@@ -2,8 +2,6 @@
 
 ## Major Features
 
-- Minify file
-- Custom tests
 - Generate words
 
 ## Code
