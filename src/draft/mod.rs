@@ -10,6 +10,7 @@ mod statements;
 mod types;
 
 pub use self::types::*;
+pub(crate) use self::replace::replace_classes;
 
 use std::collections::HashMap;
 

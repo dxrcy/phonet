@@ -6,6 +6,8 @@ mod draft;
 pub mod error;
 /// Running and displaying of *Phonet* `Draft`
 mod outcome;
+/// Generation of random words
+mod generate;
 
 pub use draft::{Draft, Message, Mode, Note, Rule, TestDraft};
 pub use outcome::{DisplayLevel, FailKind, Outcome, PassStatus, TestOutcome};

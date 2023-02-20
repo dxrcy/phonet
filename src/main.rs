@@ -27,7 +27,6 @@ fn main() {
     let file = fs::read_to_string(&args.file).expect("Could not read phonet file");
 
     // Parse file
-    // let mut draft = Draft::from(&file).expect("Failed to parse file");
     let mut draft = try_this!(Draft::from(&file));
 
     // Use custom CLI tests if given

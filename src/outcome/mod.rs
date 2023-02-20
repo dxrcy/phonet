@@ -5,6 +5,8 @@ mod display;
 /// Run function for `Outcome` struct
 mod run;
 
+pub(crate) use run::{validate_test, Validity};
+
 use crate::draft::{Message, Note};
 
 #[derive(Debug)]

@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use fancy_regex::Regex;
 
 /// Alias for `HashMap` of `String` and `String`, for raw classes
-pub(super) type Classes = HashMap<String, String>;
+pub(crate) type Classes = HashMap<String, String>;
 
 /// Pattern rule
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Rule {
     /// Whether pattern should match or not, for a test to be valid
     pub pattern: Regex,

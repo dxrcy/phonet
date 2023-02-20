@@ -17,7 +17,7 @@ use crate::{
 ///
 /// NOTE: This is different to whether a test *passes* (See `PassStatus`)
 #[derive(Debug, PartialEq)]
-enum Validity {
+pub(crate) enum Validity {
     Valid,
     Invalid(Option<Note>),
 }
@@ -76,7 +76,7 @@ fn run_test(test: TestDraft, rules: &Vec<Rule>) -> TestOutcome {
 }
 
 /// Check if test is valid against rules
-fn validate_test(word: &str, rules: &Vec<Rule>) -> Validity {
+pub(crate) fn validate_test(word: &str, rules: &[Rule]) -> Validity {
     // Check for match with every rule, if not, return fail
     for Rule {
         intent,

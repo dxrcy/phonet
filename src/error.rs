@@ -3,9 +3,11 @@ use thiserror::Error;
 /// Error type for *Phonet*
 #[derive(Error, Debug)]
 pub enum Error {
-    /// Error parsing file
     #[error("Error while parsing: {0}, at line {1}")]
     Parse(ParseError, usize),
+
+    #[error("Missing 'any' class. Use `$_ = ___` to define it")]
+    MissingAnyClass,
 }
 
 #[derive(Error, Debug)]

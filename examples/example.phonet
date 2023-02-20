@@ -6,7 +6,7 @@ $C = [ptkmnswjl]      ;# Consonants
 $V = [aeiou]          ;# Vowels
 
 * Invalid letters     ;# Note - Prints to standard output, and used as reason if test fails
-  + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' group
+  + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' class
     ?+ taso
     ?! tyxo
 

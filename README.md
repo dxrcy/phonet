@@ -216,7 +216,7 @@ _Syntax:_
 - `=` _Equals_
 - Value - Regular Expression, may contain other _classes_ in angle brackets `<>` or `⟨⟩` (as with [_rules_](#rules))
 
-The `any` class, defined with `$_ = ...`, is used for random word generation.
+The *'any'* class, defined with `$_ = ...`, is used for random word generation.
 
 _Example:_
 
@@ -352,7 +352,7 @@ These formatting tips are not required, but recommended to make the file easier 
 
 1. Specify the mode at the very top of the file
 2. Define all classes at the top of the file
-   - Also define an [`any` class](#classes) first, for word generation
+   - Also define an [*'any'* class](#classes) first, for word generation
 3. Group related rules and tests, using a note
    - Define rules first, then positive tests, then negative tests
 4. Indent rules and tests under note
@@ -369,7 +369,7 @@ $C = [ptkmnswjl]      ;# Consonants
 $V = [aeiou]          ;# Vowels
 
 * Invalid letters     ;# Note - Prints to standard output, and used as reason if test fails
-  + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' group
+  + ^ ⟨_⟩+ $          ;# Check that every letter is in the 'any' class
     ?+ taso
     ?! tyxo
 
