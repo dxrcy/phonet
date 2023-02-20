@@ -1,9 +1,5 @@
 # TODO
 
-## Major Features
-
-- Generate words
-
 ## Code
 
 ### Documentation
