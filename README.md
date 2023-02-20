@@ -344,7 +344,7 @@ See the [examples](./examples/) folder for _Phonet_ file examples.
 
 - [Good Syntax Example](./examples/example.phonet)
 - [Toki Pona](./examples/tokipona.phonet)
-- [Ivalingo](./examples/ivalingo.phonet)
+<!-- - [Ivalingo](./examples/ivalingo.phonet) -->
 
 ## Recommended Syntax Patterns
 
@@ -352,7 +352,7 @@ These formatting tips are not required, but recommended to make the file easier 
 
 1. Specify the mode at the very top of the file
 2. Define all classes at the top of the file
-   - Also define an `any` class first, for word generation
+   - Also define an [`any` class](#classes) first, for word generation
 3. Group related rules and tests, using a note
    - Define rules first, then positive tests, then negative tests
 4. Indent rules and tests under note
