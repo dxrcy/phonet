@@ -21,6 +21,7 @@
 
 - Add comments
 - Only use `clap` dependency for binary
+- Tidy `pub`, `pub(crate)`, and `pub use`
 
 ### API
 

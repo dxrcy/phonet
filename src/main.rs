@@ -3,24 +3,28 @@ mod args;
 use std::fs;
 
 use clap::Parser;
-use phonet::{get_min_filename, Draft, Message::Test, TestDraft};
+use colorful::Color;
+
+use phonet::{color, get_min_filename, Draft, Message::Test, TestDraft};
 
 use crate::args::Args;
 
+/// Unwrap the `Ok` value of a `Result`, or exit with a stringified `Error`
+///
+/// TODO something else????
 macro_rules! try_this {
     ( $result: expr ) => {{
         match $result {
             Ok(value) => value,
 
             Err(err) => {
-                eprintln!("{}", err);
-                return;
+                return Err(err.to_string());
             }
         }
     }};
 }
 
-fn main() {
+fn main() -> Result<(), String> {
     let args = Args::parse();
 
     // Read file
@@ -51,8 +55,43 @@ fn main() {
         .expect("Could not write minified file");
     }
 
+    // Generate words
+    let generated = if let Some(count) = args.generate {
+        // Default count to 1 word
+        let count = count.unwrap_or(1);
+
+        // Min and max length
+        let length = args.generate_min_len.unwrap_or(3)..args.generate_max_len.unwrap_or(14);
+
+        // Generate words
+        Some(try_this!(draft.generate(count, length)))
+    } else {
+        None
+    };
+
     // Run tests and display
     draft.run().display(args.display_level, !args.no_color);
 
-    //TODO Generate words
+    // Display generated words
+    if let Some(words) = generated {
+        // Print title
+        println!(
+            "{}",
+            color(
+                &format!(
+                    "Randomly generated word{s}:",
+                    s = if words.len() == 1 { "" } else { "s" }
+                ),
+                Color::Blue,
+                !args.no_color,
+            )
+        );
+
+        // Print words
+        for word in words {
+            println!(" {} {}", color("-", Color::Cyan, !args.no_color), word);
+        }
+    }
+
+    Ok(())
 }

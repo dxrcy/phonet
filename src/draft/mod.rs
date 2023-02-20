@@ -9,8 +9,8 @@ mod statements;
 /// Holds types for `Draft` struct
 mod types;
 
-pub use self::types::*;
 pub(crate) use self::replace::replace_classes;
+pub use self::types::*;
 
 use std::collections::HashMap;
 
@@ -239,6 +239,9 @@ impl Draft {
         })
     }
 
+    /// Returns a minified version of the original file of the `Draft`
+    ///
+    /// If `with_tests` is true, the minified string will include tests
     pub fn minify(&self, with_tests: bool) -> Result<String, Error> {
         minify(
             self.mode,

@@ -5,7 +5,9 @@ use crate::error::Error;
 
 use super::{replace::replace_classes, types::*, Message::*};
 
-#[allow(unused_variables)]
+/// Minifies the fields of a `Draft`
+///
+/// If `with_tests` is true, the minified string will include tests
 pub(super) fn minify(
     mode: Mode,
     classes: &Classes,

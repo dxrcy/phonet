@@ -1,5 +1,5 @@
 /// Color styles for stdout
-mod colorize;
+pub(crate) mod colorize;
 /// Display function for `Outcome` struct
 mod display;
 /// Run function for `Outcome` struct
