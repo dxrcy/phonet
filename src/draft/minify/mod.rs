@@ -61,7 +61,7 @@ fn minify_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<String>, Err
         strings.push(format!(
             "{}{}",
             if *intent { '+' } else { '!' },
-            replace_classes(&pattern, classes)?
+            replace_classes(pattern, classes)?
         ));
     }
 

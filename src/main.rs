@@ -3,7 +3,7 @@ mod args;
 use std::fs;
 
 use clap::Parser;
-use phonet::Draft;
+use phonet::{get_min_filename, Draft};
 
 use crate::args::Args;
 
@@ -16,7 +16,11 @@ fn main() {
     // Parse file
     let draft = Draft::from(&file).expect("Failed to parse file");
 
-    //TODO Minify
+    // Minify file
+    if args.minify {
+        fs::write(get_min_filename(&args.file), &draft.minified)
+            .expect("Could not write minified file");
+    }
 
     //TODO Custom tests
 

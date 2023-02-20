@@ -1,4 +1,4 @@
-use clap::{builder::PossibleValue, Parser, ValueEnum};
+use clap::Parser;
 
 use phonet::DisplayLevel::{self, *};
 
@@ -27,8 +27,8 @@ pub struct Args {
     pub display_level: DisplayLevel,
 
     /// Minify file and save
-    #[arg(short, long, value_enum)]
-    pub minify: Option<Option<WithTests>>,
+    #[arg(short, long)]
+    pub minify: bool,
 
     /// Generate random words
     ///
@@ -55,25 +55,4 @@ pub struct Args {
     /// Use for piping standard output to a file
     #[arg(short, long)]
     pub no_color: bool,
-}
-
-#[derive(Clone, Copy, Debug)]
-/// Custom implementation of boolean, for argument aliases
-pub enum WithTests {
-    Tests,
-}
-
-// Custom implementation, for argument aliases
-impl ValueEnum for WithTests {
-    fn to_possible_value(&self) -> Option<clap::builder::PossibleValue> {
-        Some(match self {
-            Self::Tests => PossibleValue::new("tests")
-                .aliases(["t"])
-                .help("Include tests"),
-        })
-    }
-
-    fn value_variants<'a>() -> &'a [Self] {
-        &[Self::Tests]
-    }
 }

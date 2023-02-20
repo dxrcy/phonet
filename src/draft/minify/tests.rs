@@ -117,5 +117,3 @@ fn minify_works() {
 }
 
 //TODO Failed to parse
-
-//TODO minify_rules_works

@@ -82,6 +82,9 @@ impl Default for Mode {
 }
 
 impl Mode {
+    /// Get `Mode` from characters
+    ///
+    /// Returns `None` if characters are not valid
     pub fn from(first: char, last: char) -> Option<Self> {
         use Mode::*;
 
@@ -94,13 +97,17 @@ impl Mode {
         })
     }
 
+    /// Get `Mode` from optional characters
+    ///
+    /// Returns `None` if characters are not valid, or any characters are `None`
     pub fn from_options(first: Option<char>, last: Option<char>) -> Option<Self> {
         match (first, last) {
             (Some(a), Some(b)) => Self::from(a, b),
-            _ => return None,
+            _ => None,
         }
     }
 
+    /// Convert `Mode` to basic characters
     pub fn as_str(self) -> &'static str {
         use Mode::*;
 
