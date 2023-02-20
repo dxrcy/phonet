@@ -63,15 +63,12 @@ fn minify_works() {
         minified,
         "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou];?+abc;?!ax hello"
     );
-    
+
     // * ...with tests disabled
 
     let minified = minify(mode, &classes, &raw_rules, &messages, false).unwrap();
 
-    assert_eq!(
-        minified,
-        "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]"
-    );
+    assert_eq!(minified, "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]");
 
     // * No negative tests
 
@@ -112,15 +109,12 @@ fn minify_works() {
         minified,
         "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou];?!ax hello"
     );
-    
+
     // * ...with tests disabled
 
     let minified = minify(mode, &classes, &raw_rules, &messages, false).unwrap();
 
-    assert_eq!(
-        minified,
-        "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]"
-    );
+    assert_eq!(minified, "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]");
 
     // * No tests, no rules
 
@@ -132,15 +126,12 @@ fn minify_works() {
     let minified = minify(mode, &classes, &[], &messages, true).unwrap();
 
     assert_eq!(minified, "~//;");
-    
+
     // * ...with tests disabled
 
     let minified = minify(mode, &classes, &raw_rules, &messages, false).unwrap();
 
-    assert_eq!(
-        minified,
-        "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]"
-    );
+    assert_eq!(minified, "~//;+^[[ptk][aeiou]]+$;![aeiou][aeiou]");
 }
 
 //TODO Failed to parse

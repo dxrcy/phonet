@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use crate::error::ParseError;
+
 use super::*;
 
 macro_rules! classes {
@@ -67,18 +69,17 @@ fn replace_classes_works() {
     assert_eq!(replace_classes("a<b", &classes).unwrap(), "a<b");
 }
 
-//TODO Use error kinds
 #[test]
 fn replace_classes_returns_error() {
     let classes = classes!();
 
     assert!(matches!(
         replace_classes("<c>", &classes),
-        Err(Error::Generic(..))
+        Err(Error::Parse(ParseError::ClassNotFound(..), _))
     ));
 
     assert!(matches!(
         replace_classes("<a<b>c>", &classes),
-        Err(Error::Generic(..))
+        Err(Error::Parse(ParseError::ClassNotFound(..), _))
     ));
 }

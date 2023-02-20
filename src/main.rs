@@ -7,6 +7,19 @@ use phonet::{get_min_filename, Draft, Message::Test, TestDraft};
 
 use crate::args::Args;
 
+macro_rules! try_this {
+    ( $result: expr ) => {{
+        match $result {
+            Ok(value) => value,
+
+            Err(err) => {
+                eprintln!("{}", err);
+                return;
+            }
+        }
+    }};
+}
+
 fn main() {
     let args = Args::parse();
 
@@ -14,7 +27,8 @@ fn main() {
     let file = fs::read_to_string(&args.file).expect("Could not read phonet file");
 
     // Parse file
-    let mut draft = Draft::from(&file).expect("Failed to parse file");
+    // let mut draft = Draft::from(&file).expect("Failed to parse file");
+    let mut draft = try_this!(Draft::from(&file));
 
     // Use custom CLI tests if given
     if let Some(tests) = args.tests {

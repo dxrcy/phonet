@@ -16,7 +16,27 @@ use std::collections::HashMap;
 use fancy_regex_macro::regex;
 
 use self::{minify::minify, parse::parse_rules, statements::split_statements};
-use crate::{outcome::Outcome, Error, IntoResult, REGEX_MATCH_FAIL};
+use crate::{error::Error, outcome::Outcome, REGEX_MATCH_FAIL};
+
+/// Shorthand for `Err(Error::Parse(ParseError::______))`
+#[macro_export]
+macro_rules! parse_error {
+    ( $line: expr, $kind: ident ) => {
+            Err(crate::error::Error::Parse(
+            crate::error::ParseError::$kind,
+            $line,
+        ))
+    };
+
+    ( $line: expr, $kind: ident, $( $value: expr )* ) => {
+        Err(crate::error::Error::Parse(
+            crate::error::ParseError::$kind(
+                $( $value )*
+            ),
+            $line,
+        ))
+    };
+}
 
 /// Parsed *Phonet* file
 #[derive(Debug, PartialEq)]
@@ -70,8 +90,8 @@ impl Draft {
             // Get line operator first character
             let mut chars = statement.chars();
             let Some(operator) = chars.next() else {
-            continue;
-        };
+                continue;
+            };
 
             // Match line operator
             match operator {
@@ -82,7 +102,7 @@ impl Draft {
                 '~' => {
                     // Fail if mode is already defined
                     if mode.is_some() {
-                        return Err(Error::Generic(line, format!("Mode already defined")));
+                        return parse_error!(line, ModeAlreadyDefined);
                     }
 
                     // Remove spaces
@@ -91,10 +111,10 @@ impl Draft {
                     }
 
                     // Select mode
-                    mode = Some(
-                        Mode::from_options(chars.next(), chars.last())
-                            .into_result(Error::Generic(line, format!("Invalid mode specifier")))?,
-                    );
+                    mode = Some(match Mode::from_options(chars.next(), chars.last()) {
+                        Some(value) => value,
+                        None => return parse_error!(line, InvalidModeSpecifier),
+                    });
                 }
 
                 // Class
@@ -103,30 +123,24 @@ impl Draft {
 
                     // Get class name
                     let Some(name) = split.next() else {
-                    return Err(Error::Generic(line, format!("No class name given")));
-                };
+                        return parse_error!(line, NoClassName);
+                    };
                     let name = name.trim();
 
                     // Check if name is valid
                     if !regex!(r"^\w+$").is_match(name).expect(REGEX_MATCH_FAIL) {
-                        return Err(Error::Generic(
-                            line,
-                            format!("Invalid class name '{}'", name),
-                        ));
+                        return parse_error!(line, InvalidClassName, name.to_string());
                     }
 
                     // Check that class name does not exist
                     if raw_classes.get(name).is_some() {
-                        return Err(Error::Generic(
-                            line,
-                            format!("Class already exists named '{}'", name),
-                        ));
+                        return parse_error!(line, ClassAlreadyExists, name.to_string());
                     }
 
                     // Get class pattern
                     let Some(pattern) = split.next() else {
-                    return Err(Error::Generic(line, format!("No class name given")));
-                };
+                        return parse_error!(line, NoClassPattern, name.to_string());
+                    };
 
                     // Add class
                     // Wrap value in NON-CAPTURING GROUP (just in case)
@@ -167,16 +181,9 @@ impl Draft {
                         // Should be VALID to pass
                         Some('!') => false,
 
-                        // Unknown character
-                        Some(ch) => {
-                            return Err(Error::Generic(
-                                line,
-                                format!("Invalid intent identifier {}", ch),
-                            ));
-                        }
-                        // No character
-                        None => {
-                            return Err(Error::Generic(line, format!("Missing intent identifier")));
+                        // Unknown or no character
+                        _ => {
+                            return parse_error!(line, InvalidTestIntent);
                         }
                     };
 
@@ -196,7 +203,7 @@ impl Draft {
                     let note = chars.as_str().trim();
 
                     if note.is_empty() {
-                        return Err(Error::Generic(line, format!("Note cannot be empty")));
+                        return parse_error!(line, EmptyNote);
                     }
 
                     // Add message
@@ -208,10 +215,7 @@ impl Draft {
 
                 // Unknown line operator
                 _ => {
-                    return Err(Error::Generic(
-                        line,
-                        format!("Unknown line operator {}", operator),
-                    ))
+                    return parse_error!(line, UnknownStatementOperator, operator);
                 }
             }
         }

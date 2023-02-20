@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use crate::error::ParseError;
+
 use super::*;
 
 macro_rules! classes {
@@ -85,12 +87,12 @@ fn parse_regex_returns_error() {
     // Unknown class
     assert!(matches!(
         parse_regex("⟨E⟩", &classes),
-        Err(Error::Generic(..))
+        Err(Error::Parse(ParseError::ClassNotFound(..), _))
     ));
 
     // Invalid regex
     assert!(matches!(
         parse_regex(r"*\", &classes),
-        Err(Error::Generic(..))
+        Err(Error::Parse(ParseError::RegexParseFail(..), _))
     ));
 }

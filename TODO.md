@@ -24,7 +24,7 @@
 
 ### API
 
-- Add error variants !!!
+- Use line numbers in class and rule parsing
 - Expose useful items
 - Group items
 - Move word generation to optional feature

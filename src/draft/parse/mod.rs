@@ -4,7 +4,7 @@ mod tests;
 use fancy_regex::Regex;
 
 use super::{replace::replace_classes, types::*, Rule};
-use crate::Error;
+use crate::{error::Error, parse_error};
 
 /// Parse each rule in list
 pub(super) fn parse_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<Rule>, Error> {
@@ -32,5 +32,8 @@ fn parse_regex(pattern: &str, classes: &Classes) -> Result<Regex, Error> {
     let pattern = replace_classes(pattern, classes)?;
 
     // Parse as regex
-    Regex::new(&pattern).map_err(|_err| Error::Generic(0, format!("Failed to parse rule as regex")))
+    match Regex::new(&pattern) {
+        Ok(regex) => Ok(regex),
+        Err(err) => parse_error!(0, RegexParseFail, err),
+    }
 }

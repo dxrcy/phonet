@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::Error;
+use crate::error::Error;
 
 use super::{replace::replace_classes, types::*, Message::*};
 

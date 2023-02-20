@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 use fancy_regex_macro::regex;
 
-use crate::Error;
+use crate::{error::Error, parse_error};
 
 /// Replace ascii `<` and `>` with `⟨` and `⟩` respectively, for classes
 ///
@@ -42,7 +42,7 @@ pub fn replace_classes(
             '⟨' => {
                 if name_build.is_some() {
                     // Name is already building - Another opening bracket should not be there
-                    return Err(Error::Generic(0, format!("Unexpected class name open")));
+                    return parse_error!(0, UnexpectedClassNameOpen);
                 }
 
                 // Start building name
@@ -54,13 +54,13 @@ pub fn replace_classes(
                 // Get class name
                 let Some(name) = name_build else {
                     // No name is building - Closing bracket should not be there
-                    return Err(Error::Generic(0, format!("Unexpected class name close")));
+                    return parse_error!(0, UnexpectedClassNameClose);
                 };
 
                 // Get class value
                 let Some(value) = classes.get(&name) else {
                     // Class name was not found
-                    return Err(Error::Generic(0, format!("Class not found")));
+                    return parse_error!(0, ClassNotFound, name);
                 };
 
                 // Add value to output (recursively)
@@ -84,10 +84,7 @@ pub fn replace_classes(
 
     // Class name was not finished building, before end of end of pattern
     if name_build.is_some() {
-        return Err(Error::Generic(
-            0,
-            String::from("Unexpected end of pattern for class name"),
-        ));
+        return parse_error!(0, UnexpectedPatternEnd);
     }
 
     Ok(output)

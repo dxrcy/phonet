@@ -3,12 +3,11 @@
 /// Parsing of *Phonet* `Draft`
 mod draft;
 /// Error type for *Phonet*
-mod error;
+pub mod error;
 /// Running and displaying of *Phonet* `Draft`
 mod outcome;
 
 pub use draft::{Draft, Message, Mode, Note, Rule, TestDraft};
-pub use error::Error;
 pub use outcome::{DisplayLevel, FailKind, Outcome, PassStatus, TestOutcome};
 
 /// Message for failed matching of static regex
@@ -37,20 +36,6 @@ pub fn get_min_filename(file: &str) -> String {
     } else {
         // No extension or only extension (no filename)
         "min.".to_string() + ext
-    }
-}
-
-/// Convert type into `Result`
-pub trait IntoResult<T, E> {
-    fn into_result(self, error: E) -> Result<T, E>;
-}
-
-impl<T, E> IntoResult<T, E> for Option<T> {
-    fn into_result(self, error: E) -> Result<T, E> {
-        match self {
-            Some(value) => Ok(value),
-            None => Err(error),
-        }
     }
 }
 
