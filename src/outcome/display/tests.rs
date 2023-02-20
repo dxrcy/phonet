@@ -28,8 +28,8 @@ fn max_word_len_works() {
         mode: Default::default(),
         test_count: 2,
         //
-        classes_raw: HashMap::new(),
-        rules_raw: vec![],
+        raw_classes: HashMap::new(),
+        raw_rules: vec![],
     }
     .run();
 

@@ -16,15 +16,6 @@ fn main() {
     // Parse file
     let mut draft = Draft::from(&file).expect("Failed to parse file");
 
-    // Minify file
-    if args.minify {
-        fs::write(
-            get_min_filename(&args.file),
-            &draft.minify(true).expect("Failed to minify"),
-        )
-        .expect("Could not write minified file");
-    }
-
     // Use custom CLI tests if given
     if let Some(tests) = args.tests {
         draft.messages = tests
@@ -36,6 +27,15 @@ fn main() {
                 })
             })
             .collect();
+    }
+
+    // Minify file
+    if args.minify {
+        fs::write(
+            get_min_filename(&args.file),
+            &draft.minify(args.with_tests).expect("Failed to minify"),
+        )
+        .expect("Could not write minified file");
     }
 
     // Run tests and display

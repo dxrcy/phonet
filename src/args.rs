@@ -30,6 +30,10 @@ pub struct Args {
     #[arg(short, long)]
     pub minify: bool,
 
+    /// Include tests in minified file
+    #[arg(short, long)]
+    pub with_tests: bool,
+
     /// Generate random words
     ///
     /// Default count 1, specify with number

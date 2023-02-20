@@ -18,7 +18,7 @@ macro_rules! classes {
 fn parse_rules_works() {
     let classes = classes!();
 
-    let rules_raw = vec![
+    let raw_rules = vec![
         RawRule {
             pattern: "^⟨_⟩+$".to_string(),
             intent: true,
@@ -45,7 +45,7 @@ fn parse_rules_works() {
         },
     ];
 
-    assert_eq!(parse_rules(&rules_raw, &classes).unwrap(), rules);
+    assert_eq!(parse_rules(&raw_rules, &classes).unwrap(), rules);
 }
 
 #[test]

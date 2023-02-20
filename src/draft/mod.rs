@@ -32,8 +32,8 @@ pub struct Draft {
     /// Amount of tests in `messages` field
     pub test_count: usize,
 
-    pub(crate) rules_raw: Vec<RawRule>,
-    pub(crate) classes_raw: Classes,
+    pub(crate) raw_rules: Vec<RawRule>,
+    pub(crate) raw_classes: Classes,
 }
 
 impl Draft {
@@ -52,8 +52,8 @@ impl Draft {
         let mut mode: Option<Mode> = None;
 
         // Field builders without regex parsed
-        let mut rules_raw = Vec::new();
-        let mut classes_raw = HashMap::new();
+        let mut raw_rules = Vec::new();
+        let mut raw_classes = HashMap::new();
 
         // Most recent note
         let mut last_note: Option<Note> = None;
@@ -116,7 +116,7 @@ impl Draft {
                     }
 
                     // Check that class name does not exist
-                    if classes_raw.get(name).is_some() {
+                    if raw_classes.get(name).is_some() {
                         return Err(Error::Generic(
                             line,
                             format!("Class already exists named '{}'", name),
@@ -132,7 +132,7 @@ impl Draft {
                     // Wrap value in NON-CAPTURING GROUP (just in case)
                     // This is non-capturing, for classes to work with back-references
                     // otherwise classes would be inherently capturing, and count towards group index in back-reference
-                    classes_raw.insert(name.trim().to_string(), pattern.trim().to_string());
+                    raw_classes.insert(name.trim().to_string(), pattern.trim().to_string());
                 }
 
                 // Rule
@@ -146,7 +146,7 @@ impl Draft {
                     let note = last_note.clone();
 
                     // Add rule
-                    rules_raw.push(RawRule {
+                    raw_rules.push(RawRule {
                         intent,
                         pattern,
                         note,
@@ -222,23 +222,23 @@ impl Draft {
         // Use default mode if none specified
         let mode = mode.unwrap_or_default();
 
-        // let minified = minify(mode, &classes_raw, &rules_raw, &messages)?;
+        // let minified = minify(mode, &raw_classes, &raw_rules, &messages)?;
 
         Ok(Self {
-            rules: parse_rules(&rules_raw, &classes_raw)?,
-            rules_raw,
+            rules: parse_rules(&raw_rules, &raw_classes)?,
+            raw_rules,
             messages,
             mode,
             test_count,
-            classes_raw,
+            raw_classes,
         })
     }
 
     pub fn minify(&self, with_tests: bool) -> Result<String, Error> {
         minify(
             self.mode,
-            &self.classes_raw,
-            &self.rules_raw,
+            &self.raw_classes,
+            &self.raw_rules,
             &self.messages,
             with_tests,
         )

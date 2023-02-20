@@ -51,8 +51,8 @@ fn run_all_successful() {
         mode: crate::Mode::Romanized,
         test_count: 3,
         //
-        classes_raw: HashMap::new(),
-        rules_raw: vec![],
+        raw_classes: HashMap::new(),
+        raw_rules: vec![],
     };
 
     let outcome = draft.run();
@@ -131,8 +131,8 @@ fn run_all_failing() {
         mode: crate::Mode::Romanized,
         test_count: 3,
         //
-        classes_raw: HashMap::new(),
-        rules_raw: vec![],
+        raw_classes: HashMap::new(),
+        raw_rules: vec![],
     };
 
     let outcome = draft.run();
