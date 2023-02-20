@@ -25,6 +25,7 @@ fn max_word_len_works() {
         ],
         mode: Default::default(),
         test_count: 2,
+        minified: String::new(),
     }
     .run();
 

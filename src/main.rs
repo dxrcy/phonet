@@ -2,10 +2,10 @@ mod args;
 
 use std::fs;
 
-use args::Args;
 use clap::Parser;
-
 use phonet::Draft;
+
+use crate::args::Args;
 
 fn main() {
     let args = Args::parse();

@@ -1,3 +1,5 @@
+/// Minify draft to string
+mod minify;
 /// Parse functions
 mod parse;
 /// Substitute class names recursively
@@ -13,8 +15,8 @@ use std::collections::HashMap;
 
 use fancy_regex_macro::regex;
 
-use self::{parse::parse_rules, statements::split_statements};
-use crate::{outcome::Outcome, Error, REGEX_MATCH_FAIL};
+use self::{minify::minify, parse::parse_rules, statements::split_statements};
+use crate::{outcome::Outcome, Error, IntoResult, REGEX_MATCH_FAIL};
 
 /// Parsed *Phonet* file
 #[derive(Debug, PartialEq)]
@@ -29,8 +31,8 @@ pub struct Draft {
     pub mode: Mode,
     /// Amount of tests in `messages` field
     pub test_count: usize,
-    //TODO Add minified
-    // minified: Minified,
+    /// Minified file
+    pub minified: String,
 }
 
 impl Draft {
@@ -88,14 +90,10 @@ impl Draft {
                     }
 
                     // Select mode
-                    mode = Some(match (chars.next(), chars.last()) {
-                        (Some('<'), Some('>')) => Mode::Romanized,
-                        (Some('/'), Some('/')) => Mode::Broad,
-                        (Some('['), Some(']')) => Mode::Narrow,
-
-                        // Invalid mode specifier
-                        _ => return Err(Error::Generic(line, format!("Invalid mode specifier"))),
-                    })
+                    mode = Some(
+                        Mode::from_options(chars.next(), chars.last())
+                            .into_result(Error::Generic(line, format!("Invalid mode specifier")))?,
+                    );
                 }
 
                 // Class
@@ -220,11 +218,17 @@ impl Draft {
         // Get amount of tests in messages
         let test_count = messages.iter().filter(|msg| msg.is_test()).count();
 
+        // Use default mode if none specified
+        let mode = mode.unwrap_or_default();
+
+        let minified = minify(mode, &classes_raw, &rules_raw, &messages)?;
+
         Ok(Self {
             rules: parse_rules(rules_raw, &classes_raw)?,
             messages,
-            mode: mode.unwrap_or_default(),
+            mode,
             test_count,
+            minified,
         })
     }
 }

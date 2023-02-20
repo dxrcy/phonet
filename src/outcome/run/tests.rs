@@ -24,7 +24,7 @@ fn get_example_rules() -> Vec<Rule> {
 fn run_all_successful() {
     let draft = Draft {
         messages: vec![
-            //s
+            //
             Info(Note("this is a note".to_string())),
             //
             Test(TestDraft {
@@ -48,6 +48,7 @@ fn run_all_successful() {
         rules: get_example_rules(),
         mode: crate::Mode::Romanized,
         test_count: 3,
+        minified: String::new(),
     };
 
     let outcome = draft.run();
@@ -125,6 +126,7 @@ fn run_all_failing() {
         rules: get_example_rules(),
         mode: crate::Mode::Romanized,
         test_count: 3,
+        minified: String::new(),
     };
 
     let outcome = draft.run();

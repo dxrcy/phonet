@@ -55,7 +55,7 @@ pub struct TestDraft {
 }
 
 /// Transcription mode of file
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Mode {
     /// Use `~<>`
     Romanized,
@@ -78,6 +78,37 @@ impl PartialEq for Rule {
 impl Default for Mode {
     fn default() -> Self {
         Self::Romanized
+    }
+}
+
+impl Mode {
+    pub fn from(first: char, last: char) -> Option<Self> {
+        use Mode::*;
+
+        Some(match (first, last) {
+            ('<', '>') => Romanized,
+            ('/', '/') => Broad,
+            ('[', ']') => Narrow,
+
+            _ => return None,
+        })
+    }
+
+    pub fn from_options(first: Option<char>, last: Option<char>) -> Option<Self> {
+        match (first, last) {
+            (Some(a), Some(b)) => Self::from(a, b),
+            _ => return None,
+        }
+    }
+
+    pub fn as_str(self) -> &'static str {
+        use Mode::*;
+
+        match self {
+            Romanized => "<>",
+            Broad => "//",
+            Narrow => "[]",
+        }
     }
 }
 
