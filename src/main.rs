@@ -59,8 +59,11 @@ fn main() -> Result<(), String> {
         .expect("Could not write minified file");
     }
 
-    // Generate words
-    let generated = if let Some(count) = args.generate {
+    // Run tests and display
+    draft.run().display(args.display_level, !args.no_color);
+
+    // Generate and display words
+    if let Some(count) = args.generate {
         // Default count to 1 word
         let count = count.unwrap_or(1);
 
@@ -69,16 +72,8 @@ fn main() -> Result<(), String> {
         let max = args.generate_max_len.unwrap_or(14) + 1; // To make inclusive without using ..=
 
         // Generate words
-        Some(try_this!(draft.generate(count, min..max)))
-    } else {
-        None
-    };
+        let words = try_this!(draft.generate(count, min..max));
 
-    // Run tests and display
-    draft.run().display(args.display_level, !args.no_color);
-
-    // Display generated words
-    if let Some(words) = generated {
         // Print title
         println!(
             "{}",

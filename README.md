@@ -196,15 +196,12 @@ fn main() {
     )
     .expect("Could not write minified file");
 
-    // Generate 10 words, each between 5 and 8 in length
-    let generated = draft.generate(10, 5..8).expect("Failed to generate words");
-
     // Run tests and display only failed tests
     draft.run().display(DisplayLevel::OnlyFails, true);
 
-    // Display generated words
+    // Generate 10 words, each between 5 and 8 in length, and print each
     println!("Randomly generated words:");
-    for word in generated {
+    for word in draft.generate(10, 5..8).expect("Failed to generate words") {
         println!(" - {}", word);
     }
 }

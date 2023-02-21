@@ -24,7 +24,7 @@ pub(crate) enum Validity {
 
 impl Outcome {
     /// Run drafted tests, return `Output`
-    pub fn run(draft: Draft) -> Self {
+    pub fn run(draft: &Draft) -> Self {
         // No messages
         if draft.messages.is_empty() {
             return Self {
@@ -38,13 +38,13 @@ impl Outcome {
         let mut fail_count = 0;
 
         // Loop messages
-        for msg in draft.messages {
+        for msg in &draft.messages {
             list.push(match msg {
                 // Move note
-                Info(note) => Info(note),
+                Info(note) => Info(note.clone()),
                 // Run test
                 Test(test) => {
-                    let outcome = run_test(test, &draft.rules);
+                    let outcome = run_test(test.clone(), &draft.rules);
 
                     // Increase fail count if failed
                     if outcome.status.is_fail() {

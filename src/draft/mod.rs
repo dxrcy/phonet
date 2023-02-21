@@ -150,7 +150,7 @@ pub enum Message<T> {
 pub struct Note(pub String);
 
 /// Test that has not yet ran, for `Draft`
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct TestDraft {
     /// String to test
     pub word: String,
@@ -171,7 +171,7 @@ pub enum Mode {
 
 impl Draft {
     /// Run drafted tests
-    pub fn run(self) -> Outcome {
+    pub fn run(&self) -> Outcome {
         Outcome::run(self)
     }
 
