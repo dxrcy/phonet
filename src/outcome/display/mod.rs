@@ -40,7 +40,7 @@ impl Outcome {
     /// Display results to standard output
     ///
     /// This can be implemented manually
-    pub fn display(self, display_level: DisplayLevel, do_color: bool) {
+    pub fn display(&self, display_level: DisplayLevel, do_color: bool) {
         self.display_with(&mut std::io::stdout(), display_level, do_color)
             .expect("Could not write to stdout");
     }
@@ -49,7 +49,7 @@ impl Outcome {
     ///
     /// This can be implemented manually
     pub fn display_with(
-        self,
+        &self,
         out: &mut dyn std::io::Write,
         display_level: DisplayLevel,
         do_color: bool,
