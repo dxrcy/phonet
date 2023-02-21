@@ -17,14 +17,10 @@
 
 - Add comments
 - Only use `clap` dependency for binary
-- Tidy `pub`, `pub(crate)`, and `pub use`
 
 ### API
 
 - Use line numbers in class and rule parsing
-- Expose useful items
-- Group items
-- Move word generation to optional feature
 
 ## Minor / Future Features
 
