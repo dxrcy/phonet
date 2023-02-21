@@ -9,9 +9,31 @@ pub(crate) use self::run::{validate_test, Validity};
 
 use crate::draft::{Message, Note};
 
-/// Outcome of tests ran from `Draft`
+/// Outcome of tests ran from *Phonet* `Draft`
 ///
-///TODO Examples
+/// Use `Outcome::display` method to display output to stdout
+///
+/// # Examples
+///
+/// ```
+/// # use phonet::Draft;
+/// # let file = "
+/// #   ~<>
+/// #   $_ = [ptkaeiou]
+/// #   * Some note
+/// #     + ^ <_>+ $
+/// #       ?+ kato
+/// #       ?! x10
+/// # ";
+/// let draft = Draft::from(file).unwrap();
+///
+/// let outcome = draft.run();
+///
+/// assert_eq!(outcome.messages.len(), 3);
+/// assert_eq!(outcome.fail_count, 0);
+///
+/// draft.display(); // Prints results to stdout
+/// ```
 #[derive(Debug)]
 pub struct Outcome {
     /// Messages to display

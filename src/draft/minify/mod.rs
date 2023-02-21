@@ -3,7 +3,12 @@ mod tests;
 
 use crate::error::Error;
 
-use super::{replace::replace_classes, types::*, Message::*};
+use super::{
+    replace::replace_classes,
+    Classes,
+    Message::{self, *},
+    Mode, RawRule, TestDraft,
+};
 
 /// Minifies the fields of a `Draft`
 ///

@@ -2,11 +2,6 @@
 
 ## Code
 
-### Documentation
-
-- Add docs to readme !!!
-- Add doc comments !!!
-
 ### Tests
 
 - More unit tests
@@ -14,10 +9,7 @@
 
 ### Clean code
 
-- Only use `clap` dependency for binary
-- Move contents of `draft/types.rs` to `draft/mod.rs`
-- - For parity with `outcome`
-- - Move `Draft::parse` method to `draft/parse`
+- Only use `clap` dependency for binary (How??)
 
 ### API
 

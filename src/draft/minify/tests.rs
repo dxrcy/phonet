@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-use super::{Message::*, *};
+use super::super::Note;
+use super::*;
 
 macro_rules! classes {
     () => {{
