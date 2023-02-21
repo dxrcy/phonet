@@ -1,20 +1,6 @@
-use std::collections::HashMap;
-
 use crate::error::ParseError;
 
 use super::*;
-
-macro_rules! classes {
-    () => {{
-        let mut hm = HashMap::new();
-
-        hm.insert("C".to_string(), "[ptk]".to_string());
-        hm.insert("V".to_string(), "[aeiou]".to_string());
-        hm.insert("_".to_string(), "[⟨C⟩⟨V⟩]".to_string());
-
-        hm
-    }};
-}
 
 #[test]
 fn swap_angle_brackets_works() {
@@ -34,52 +20,48 @@ fn swap_angle_brackets_works() {
 
 #[test]
 fn replace_classes_works() {
-    let classes = HashMap::from([
-        ("C".to_string(), "[ptk]".to_string()),
-        ("Vowels".to_string(), "[aio]".to_string()),
-        ("_".to_string(), "[<C><Vowels>]".to_string()),
-    ]);
+    let classes = example_classes!();
 
     assert_eq!(
-        replace_classes("<C>", &classes).unwrap(),
+        replace_classes("<C>", &classes, 0).unwrap(),
         "[ptk]".to_string()
     );
 
     assert_eq!(
-        replace_classes("<C>-<Vowels>", &classes).unwrap(),
-        "[ptk]-[aio]".to_string()
+        replace_classes("<C>-<V>", &classes, 0).unwrap(),
+        "[ptk]-[aeiou]".to_string()
     );
 
     assert_eq!(
-        replace_classes("<_>", &classes).unwrap(),
-        "[[ptk][aio]]".to_string()
+        replace_classes("<_>", &classes, 0).unwrap(),
+        "[[ptk][aeiou]]".to_string()
     );
 
     assert_eq!(
-        replace_classes("(?<=1)", &classes).unwrap(),
+        replace_classes("(?<=1)", &classes, 0).unwrap(),
         "(?<=1)".to_string()
     );
 
     assert_eq!(
-        replace_classes("(?<abc><C>)", &classes).unwrap(),
+        replace_classes("(?<abc><C>)", &classes, 0).unwrap(),
         "(?<abc>[ptk])".to_string()
     );
 
-    assert_eq!(replace_classes("a>b", &classes).unwrap(), "a>b");
-    assert_eq!(replace_classes("a<b", &classes).unwrap(), "a<b");
+    assert_eq!(replace_classes("a>b", &classes, 0).unwrap(), "a>b");
+    assert_eq!(replace_classes("a<b", &classes, 0).unwrap(), "a<b");
 }
 
 #[test]
 fn replace_classes_returns_error() {
-    let classes = classes!();
+    let classes = example_classes!();
 
     assert!(matches!(
-        replace_classes("<c>", &classes),
+        replace_classes("<c>", &classes, 0),
         Err(Error::Parse(ParseError::ClassNotFound(..), _))
     ));
 
     assert!(matches!(
-        replace_classes("<a<b>c>", &classes),
+        replace_classes("<a<b>c>", &classes, 0),
         Err(Error::Parse(ParseError::ClassNotFound(..), _))
     ));
 }

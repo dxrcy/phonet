@@ -66,13 +66,16 @@ fn minify_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<String>, Err
     let mut strings = Vec::new();
 
     for RawRule {
-        intent, pattern, ..
+        intent,
+        pattern,
+        line,
+        ..
     } in rules
     {
         strings.push(format!(
             "{}{}",
             if *intent { '+' } else { '!' },
-            replace_classes(pattern, classes)?
+            replace_classes(pattern, classes, *line)?
         ));
     }
 

@@ -76,12 +76,12 @@ fn remove_regex_symbols(pattern: &str) -> String {
 /// Get 'any' class (named `_`) from classes
 fn get_any_class(classes: &Classes) -> Result<String, Error> {
     // Get class
-    let Some(pattern) = classes.get("_") else {
+    let Some((pattern, line)) = classes.get("_") else {
         return Err(Error::MissingAnyClass);
     };
 
     // Replace inner classes
-    let pattern = replace_classes(pattern, classes)?;
+    let pattern = replace_classes(pattern, classes, *line)?;
 
     Ok(pattern)
 }

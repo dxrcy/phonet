@@ -45,7 +45,7 @@ fn main() -> Result<(), String> {
     let mut draft = try_this!(Draft::from(&file));
 
     // Use custom CLI tests if given
-    if args.tests.len() > 0 {
+    if !args.tests.is_empty() {
         draft.messages = args
             .tests
             .iter()

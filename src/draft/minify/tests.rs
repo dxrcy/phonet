@@ -1,36 +1,24 @@
-use std::collections::HashMap;
-
 use super::super::Note;
 use super::*;
-
-macro_rules! classes {
-    () => {{
-        let mut hm = HashMap::new();
-
-        hm.insert("C".to_string(), "[ptk]".to_string());
-        hm.insert("V".to_string(), "[aeiou]".to_string());
-        hm.insert("_".to_string(), "[⟨C⟩⟨V⟩]".to_string());
-
-        hm
-    }};
-}
 
 #[test]
 fn minify_works() {
     let mode = Mode::Broad;
 
-    let classes = classes!();
+    let classes = example_classes!();
 
     let raw_rules = vec![
         RawRule {
             pattern: "^⟨_⟩+$".to_string(),
             intent: true,
             note: Some(Note("Should contain ⟨a⟩".to_string())),
+            line: 0,
         },
         RawRule {
             pattern: "⟨V⟩⟨V⟩".to_string(),
             intent: false,
             note: None,
+            line: 0,
         },
     ];
 

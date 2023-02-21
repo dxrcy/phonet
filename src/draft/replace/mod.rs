@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests;
 
-use std::collections::HashMap;
-
 use fancy_regex_macro::regex;
 
-use crate::error::Error;
+use crate::{error::Error, REGEX_MATCH_FAIL};
+
+use super::Classes;
 
 /// Replace ascii `<` and `>` with `⟨` and `⟩` respectively, for classes
 ///
@@ -23,8 +23,8 @@ fn replace_angle_brackets(pattern: &str) -> String {
 /// `pattern` argument must not contain spaces
 pub(crate) fn replace_classes(
     pattern: &str,
-    classes: &HashMap<String, String>,
-    // line: usize,
+    classes: &Classes,
+    line: usize,
 ) -> Result<String, Error> {
     // Replace `<` and `>` with `⟨` and `⟩` respectively, where classes are
     let pattern = replace_angle_brackets(pattern);
@@ -42,7 +42,7 @@ pub(crate) fn replace_classes(
             '⟨' => {
                 if name_build.is_some() {
                     // Name is already building - Another opening bracket should not be there
-                    return parse_error!(0, UnexpectedClassNameOpen);
+                    return parse_error!(line, UnexpectedClassNameOpen);
                 }
 
                 // Start building name
@@ -54,17 +54,22 @@ pub(crate) fn replace_classes(
                 // Get class name
                 let Some(name) = name_build else {
                     // No name is building - Closing bracket should not be there
-                    return parse_error!(0, UnexpectedClassNameClose);
+                    return parse_error!(line, UnexpectedClassNameClose);
                 };
 
+                // Check if name is valid
+                if !regex!(r"^\w+$").is_match(&name).expect(REGEX_MATCH_FAIL) {
+                    return parse_error!(line, InvalidClassName, name.to_string());
+                }
+
                 // Get class value
-                let Some(value) = classes.get(&name) else {
+                let Some((value, _line)) = classes.get(&name) else {
                     // Class name was not found
-                    return parse_error!(0, ClassNotFound, name);
+                    return parse_error!(line, ClassNotFound, name);
                 };
 
                 // Add value to output (recursively)
-                output.push_str(&replace_classes(value, classes)?);
+                output.push_str(&replace_classes(value, classes, line)?);
 
                 // Finish building and reset
                 name_build = None;
@@ -84,7 +89,7 @@ pub(crate) fn replace_classes(
 
     // Class name was not finished building, before end of end of pattern
     if name_build.is_some() {
-        return parse_error!(0, UnexpectedPatternEnd);
+        return parse_error!(line, UnexpectedPatternEnd);
     }
 
     Ok(output)

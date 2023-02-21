@@ -1,3 +1,17 @@
+/// Example of `Classes` hashmap FOR TESTS
+#[cfg(test)]
+macro_rules! example_classes {
+    () => {{
+        let mut hm = crate::draft::Classes::new();
+
+        hm.insert("C".to_string(), ("[ptk]".to_string(), 0));
+        hm.insert("V".to_string(), ("[aeiou]".to_string(), 0));
+        hm.insert("_".to_string(), ("[⟨C⟩⟨V⟩]".to_string(), 0));
+
+        hm
+    }};
+}
+
 /// Parsing of *Phonet* `Draft`
 pub mod draft;
 /// Error type for *Phonet*

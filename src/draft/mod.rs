@@ -45,8 +45,8 @@ use self::minify::minify;
 // parse::parse_rules, statements::split_statements
 use crate::{error::Error, outcome::Outcome};
 
-/// Alias for `HashMap` of `String` and `String`, for raw classes
-pub(crate) type Classes = HashMap<String, String>;
+/// Maps class names of pattern and line number, for raw classes
+pub(crate) type Classes = HashMap<String, (String, usize)>;
 
 /// Parsed *Phonet* file
 ///
@@ -128,6 +128,8 @@ pub(crate) struct RawRule {
     ///
     /// Reason given, if test fails from this rule
     pub note: Option<Note>,
+    /// Line number
+    pub line: usize,
 }
 
 /// Single message to be displayed in `Draft` and `Outcome`

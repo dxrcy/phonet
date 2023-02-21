@@ -2,7 +2,6 @@
 
 - Add `display` to integration tests
 - Only use `clap` dependency for binary (How??)
-- Use line numbers in class and rule parsing
 
 ## Minor / Future Features
 

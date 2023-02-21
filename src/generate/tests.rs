@@ -1,26 +1,12 @@
-use std::collections::HashMap;
-
 use fancy_regex::Regex;
 
 use crate::draft::Note;
 
 use super::*;
 
-macro_rules! classes {
-    () => {{
-        let mut hm = HashMap::new();
-
-        hm.insert("C".to_string(), "[ptk]".to_string());
-        hm.insert("V".to_string(), "[aeiou]".to_string());
-        hm.insert("_".to_string(), "[⟨C⟩⟨V⟩]".to_string());
-
-        hm
-    }};
-}
-
 #[test]
 fn get_letters_works() {
-    let classes = classes!();
+    let classes = example_classes!();
 
     assert_eq!(get_any_class(&classes).unwrap(), "[[ptk][aeiou]]");
 
@@ -31,7 +17,7 @@ fn get_letters_works() {
 
 #[test]
 fn generate_works() {
-    let classes = classes!();
+    let classes = example_classes!();
 
     let rules = vec![
         Rule {

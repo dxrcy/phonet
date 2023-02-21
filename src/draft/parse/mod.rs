@@ -24,7 +24,7 @@ impl Draft {
 
         // Field builders without regex parsed
         let mut raw_rules = Vec::new();
-        let mut raw_classes = HashMap::new();
+        let mut raw_classes: Classes = HashMap::new();
 
         // Most recent note
         let mut last_note: Option<Note> = None;
@@ -100,7 +100,7 @@ impl Draft {
                     // otherwise classes would be inherently capturing, and count towards group index in back-reference
                     raw_classes.insert(
                         name.trim().to_string(),
-                        format!("(?:{})", pattern.trim().to_string()),
+                        (format!("(?:{})", pattern.trim()), line),
                     );
                 }
 
@@ -119,6 +119,7 @@ impl Draft {
                         intent,
                         pattern,
                         note,
+                        line,
                     })
                 }
 
@@ -200,10 +201,11 @@ fn parse_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<Rule>, Error>
         pattern,
         intent,
         note,
+        line,
     } in rules
     {
         new.push(Rule {
-            pattern: parse_regex(pattern, classes)?,
+            pattern: parse_regex(pattern, classes, *line)?,
             intent: *intent,
             note: note.clone(),
         })
@@ -213,13 +215,13 @@ fn parse_rules(rules: &[RawRule], classes: &Classes) -> Result<Vec<Rule>, Error>
 }
 
 /// Substitute class names and parse as regex
-fn parse_regex(pattern: &str, classes: &Classes) -> Result<Regex, Error> {
+fn parse_regex(pattern: &str, classes: &Classes, line: usize) -> Result<Regex, Error> {
     // Substitute class names
-    let pattern = replace_classes(pattern, classes)?;
+    let pattern = replace_classes(pattern, classes, line)?;
 
     // Parse as regex
     match Regex::new(&pattern) {
         Ok(regex) => Ok(regex),
-        Err(err) => parse_error!(0, RegexParseFail, err),
+        Err(err) => parse_error!(line, RegexParseFail, err),
     }
 }
