@@ -7,10 +7,9 @@ use fancy_regex_macro::regex;
 use rand::{rngs::ThreadRng, seq::SliceRandom, Rng};
 
 use crate::{
-    draft::{replace_classes, Classes, Draft},
+    draft::{replace_classes, Classes, Draft, Rule},
     error::Error,
     outcome::{validate_test, Validity::*},
-    Rule,
 };
 
 impl Draft {

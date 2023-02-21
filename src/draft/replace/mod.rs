@@ -21,7 +21,7 @@ fn replace_angle_brackets(pattern: &str) -> String {
 /// Substitute class names regex rule with class values (recursively)
 ///
 /// `pattern` argument must not contain spaces
-pub fn replace_classes(
+pub(crate) fn replace_classes(
     pattern: &str,
     classes: &HashMap<String, String>,
     // line: usize,

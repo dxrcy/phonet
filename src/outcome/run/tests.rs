@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use fancy_regex_macro::regex;
 
 use super::*;
-use crate::draft::Message;
+use crate::draft::{Message, Mode};
 
 /// Get example list of rules for testing
 fn get_example_rules() -> Vec<Rule> {
@@ -48,7 +48,7 @@ fn run_all_successful() {
         ],
         //
         rules: get_example_rules(),
-        mode: crate::Mode::Romanized,
+        mode: Mode::Romanized,
         test_count: 3,
         //
         raw_classes: HashMap::new(),
@@ -128,7 +128,7 @@ fn run_all_failing() {
         ],
         //
         rules: get_example_rules(),
-        mode: crate::Mode::Romanized,
+        mode: Mode::Romanized,
         test_count: 3,
         //
         raw_classes: HashMap::new(),

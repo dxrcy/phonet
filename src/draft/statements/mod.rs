@@ -2,7 +2,7 @@
 mod tests;
 
 /// Split file into list of statements
-pub fn split_statements(file: &str) -> Vec<(String, usize)> {
+pub(super) fn split_statements(file: &str) -> Vec<(String, usize)> {
     // Vector of statements
     // Multiline statements are treated as single line, with linebreaks removed
     let mut statements = vec![];

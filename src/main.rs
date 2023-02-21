@@ -5,7 +5,11 @@ use std::fs;
 use clap::Parser;
 use colorful::Color;
 
-use phonet::{color, get_min_filename, Draft, Message::Test, TestDraft};
+use phonet::{
+    colorize,
+    draft::{Message::Test, TestDraft},
+    get_min_filename, Draft,
+};
 
 use crate::args::Args;
 
@@ -77,7 +81,7 @@ fn main() -> Result<(), String> {
         // Print title
         println!(
             "{}",
-            color(
+            colorize(
                 &format!(
                     "Randomly generated word{s}:",
                     s = if words.len() == 1 { "" } else { "s" }
@@ -89,7 +93,7 @@ fn main() -> Result<(), String> {
 
         // Print words
         for word in words {
-            println!(" {} {}", color("-", Color::Cyan, !args.no_color), word);
+            println!(" {} {}", colorize("-", Color::Cyan, !args.no_color), word);
         }
     }
 

@@ -1,6 +1,10 @@
 use fancy_regex::Regex;
 
-use phonet::{self, Draft, Message, Note, Rule, TestDraft};
+use phonet::{
+    self,
+    draft::{Message, Mode, Note, Rule, TestDraft},
+    Draft,
+};
 
 #[test]
 fn example_draft_works() {
@@ -8,7 +12,7 @@ fn example_draft_works() {
 
     let draft = Draft::from(file).expect("Failed to parse");
 
-    assert_eq!(draft.mode, phonet::Mode::Romanized);
+    assert_eq!(draft.mode, Mode::Romanized);
     assert_eq!(draft.test_count, 15);
 
     let mut rules = draft.rules.iter();

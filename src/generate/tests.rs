@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use fancy_regex::Regex;
 
-use crate::Note;
+use crate::draft::Note;
 
 use super::*;
 

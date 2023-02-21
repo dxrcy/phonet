@@ -1,17 +1,11 @@
 #[cfg(test)]
 mod tests;
 
-use super::{
-    colorize::{color, colors::*},
-    Outcome,
-};
+use super::Outcome;
 use crate::{
+    color::{colorize, colors::*},
+    outcome::{FailKind::*, Message::*, Note, PassStatus::*, TestOutcome},
     DisplayLevel::{self, *},
-    FailKind::*,
-    Message::*,
-    Note,
-    PassStatus::*,
-    TestOutcome,
 };
 
 impl Outcome {
@@ -62,7 +56,7 @@ impl Outcome {
 
         // No tests
         if self.test_count() == 0 {
-            writeln!(out, "{}", color("No tests ran.", Yellow, do_color))?;
+            writeln!(out, "{}", colorize("No tests ran.", Yellow, do_color))?;
             return Ok(());
         }
 
@@ -70,7 +64,7 @@ impl Outcome {
         writeln!(
             out,
             "{}",
-            color(
+            colorize(
                 &format!(
                     "Running {count} test{s}...",
                     count = test_count,
@@ -91,7 +85,7 @@ impl Outcome {
                 Info(Note(note)) => match display_level {
                     // Always show - Print note
                     ShowAll | IgnorePasses => {
-                        writeln!(out, "{}", color(note, Blue, do_color))?;
+                        writeln!(out, "{}", colorize(note, Blue, do_color))?;
                     }
 
                     // Else skip
@@ -115,7 +109,8 @@ impl Outcome {
                     };
 
                     // Colored text for `ShouldBeInvalid` fail
-                    let should_be_invalid = color("Valid, but should be invalid", Yellow, do_color);
+                    let should_be_invalid =
+                        colorize("Valid, but should be invalid", Yellow, do_color);
 
                     // Format reason
                     let reason = match status {
@@ -131,9 +126,9 @@ impl Outcome {
                         "  {intent} {word}{space}  {status} {reason}",
                         // Intent
                         intent = if *intent {
-                            color("✔", Cyan, do_color)
+                            colorize("✔", Cyan, do_color)
                         } else {
-                            color("✗", Magenta, do_color)
+                            colorize("✗", Magenta, do_color)
                         },
                         // Word
                         word = word,
@@ -141,9 +136,9 @@ impl Outcome {
                         space = " ".repeat(max_word_len - word.chars().count()),
                         // Status of test
                         status = if status.is_pass() {
-                            color("pass", Green, do_color)
+                            colorize("pass", Green, do_color)
                         } else {
-                            color("FAIL", Red, do_color)
+                            colorize("FAIL", Red, do_color)
                         },
                         // Reason (if failed)
                         reason = reason,
@@ -155,13 +150,13 @@ impl Outcome {
         // Final print
         if self.fail_count == 0 {
             // All passed
-            writeln!(out, "{}", color("All tests pass!", Green, do_color))?;
+            writeln!(out, "{}", colorize("All tests pass!", Green, do_color))?;
         } else {
             // Some tests failed
             writeln!(
                 out,
                 "{}",
-                color(
+                colorize(
                     &format!(
                         "{count} test{s} failed",
                         count = self.fail_count,

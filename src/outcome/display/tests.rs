@@ -2,7 +2,10 @@ use std::collections::HashMap;
 
 use fancy_regex::Regex;
 
-use crate::{DisplayLevel, Draft, Message::*, Note, Rule, TestDraft};
+use crate::{
+    draft::{Message::*, Note, Rule, TestDraft},
+    DisplayLevel, Draft,
+};
 
 #[test]
 fn max_word_len_works() {

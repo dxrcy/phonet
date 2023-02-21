@@ -1,16 +1,26 @@
 #![allow(clippy::useless_format)] //TODO until error handling is implemented
 
 /// Parsing of *Phonet* `Draft`
-mod draft;
+pub mod draft;
 /// Error type for *Phonet*
 pub mod error;
+/// Running and displaying of *Phonet* `Draft`
+pub mod outcome;
+
+/// Color styles for stdout
+mod color;
 /// Generation of random words
 mod generate;
-/// Running and displaying of *Phonet* `Draft`
-mod outcome;
 
-pub use draft::{Draft, Message, Mode, Note, Rule, TestDraft};
-pub use outcome::{colorize::color, DisplayLevel, FailKind, Outcome, PassStatus, TestOutcome};
+pub use crate::{
+    color::colorize,
+    draft::Draft,
+    outcome::{DisplayLevel, Outcome},
+};
+
+// pub use color::colorize;
+// pub use draft::{Draft, Message, Mode, Note, Rule, TestDraft};
+// pub use outcome::{DisplayLevel, FailKind, Outcome, PassStatus, TestOutcome};
 
 /// Message for failed matching of static regex
 const REGEX_MATCH_FAIL: &str = "Regex failed on 'match' method. This should never happen";

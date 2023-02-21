@@ -1,4 +1,8 @@
-use phonet::{Draft, FailKind::*, Message, Note, PassStatus::*, TestOutcome};
+use phonet::{
+    draft::{Message, Note},
+    outcome::{FailKind::*, PassStatus::*, TestOutcome},
+    Draft,
+};
 
 #[test]
 fn example_outcome_works() {
