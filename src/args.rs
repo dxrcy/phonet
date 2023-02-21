@@ -40,7 +40,7 @@ pub struct Args {
     #[arg(short, long)]
     pub generate: Option<Option<usize>>,
 
-    /// Set minimum length for generated words
+    /// Set minimum length (inclusive) for generated words
     ///
     /// Use with the `--generate` or `-g` flag
     ///
@@ -48,7 +48,7 @@ pub struct Args {
     #[arg(long = "gmin")]
     pub generate_min_len: Option<usize>,
 
-    /// Set maximum length for generated words
+    /// Set maximum length (inclusive) for generated words
     ///
     /// Use with the `--generate` or `-g` flag
     #[arg(long = "gmax")]

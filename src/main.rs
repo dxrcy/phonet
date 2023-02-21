@@ -65,10 +65,11 @@ fn main() -> Result<(), String> {
         let count = count.unwrap_or(1);
 
         // Min and max length
-        let length = args.generate_min_len.unwrap_or(3)..args.generate_max_len.unwrap_or(14);
+        let min = args.generate_min_len.unwrap_or(3);
+        let max = args.generate_max_len.unwrap_or(14) + 1; // To make inclusive without using ..=
 
         // Generate words
-        Some(try_this!(draft.generate(count, length)))
+        Some(try_this!(draft.generate(count, min..max)))
     } else {
         None
     };
