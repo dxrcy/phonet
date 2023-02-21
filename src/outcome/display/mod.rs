@@ -118,6 +118,7 @@ impl Outcome {
                     let reason = match status {
                         Pass => "",
                         Fail(ShouldBeInvalid) => &should_be_invalid,
+                        //TODO Use color
                         Fail(NoReasonGiven) => "No reason given",
                         Fail(CustomReason(Note(reason))) => reason,
                     };
@@ -132,8 +133,6 @@ impl Outcome {
                         } else {
                             colorize("✗", Magenta, do_color)
                         },
-                        // Word
-                        word = word,
                         // Spacing after word
                         space = " ".repeat(max_word_len - word.chars().count()),
                         // Status of test
@@ -142,8 +141,6 @@ impl Outcome {
                         } else {
                             colorize("FAIL", Red, do_color)
                         },
-                        // Reason (if failed)
-                        reason = reason,
                     )?;
                 }
             }
