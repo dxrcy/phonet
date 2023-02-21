@@ -62,6 +62,6 @@ fn replace_classes_returns_error() {
 
     assert!(matches!(
         replace_classes("<a<b>c>", &classes, 0),
-        Err(Error::Parse(ParseError::ClassNotFound(..), _))
+        Err(Error::Parse(ParseError::InvalidClassName(..), _))
     ));
 }
