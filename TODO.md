@@ -1,5 +1,7 @@
 # TODO
 
+- use `x..=y` inclusive range for generated word lengths
+
 ## Code
 
 ### Tests

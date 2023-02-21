@@ -10,7 +10,7 @@ Words can be randomly generated (see [Argument Syntax](#argument-syntax)).
 
 # Usage
 
-This project can be used as a rust library, or as a binary.
+This project can be used as a rust library crate, or as a binary executable.
 
 ## Binary use
 
@@ -88,7 +88,7 @@ Options:
 # Runs ./phonet
 phonet
 
-# Runs ./phonet, with tests: 'some', 'words' (instead of tests in file)
+# Runs ./phonet, with tests: 'some', 'words' (overrides the tests in file)
 phonet -t some,words
 
 # Runs ./myfile.phonet
@@ -97,7 +97,7 @@ phonet -f myfile.phonet
 # Runs ./phonet, only showing fails
 phonet -df
 # Alternatives:
-phonet -d just-fails
+phonet -d only-fails
 phonet -d fails
 
 # Runs ./phonet, and minifies to ./min.phonet without tests
@@ -110,13 +110,13 @@ phonet -f myfile.phonet -dh -mw
 phonet -g
 
 # Runs ./myfile.phonet, and generates 10 random words
-phonet -g10 -g myfile.phonet
+phonet -g10 -f myfile.phonet
 
 # Runs ./phonet, with no color, and writes output to ./phonet.txt
 phonet -n > phonet.txt
 
 # Runs ./myfile.phonet, with all test output hidden, and generates 3 random words with length 6-8, writes output to ./phonet.txt (with no color)
-phonet -f myfile.phonet -nd h -g 3 --gmin 6 --gmax 8 > ./phonet.txt
+phonet -f myfile.phonet -ndh -g 3 --gmin 6 --gmax 8 > ./phonet.txt
 ```
 
 ### Create Alias / Path
@@ -147,7 +147,7 @@ Add `phonet = "0.9.0"` to your `Crates.toml` file
 - [Docs.rs](https://docs.rs/phonet/latest/phonet)
 - [Crates.io](https://crates.io/crates/phonet)
 
-Short example:
+### Short Example
 
 ```rs
 use phonet::Draft;
@@ -164,9 +164,51 @@ fn main() {
 }
 ```
 
-Long example:
+### Long Example
 
-[[long example]]
+```rs
+use std::fs;
+
+use phonet::{
+    draft::{Message::Test, TestDraft},
+    get_min_filename, DisplayLevel, Draft,
+};
+
+fn main() {
+    let filename = "myfile.phonet";
+
+    // Read file
+    let file = fs::read_to_string(filename).expect("Could not read phonet file");
+
+    // Parse file
+    let mut draft = Draft::from(&file).expect("Failed to parse file");
+
+    // Add a custom test
+    draft.messages.push(Test(TestDraft {
+        intent: true,
+        word: "taso".to_string(),
+    }));
+
+    // Minify file
+    fs::write(
+        get_min_filename(filename),
+        draft.minify(false).expect("Failed to minify"),
+    )
+    .expect("Could not write minified file");
+
+    // Generate 10 words, each between 5 and 8 in length
+    let generated = draft.generate(10, 5..8).expect("Failed to generate words");
+
+    // Run tests and display only failed tests
+    draft.run().display(DisplayLevel::OnlyFails, true);
+
+    // Display generated words
+    println!("Randomly generated words:");
+    for word in generated {
+        println!(" - {}", word);
+    }
+}
+```
 
 # File syntax
 
@@ -216,7 +258,7 @@ _Syntax:_
 - `=` _Equals_
 - Value - Regular Expression, may contain other _classes_ in angle brackets `<>` or `⟨⟩` (as with [_rules_](#rules))
 
-The *'any'* class, defined with `$_ = ...`, is used for random word generation.
+The _'any'_ class, defined with `$_ = ...`, is used for random word generation.
 
 _Example:_
 
@@ -352,7 +394,7 @@ These formatting tips are not required, but recommended to make the file easier 
 
 1. Specify the mode at the very top of the file
 2. Define all classes at the top of the file
-   - Also define an [*'any'* class](#classes) first, for word generation
+   - Also define an [_'any'_ class](#classes) first, for word generation
 3. Group related rules and tests, using a note
    - Define rules first, then positive tests, then negative tests
 4. Indent rules and tests under note

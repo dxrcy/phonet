@@ -32,7 +32,7 @@ use crate::draft::{Message, Note};
 /// assert_eq!(outcome.messages.len(), 3);
 /// assert_eq!(outcome.fail_count, 0);
 ///
-/// draft.display(); // Prints results to stdout
+/// outcome.display(Default::default(), true); // Prints results to stdout
 /// ```
 #[derive(Debug)]
 pub struct Outcome {
