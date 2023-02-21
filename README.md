@@ -403,7 +403,7 @@ _Example (this is from [example.phonet](./examples/example.phonet)):_
 ~<> ;# Mode (optional) - This file uses romanized letters
 
 # Class definitions
-$_ = [ptkmnswjlaeiou] ;# Any / all letters (required for generating words)
+$_ = ⟨C⟩ | ⟨V⟩        ;# Any / all letters (required for generating words)
 $C = [ptkmnswjl]      ;# Consonants
 $V = [aeiou]          ;# Vowels
 
@@ -417,13 +417,13 @@ $V = [aeiou]          ;# Vowels
     ?! taso           ;# This test will fail, as a false positive
 
 * Syllable structure
-  + ^ ( ⟨C⟩ ⟨V⟩ )+ $  ;# Check that word is Consonant + Vowel, repeating at least once
-    ?+ taso kili
-    ?! ano taaso
+  + ^ ⟨V⟩? ( ⟨C⟩ ⟨V⟩ )+ $  ;# Check that word is Consonant + Vowel, repeating at least once
+    ?+ taso kili ano atoso
+    ?! taaso an
 
 * Some more tests
     ?+ silo tila
-    ?! aka axe
+    ?! akka axe
 
 * No repeated letters
   ! (.)\1             ;# This is an unnamed back-reference

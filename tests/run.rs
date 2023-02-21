@@ -80,7 +80,15 @@ fn example_outcome_works() {
         list.next().unwrap(),
         &Message::Test(TestOutcome {
             word: "ano".to_string(),
-            intent: false,
+            intent: true,
+            status: Pass,
+        })
+    );
+    assert_eq!(
+        list.next().unwrap(),
+        &Message::Test(TestOutcome {
+            word: "atoso".to_string(),
+            intent: true,
             status: Pass,
         })
     );
@@ -88,6 +96,14 @@ fn example_outcome_works() {
         list.next().unwrap(),
         &Message::Test(TestOutcome {
             word: "taaso".to_string(),
+            intent: false,
+            status: Pass,
+        })
+    );
+    assert_eq!(
+        list.next().unwrap(),
+        &Message::Test(TestOutcome {
+            word: "an".to_string(),
             intent: false,
             status: Pass,
         })
@@ -116,7 +132,7 @@ fn example_outcome_works() {
     assert_eq!(
         list.next().unwrap(),
         &Message::Test(TestOutcome {
-            word: "aka".to_string(),
+            word: "akka".to_string(),
             intent: false,
             status: Pass,
         })

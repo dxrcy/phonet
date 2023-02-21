@@ -13,14 +13,21 @@ fn example_draft_works() {
     let draft = Draft::from(file).expect("Failed to parse");
 
     assert_eq!(draft.mode, Mode::Romanized);
-    assert_eq!(draft.test_count, 15);
+    assert_eq!(draft.test_count, 17);
+
+    for rule in &draft.rules {
+        assert!(
+            !rule.pattern.to_string().contains(' '),
+            "Rule should not contain space"
+        );
+    }
 
     let mut rules = draft.rules.iter();
 
     assert_eq!(
         rules.next().unwrap(),
         &Rule {
-            pattern: Regex::new(r"^[ptkmnswjlaeiou]+$").unwrap(),
+            pattern: Regex::new(r"^(?:(?:[ptkmnswjl])|(?:[aeiou]))+$").unwrap(),
             intent: true,
             note: Some(Note("Invalid letters".to_string())),
         },
@@ -29,7 +36,7 @@ fn example_draft_works() {
     assert_eq!(
         rules.next().unwrap(),
         &Rule {
-            pattern: Regex::new(r"^([ptkmnswjl][aeiou])+$").unwrap(),
+            pattern: Regex::new(r"^(?:[aeiou])?((?:[ptkmnswjl])(?:[aeiou]))+$").unwrap(),
             intent: true,
             note: Some(Note("Syllable structure".to_string())),
         }
@@ -117,13 +124,27 @@ fn example_draft_works() {
         messages.next().unwrap(),
         &Message::Test(TestDraft {
             word: "ano".to_string(),
-            intent: false
+            intent: true
+        })
+    );
+    assert_eq!(
+        messages.next().unwrap(),
+        &Message::Test(TestDraft {
+            word: "atoso".to_string(),
+            intent: true
         })
     );
     assert_eq!(
         messages.next().unwrap(),
         &Message::Test(TestDraft {
             word: "taaso".to_string(),
+            intent: false
+        })
+    );
+    assert_eq!(
+        messages.next().unwrap(),
+        &Message::Test(TestDraft {
+            word: "an".to_string(),
             intent: false
         })
     );
@@ -149,7 +170,7 @@ fn example_draft_works() {
     assert_eq!(
         messages.next().unwrap(),
         &Message::Test(TestDraft {
-            word: "aka".to_string(),
+            word: "akka".to_string(),
             intent: false
         })
     );

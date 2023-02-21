@@ -59,6 +59,9 @@ fn main() -> Result<(), String> {
         .expect("Could not write minified file");
     }
 
+    let last = draft.rules.last();
+    println!("{:?}", last);
+
     // Run tests and display
     draft.run().display(args.display_level, !args.no_color);
 

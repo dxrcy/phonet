@@ -92,12 +92,16 @@ impl Draft {
                     let Some(pattern) = split.next() else {
                         return parse_error!(line, NoClassPattern, name.to_string());
                     };
+                    let pattern = pattern.replace(' ', "");
 
                     // Add class
                     // Wrap value in NON-CAPTURING GROUP (just in case)
                     // This is non-capturing, for classes to work with back-references
                     // otherwise classes would be inherently capturing, and count towards group index in back-reference
-                    raw_classes.insert(name.trim().to_string(), pattern.trim().to_string());
+                    raw_classes.insert(
+                        name.trim().to_string(),
+                        format!("(?:{})", pattern.trim().to_string()),
+                    );
                 }
 
                 // Rule
