@@ -28,7 +28,7 @@ impl Outcome {
         // No messages
         if draft.messages.is_empty() {
             return Self {
-                list: Vec::new(),
+                messages: Vec::new(),
                 fail_count: 0,
             };
         }
@@ -56,7 +56,7 @@ impl Outcome {
             });
         }
 
-        Self { list, fail_count }
+        Self { messages: list, fail_count }
     }
 }
 

@@ -59,7 +59,7 @@ fn run_all_successful() {
 
     assert_eq!(outcome.fail_count, 0);
 
-    let mut list = outcome.list.iter();
+    let mut list = outcome.messages.iter();
 
     assert_eq!(
         list.next(),
@@ -139,7 +139,7 @@ fn run_all_failing() {
 
     assert_eq!(outcome.fail_count, 3);
 
-    let mut list = outcome.list.iter();
+    let mut list = outcome.messages.iter();
 
     assert_eq!(
         list.next(),

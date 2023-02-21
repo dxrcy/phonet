@@ -12,7 +12,7 @@ fn example_outcome_works() {
 
     assert_eq!(outcome.fail_count, 2);
 
-    let mut list = outcome.list.iter();
+    let mut list = outcome.messages.iter();
 
     assert_eq!(
         list.next().unwrap(),

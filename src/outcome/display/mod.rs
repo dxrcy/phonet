@@ -11,7 +11,7 @@ use crate::{
 impl Outcome {
     /// Get maximum length of all test words
     pub fn max_word_len(&self, display_level: DisplayLevel) -> usize {
-        self.list
+        self.messages
             .iter()
             .map(|msg| match msg {
                 // Test - Check display level
@@ -32,7 +32,7 @@ impl Outcome {
 
     /// Get count of tests in list
     pub fn test_count(&self) -> usize {
-        self.list.iter().filter(|item| item.is_test()).count()
+        self.messages.iter().filter(|item| item.is_test()).count()
     }
 
     /// Display results to standard output
@@ -79,7 +79,7 @@ impl Outcome {
         let max_word_len = self.max_word_len(display_level);
 
         // Loop result list
-        for msg in &self.list {
+        for msg in &self.messages {
             match msg {
                 // Display note
                 Info(Note(note)) => match display_level {

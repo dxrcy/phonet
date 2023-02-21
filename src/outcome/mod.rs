@@ -9,8 +9,7 @@ use crate::draft::{Message, Note};
 
 #[derive(Debug)]
 pub struct Outcome {
-    /// TODO Rename to `messages` ?
-    pub list: Vec<Message<TestOutcome>>,
+    pub messages: Vec<Message<TestOutcome>>,
     pub fail_count: usize,
 }
 
