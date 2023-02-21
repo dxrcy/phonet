@@ -31,16 +31,24 @@ macro_rules! try_this {
 fn main() -> Result<(), String> {
     let args = Args::parse();
 
+    // Add 'phonet' file extension if file argument ends with a period
+    let filename = if args.file.ends_with('.') {
+        args.file + "phonet"
+    } else {
+        args.file
+    };
+
     // Read file
-    let file = fs::read_to_string(&args.file).expect("Could not read phonet file");
+    let file = fs::read_to_string(&filename).expect("Could not read phonet file");
 
     // Parse file
     let mut draft = try_this!(Draft::from(&file));
 
     // Use custom CLI tests if given
-    if let Some(tests) = args.tests {
-        draft.messages = tests
-            .split(',')
+    if args.tests.len() > 0 {
+        draft.messages = args
+            .tests
+            .iter()
             .map(|x| {
                 Test(TestDraft {
                     intent: true,
@@ -53,14 +61,11 @@ fn main() -> Result<(), String> {
     // Minify file
     if args.minify {
         fs::write(
-            get_min_filename(&args.file),
+            get_min_filename(&filename),
             draft.minify(args.with_tests).expect("Failed to minify"),
         )
         .expect("Could not write minified file");
     }
-
-    let last = draft.rules.last();
-    println!("{:?}", last);
 
     // Run tests and display
     draft.run().display(args.display_level, !args.no_color);

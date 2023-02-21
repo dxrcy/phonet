@@ -8,13 +8,16 @@ use phonet::DisplayLevel::{self, *};
 ///
 /// More information: https://github.com/darccyy/phonet
 pub struct Args {
-    /// Custom test, separate with comma (Ignores tests in file)
-    #[arg(short, long)]
-    pub tests: Option<String>,
+    /// Custom tests (optional)
+    ///
+    /// This overrides all tests in the file
+    pub tests: Vec<String>,
 
     /// Name and path of file to run and test
     ///
-    /// Eg. `phonet -f ./myfile.phonet`
+    /// If name ends with a period, the 'phonet' extension is implied
+    ///
+    /// Eg. `phonet -f ./myfile.phonet` or `phonet -f ./myfile.` (same result)
     #[arg(short, long, default_value_t = String::from("phonet"))]
     pub file: String,
 

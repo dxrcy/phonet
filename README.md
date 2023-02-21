@@ -19,16 +19,21 @@ This project can be used as a rust library crate, or as a binary executable.
 ### Argument Syntax
 
 ```
-Usage: phonet.exe [OPTIONS]
+Usage: phonet.exe [OPTIONS] [TESTS]...
+
+Arguments:
+  [TESTS]...
+          Custom tests (Optional)
+
+          This overrides all tests in the file
 
 Options:
-  -t, --tests <TESTS>
-          Custom test, separate with comma (Ignores tests in file)
-
   -f, --file <FILE>
           Name and path of file to run and test
 
-          Eg. `phonet -f ./myfile.phonet`
+          If name ends with a period, the 'phonet' extension is implied
+
+          Eg. `phonet -f ./myfile.phonet` or `phonet -f ./myfile.` (same result)
 
           [default: phonet]
 
@@ -59,14 +64,14 @@ Options:
           Default count 1, specify with number
 
       --gmin <GENERATE_MIN_LEN>
-          Set minimum length for generated words
+          Set minimum length (inclusive) for generated words
 
           Use with the `--generate` or `-g` flag
 
           Note: This increases generation time exponentially
 
       --gmax <GENERATE_MAX_LEN>
-          Set maximum length for generated words
+          Set maximum length (inclusive) for generated words
 
           Use with the `--generate` or `-g` flag
 
@@ -77,9 +82,6 @@ Options:
 
   -h, --help
           Print help (see a summary with '-h')
-
-  -V, --version
-          Print version
 ```
 
 ### Example
@@ -88,11 +90,12 @@ Options:
 # Runs ./phonet
 phonet
 
-# Runs ./phonet, with tests: 'some', 'words' (overrides the tests in file)
-phonet -t some,words
+# Runs ./phonet, with tests: 'some', 'tests' (overrides the tests in file)
+phonet some tests
 
 # Runs ./myfile.phonet
 phonet -f myfile.phonet
+phonet -f myfile.phonet some tests
 
 # Runs ./phonet, only showing fails
 phonet -df
