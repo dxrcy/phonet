@@ -14,8 +14,10 @@
 
 ### Clean code
 
-- Add comments
 - Only use `clap` dependency for binary
+- Move contents of `draft/types.rs` to `draft/mod.rs`
+- - For parity with `outcome`
+- - Move `Draft::parse` method to `draft/parse`
 
 ### API
 

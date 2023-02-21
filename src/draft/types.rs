@@ -5,14 +5,14 @@ use fancy_regex::Regex;
 /// Alias for `HashMap` of `String` and `String`, for raw classes
 pub(crate) type Classes = HashMap<String, String>;
 
-/// Pattern rule
+/// Pattern rule for `Draft`
 #[derive(Debug, Clone)]
 pub struct Rule {
     /// Whether pattern should match or not, for a test to be valid
     pub pattern: Regex,
     /// Regex pattern
     pub intent: bool,
-    /// Note for rule
+    /// Note for rule (optional)
     ///
     /// Reason given, if test fails from this rule
     pub note: Option<Note>,
@@ -21,19 +21,21 @@ pub struct Rule {
 /// Mirrors `Rule` struct, but with `String` instead of `Regex`
 #[derive(Debug, PartialEq)]
 pub(crate) struct RawRule {
-    /// Whether pattern should match or not, for a test to be valid
-    pub intent: bool,
     /// Regex pattern, as `String`
     pub pattern: String,
+    /// Whether pattern should match or not, for a test to be valid
+    pub intent: bool,
     /// Note for rule
     ///
     /// Reason given, if test fails from this rule
     pub note: Option<Note>,
 }
 
-/// Single message to be displayed
+/// Single message to be displayed in `Draft` and `Outcome`
 ///
 /// May be a `Info` (`Note`) and `Test`
+///
+/// `Test` type should hold `TestDraft` or `TestOutcome`, for `Draft` and `Outcome` structs respectively
 #[derive(Debug, PartialEq)]
 pub enum Message<T> {
     /// Plain text `Note`
@@ -43,15 +45,17 @@ pub enum Message<T> {
 }
 
 /// Wrapper for `String`
+///
+///TODO Remove this - use string
 #[derive(Debug, Clone, PartialEq)]
 pub struct Note(pub String);
 
-/// Test that has not ran
+/// Test that has not yet ran, for `Draft`
 #[derive(Debug, PartialEq)]
 pub struct TestDraft {
     /// String to test
     pub word: String,
-    /// Whether test should be valid or not, to pass
+    /// Whether test should be valid or not to pass
     pub intent: bool,
 }
 
@@ -73,6 +77,18 @@ impl PartialEq for Rule {
             && self.note == other.note
             // Regex must be stringified
             && self.pattern.to_string() == other.pattern.to_string()
+    }
+}
+
+impl<T> Message<T> {
+    /// Returns `true` if self is `Info`
+    pub fn is_note(&self) -> bool {
+        matches!(self, Self::Info(_))
+    }
+
+    /// Returns `true` if self is `Test`
+    pub fn is_test(&self) -> bool {
+        matches!(self, Self::Test(_))
     }
 }
 
@@ -117,17 +133,5 @@ impl Mode {
             Broad => "//",
             Narrow => "[]",
         }
-    }
-}
-
-impl<T> Message<T> {
-    /// Returns `true` if self is `Info`
-    pub fn is_note(&self) -> bool {
-        matches!(self, Self::Info(_))
-    }
-
-    /// Returns `true` if self is `Test`
-    pub fn is_test(&self) -> bool {
-        matches!(self, Self::Test(_))
     }
 }

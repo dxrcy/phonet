@@ -1,3 +1,23 @@
+/// Shorthand for `Err(Error::Parse(ParseError::______))`
+///
+/// Only used in the `parse` module
+macro_rules! parse_error {
+    ( $line: expr, $kind: ident ) => {
+        Err($crate::error::Error::Parse(
+            $crate::error::ParseError::$kind,
+            $line,
+        ))
+    };
+    ( $line: expr, $kind: ident, $( $value: expr )* ) => {
+        Err($crate::error::Error::Parse(
+            $crate::error::ParseError::$kind(
+                $( $value )*
+            ),
+            $line,
+        ))
+    };
+}
+
 /// Minify draft to string
 mod minify;
 /// Parse functions
@@ -19,27 +39,9 @@ use fancy_regex_macro::regex;
 use self::{minify::minify, parse::parse_rules, statements::split_statements};
 use crate::{error::Error, outcome::Outcome, REGEX_MATCH_FAIL};
 
-/// Shorthand for `Err(Error::Parse(ParseError::______))`
-#[macro_export]
-macro_rules! parse_error {
-    ( $line: expr, $kind: ident ) => {
-            Err(crate::error::Error::Parse(
-            crate::error::ParseError::$kind,
-            $line,
-        ))
-    };
-
-    ( $line: expr, $kind: ident, $( $value: expr )* ) => {
-        Err(crate::error::Error::Parse(
-            crate::error::ParseError::$kind(
-                $( $value )*
-            ),
-            $line,
-        ))
-    };
-}
-
 /// Parsed *Phonet* file
+///
+/// TODO Examples!
 #[derive(Debug, PartialEq)]
 pub struct Draft {
     /// List of defined rules
@@ -226,8 +228,6 @@ impl Draft {
 
         // Use default mode if none specified
         let mode = mode.unwrap_or_default();
-
-        // let minified = minify(mode, &raw_classes, &raw_rules, &messages)?;
 
         Ok(Self {
             rules: parse_rules(&raw_rules, &raw_classes)?,

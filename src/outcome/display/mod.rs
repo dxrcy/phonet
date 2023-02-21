@@ -10,6 +10,8 @@ use crate::{
 
 impl Outcome {
     /// Get maximum length of all test words
+    ///
+    /// For printing to output
     pub fn max_word_len(&self, display_level: DisplayLevel) -> usize {
         self.messages
             .iter()

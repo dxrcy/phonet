@@ -54,7 +54,7 @@ fn main() -> Result<(), String> {
     if args.minify {
         fs::write(
             get_min_filename(&args.file),
-            &draft.minify(args.with_tests).expect("Failed to minify"),
+            draft.minify(args.with_tests).expect("Failed to minify"),
         )
         .expect("Could not write minified file");
     }

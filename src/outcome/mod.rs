@@ -3,41 +3,72 @@ mod display;
 /// Run function for `Outcome` struct
 mod run;
 
-pub(crate) use run::{validate_test, Validity};
+use clap::{builder::PossibleValue, ValueEnum};
+
+pub(crate) use self::run::{validate_test, Validity};
 
 use crate::draft::{Message, Note};
 
+/// Outcome of tests ran from `Draft`
+///
+///TODO Examples
 #[derive(Debug)]
 pub struct Outcome {
+    /// Messages to display
     pub messages: Vec<Message<TestOutcome>>,
+    /// Amount of failed tests ran
     pub fail_count: usize,
 }
 
+/// Outcome of `TestDraft` that was ran
 #[derive(Debug, PartialEq)]
 pub struct TestOutcome {
+    /// String that was tested
     pub word: String,
+    /// Whether test should have been valid or not to pass
     pub intent: bool,
+    /// Whether the test has passed or not
     pub status: PassStatus,
 }
 
+/// Status of test that was ran
 #[derive(Debug, PartialEq)]
 pub enum PassStatus {
+    /// Test passed
+    ///
+    /// Intent and validity matched
     Pass,
+    /// Test failed
+    ///
+    /// Intent and validity did not match
     Fail(FailKind),
 }
 
+/// The manner in which a test failed
 #[derive(Debug, PartialEq)]
 pub enum FailKind {
+    /// The test was supposed to not match the rules, however it did
     ShouldBeInvalid,
+    /// The test was invalid, but should have matched
+    ///
+    /// No reason was given for this fail
     NoReasonGiven,
+    /// The test was invalid, but should have matched
+    ///
+    /// A custom reason was given to the rule of which this test failed against
     CustomReason(Note),
 }
 
+/// The kinds of messages to display to the output, when `Outcome::display` is called
 #[derive(Debug, Clone, Copy)]
 pub enum DisplayLevel {
+    /// Show everything: passed or failed tests, and notes
     ShowAll,
+    /// Show failed tests and notes, but not passes
     IgnorePasses,
+    /// Show only failed tests, not passed tests or notes
     OnlyFails,
+    /// Show nothing: not passed or failed tests, or notes
     HideAll,
 }
 
@@ -58,8 +89,6 @@ impl Default for DisplayLevel {
         Self::ShowAll
     }
 }
-
-use clap::{builder::PossibleValue, ValueEnum};
 
 // Custom implementation, for argument aliases
 impl ValueEnum for DisplayLevel {

@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 use fancy_regex_macro::regex;
 
-use crate::{error::Error, parse_error};
+use crate::error::Error;
 
 /// Replace ascii `<` and `>` with `⟨` and `⟩` respectively, for classes
 ///

@@ -1,5 +1,3 @@
-#![allow(clippy::useless_format)] //TODO until error handling is implemented
-
 /// Parsing of *Phonet* `Draft`
 pub mod draft;
 /// Error type for *Phonet*
@@ -17,10 +15,6 @@ pub use crate::{
     draft::Draft,
     outcome::{DisplayLevel, Outcome},
 };
-
-// pub use color::colorize;
-// pub use draft::{Draft, Message, Mode, Note, Rule, TestDraft};
-// pub use outcome::{DisplayLevel, FailKind, Outcome, PassStatus, TestOutcome};
 
 /// Message for failed matching of static regex
 const REGEX_MATCH_FAIL: &str = "Regex failed on 'match' method. This should never happen";

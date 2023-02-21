@@ -23,7 +23,7 @@ pub(crate) enum Validity {
 }
 
 impl Outcome {
-    /// Run drafted tests
+    /// Run drafted tests, return `Output`
     pub fn run(draft: Draft) -> Self {
         // No messages
         if draft.messages.is_empty() {
@@ -56,12 +56,15 @@ impl Outcome {
             });
         }
 
-        Self { messages: list, fail_count }
+        Self {
+            messages: list,
+            fail_count,
+        }
     }
 }
 
 /// Run `TestDraft` against rules, return `TestOutcome`
-fn run_test(test: TestDraft, rules: &Vec<Rule>) -> TestOutcome {
+fn run_test(test: TestDraft, rules: &[Rule]) -> TestOutcome {
     // Validate test
     let validity = validate_test(&test.word, rules);
 
