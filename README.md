@@ -224,7 +224,7 @@ The syntax is a statements, each separated by a semicolon `;` or a linebreak.
 
 Use a _Ampersand_ `&` to denote a multi-line statement. This can only be ended with a semicolon `;`.
 
-Comments will only end with a linebreak.
+Comments will end with a linebreak or a semicolon `;`.
 
 All whitespace is ignored, except to separate words in [_tests_](#tests).
 
