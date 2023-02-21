@@ -10,7 +10,6 @@
 ### Tests
 
 - More unit tests
-- Add details to asserts
 - Add `display` to integration tests
 
 ### Clean code
