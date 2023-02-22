@@ -321,6 +321,8 @@ dependencies = [
 [[package]]
 name = "stilo"
 version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4b297fd42fed8fa87d4a8c0ba3f57a07ed7829643006262a864387ac570d1a45"
 
 [[package]]
 name = "strsim"
