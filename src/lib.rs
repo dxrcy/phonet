@@ -20,12 +20,13 @@ pub mod error;
 pub mod outcome;
 
 /// Color styles for stdout
-mod color;
+// mod color;
+
 /// Generation of random words
 mod generate;
 
 pub use crate::{
-    color::colorize,
+    // color::colorize,
     draft::Draft,
     outcome::{DisplayLevel, Outcome},
 };

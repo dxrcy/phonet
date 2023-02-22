@@ -8,12 +8,13 @@ documentation = "https://docs.rs/phonet/latest/phonet"
 repository = "https://github.com/darccyy/phonet"
 authors = ["darcy"]
 keywords = ["phoner", "phone", "regex", "lang", "conlang"]
-exclude = ["target", "examples/test.min.phonet"]
+exclude = ["target"]
 
 [dependencies]
-colorful = "0.2.2"
 fancy-regex = "0.11.0"
 fancy-regex-macro = "0.1.0"
 thiserror = "1.0.38"
 clap = { version = "4.1.6", features = ["derive"] }
 rand = "0.8.5"
+# stilo = "0.1.1"
+stilo = {path = "../stilo"}

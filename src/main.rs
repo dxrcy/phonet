@@ -3,10 +3,9 @@ mod args;
 use std::fs;
 
 use clap::Parser;
-use colorful::Color;
+use stilo::{style, Style};
 
 use phonet::{
-    colorize,
     draft::{Message::Test, TestDraft},
     get_min_filename, Draft,
 };
@@ -85,21 +84,34 @@ fn main() -> Result<(), String> {
         // Print title
         println!(
             "{}",
-            colorize(
+            color(
                 &format!(
                     "Randomly generated word{s}:",
                     s = if words.len() == 1 { "" } else { "s" }
                 ),
-                Color::Blue,
+                style!(Blue),
                 !args.no_color,
             )
         );
 
         // Print words
         for word in words {
-            println!(" {} {}", colorize("-", Color::Cyan, !args.no_color), word);
+            println!(
+                " {} {}",
+                color("-", style!(Cyan), !args.no_color),
+                color(&word, style!(-italic), !args.no_color)
+            );
         }
     }
 
     Ok(())
+}
+
+/// Use `stilo::Color` to format text only if `do_color` is true
+fn color(text: &str, style: Style, do_color: bool) -> String {
+    if do_color {
+        style.format(text)
+    } else {
+        text.into()
+    }
 }
