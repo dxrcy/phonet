@@ -15,6 +15,29 @@ use crate::{
 impl Draft {
     /// Generate random words that is valid against rules
     pub fn generate(&self, count: usize, length: Range<usize>) -> Result<Vec<String>, Error> {
+        // let pattern = self.rules.get(1).unwrap().pattern.to_string();
+
+        // let mut chars = pattern.chars();
+        // chars.next();
+        // chars.next_back();
+
+        // let pattern = chars.collect::<String>();
+
+        // println!("{}", pattern);
+
+        // let mut rng = rand::thread_rng();
+
+        // let gen = rand_regex::Regex::compile(&pattern, 100).unwrap();
+
+        // let samples = (&mut rng)
+        //     .sample_iter(&gen)
+        //     .take(3)
+        //     .collect::<Vec<String>>();
+
+        // println!("{:#?}", samples);
+
+        // return Ok(vec![]);
+
         let letters = get_letters(&self.raw_classes)?;
         let mut words = Vec::new();
         let mut rng = rand::thread_rng();
