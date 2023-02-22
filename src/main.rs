@@ -76,26 +76,26 @@ fn main() -> Result<(), String> {
 
         // Min and max length
         let min = args.generate_min_len.unwrap_or(3);
-        let max = args.generate_max_len.unwrap_or(14) + 1; // To make inclusive without using ..=
+        let max = args.generate_max_len.unwrap_or(14);
+        // Ensure min and max are not invalid
+        let max = max.max(min);
+        let min = min.min(max);
+        // To make inclusive without using ..=
+        let max = max + 1;
 
         // Generate words
-        let words = try_this!(draft.generate(count, min..max));
+        let mut words = try_this!(draft.generator(min..max));
 
         // Print title
         println!(
             "{}",
-            color(
-                &format!(
-                    "Randomly generated word{s}:",
-                    s = if words.len() == 1 { "" } else { "s" }
-                ),
-                style!(Blue),
-                !args.no_color,
-            )
+            color("Randomly generated words:", style!(Blue), !args.no_color,)
         );
 
         // Print words
-        for word in words {
+        for _ in 0..count {
+            let word = words.next();
+
             println!(
                 " {} {}",
                 color("-", style!(Cyan), !args.no_color),

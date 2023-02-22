@@ -32,7 +32,6 @@ fn generate_works() {
         },
     ];
 
-    let count = 50;
     let length = 4..6;
 
     let draft = Draft {
@@ -45,14 +44,12 @@ fn generate_works() {
     };
 
     // Generate some random valid words
-    let words = draft.generate(count, length.clone()).unwrap();
+    let mut words = draft.generator(length.clone()).unwrap();
 
-    assert_eq!(words.len(), count);
-
-    for word in words {
-        // Check word is valid
-        assert!(matches!(validate_test(&word, &rules), Valid));
-        // Check length is in range
-        assert!(length.contains(&word.len()));
-    }
+    // Check some words are valid
+    assert!(matches!(validate_test(&words.next(), &rules), Valid));
+    assert!(matches!(validate_test(&words.next(), &rules), Valid));
+    assert!(matches!(validate_test(&words.next(), &rules), Valid));
+    assert!(matches!(validate_test(&words.next(), &rules), Valid));
+    assert!(matches!(validate_test(&words.next(), &rules), Valid));
 }

@@ -12,63 +12,50 @@ use crate::{
     outcome::{validate_test, Validity::*},
 };
 
-impl Draft {
-    /// Generate random words that is valid against rules
-    pub fn generate(&self, count: usize, length: Range<usize>) -> Result<Vec<String>, Error> {
-        // let pattern = self.rules.get(1).unwrap().pattern.to_string();
+/// Generator for random valid words
+pub struct Generator {
+    rng: ThreadRng,
+    /// Word length range
+    length: Range<usize>,
+    /// Letters from 'any' class
+    letters: String,
+    /// Rules to test against
+    rules: Vec<Rule>,
+}
 
-        // let mut chars = pattern.chars();
-        // chars.next();
-        // chars.next_back();
+impl Generator {
+    /// Create a new word `Generator` from a `Draft`, with a word length range
+    pub fn new(draft: &Draft, length: Range<usize>) -> Result<Self, Error> {
+        let letters = get_letters(&draft.raw_classes)?;
 
-        // let pattern = chars.collect::<String>();
+        Ok(Self {
+            rng: rand::thread_rng(),
+            length,
+            letters,
+            rules: draft.rules.clone(),
+        })
+    }
 
-        // println!("{}", pattern);
+    /// Generate a random word, with a random length, that is valid against rules
+    pub fn next(&mut self) -> String {
+        loop {
+            let word = random_word(
+                &self.letters,
+                self.rng.gen_range(self.length.clone()),
+                &mut self.rng,
+            );
 
-        // let mut rng = rand::thread_rng();
-
-        // let gen = rand_regex::Regex::compile(&pattern, 100).unwrap();
-
-        // let samples = (&mut rng)
-        //     .sample_iter(&gen)
-        //     .take(3)
-        //     .collect::<Vec<String>>();
-
-        // println!("{:#?}", samples);
-
-        // return Ok(vec![]);
-
-        let letters = get_letters(&self.raw_classes)?;
-        let mut words = Vec::new();
-        let mut rng = rand::thread_rng();
-
-        for _ in 0..count {
-            // Loops until it finds a valid word
-            words.push(generate_valid_word(
-                &letters,
-                &self.rules,
-                &length,
-                &mut rng,
-            ));
+            if matches!(validate_test(&word, &self.rules), Valid) {
+                return word;
+            }
         }
-
-        Ok(words)
     }
 }
 
-/// Generate a random word, with a random length, that is valid against rules
-fn generate_valid_word(
-    letters: &str,
-    rules: &[Rule],
-    length: &Range<usize>,
-    rng: &mut ThreadRng,
-) -> String {
-    loop {
-        let word = random_word(letters, rng.gen_range(length.clone()), rng);
-
-        if matches!(validate_test(&word, rules), Valid) {
-            return word;
-        }
+impl Draft {
+    /// Create a new word `Generator` from a `Draft`, with a word length range
+    pub fn generator(&self, length: Range<usize>) -> Result<Generator, Error> {
+        Generator::new(self, length)
     }
 }
 
