@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use std::ops::Range;
+use std::ops::{RangeInclusive};
 
 use fancy_regex_macro::regex;
 use rand::{rngs::ThreadRng, seq::SliceRandom, Rng};
@@ -16,7 +16,7 @@ use crate::{
 pub struct Generator {
     rng: ThreadRng,
     /// Word length range
-    length: Range<usize>,
+    length: RangeInclusive<usize>,
     /// Letters from 'any' class
     letters: String,
     /// Rules to test against
@@ -25,7 +25,7 @@ pub struct Generator {
 
 impl Generator {
     /// Create a new word `Generator` from a `Draft`, with a word length range
-    pub fn new(draft: &Draft, length: Range<usize>) -> Result<Self, Error> {
+    pub fn new(draft: &Draft, length: RangeInclusive<usize>) -> Result<Self, Error> {
         let letters = get_letters(&draft.raw_classes)?;
 
         Ok(Self {
@@ -54,7 +54,7 @@ impl Generator {
 
 impl Draft {
     /// Create a new word `Generator` from a `Draft`, with a word length range
-    pub fn generator(&self, length: Range<usize>) -> Result<Generator, Error> {
+    pub fn generator(&self, length: RangeInclusive<usize>) -> Result<Generator, Error> {
         Generator::new(self, length)
     }
 }

@@ -163,7 +163,7 @@ fn main() {
         // Run tests
         .run()
         // Display results
-        .display(Default::default())
+        .display(Default::default(), true)
 }
 ```
 
@@ -202,10 +202,17 @@ fn main() {
     // Run tests and display only failed tests
     draft.run().display(DisplayLevel::OnlyFails, true);
 
-    // Generate 10 words, each between 5 and 8 in length, and print each
+    // Create a generator for random words
+    // Each with a length between 5 and 8 (inclusive)
+    // Generation is done lazily, similar to an iterator
     println!("Randomly generated words:");
-    for word in draft.generate(10, 5..8).expect("Failed to generate words") {
-        println!(" - {}", word);
+    let mut words = draft
+        .generator(5..=8)
+        .expect("Failed to create word generator");
+
+    // Generate 10 random words
+    for _ in 0..10 {
+        println!(" - {}", words.next());
     }
 }
 ```

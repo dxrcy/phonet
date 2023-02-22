@@ -32,7 +32,7 @@ fn generate_works() {
         },
     ];
 
-    let length = 4..6;
+    let length = 4..=6;
 
     let draft = Draft {
         messages: vec![],

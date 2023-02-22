@@ -80,11 +80,9 @@ fn main() -> Result<(), String> {
         // Ensure min and max are not invalid
         let max = max.max(min);
         let min = min.min(max);
-        // To make inclusive without using ..=
-        let max = max + 1;
 
         // Generate words
-        let mut words = try_this!(draft.generator(min..max));
+        let mut words = try_this!(draft.generator(min..=max));
 
         // Print title
         println!(
