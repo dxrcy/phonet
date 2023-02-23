@@ -17,4 +17,3 @@ thiserror = "1.0.38"
 clap = { version = "4.1.6", features = ["derive"] }
 rand = "0.8.5"
 stilo = "0.1.1"
-# rand_regex = "0.15.1"
