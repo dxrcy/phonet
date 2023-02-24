@@ -1,6 +1,6 @@
 mod args;
 
-use std::fs;
+use std::{fs, path::Path};
 
 use clap::Parser;
 use stilo::{style, Style};
@@ -13,9 +13,7 @@ use phonet::{
 use crate::args::Args;
 
 /// Unwrap the `Ok` value of a `Result`, or exit with a stringified `Error`
-///
-/// TODO something else????
-macro_rules! try_this {
+macro_rules! try_or_throw {
     ( $result: expr ) => {{
         match $result {
             Ok(value) => value,
@@ -25,6 +23,28 @@ macro_rules! try_this {
             }
         }
     }};
+}
+
+/// Returns an `Err` with a formatted `String`
+macro_rules! throw {
+    () => {
+        return Err(String::new())
+    };
+    ( $str: literal ) => {
+        return Err($str.to_string())
+    };
+    ( $str: literal, $( $arg: tt ),* ) => {
+        return Err(format!($str, $( $arg )*))
+    };
+}
+
+/// Use `stilo::Color` to format text only if `do_color` is true
+fn color(text: &str, style: Style, do_color: bool) -> String {
+    if do_color {
+        style.format(text)
+    } else {
+        text.into()
+    }
 }
 
 fn main() -> Result<(), String> {
@@ -37,11 +57,18 @@ fn main() -> Result<(), String> {
         args.file
     };
 
+    // Check if input file exists
+    if !Path::new(&filename).exists() {
+        throw!("File not found '{}'", filename);
+    }
     // Read file
-    let file = fs::read_to_string(&filename).expect("Could not read phonet file");
+    let file = match fs::read_to_string(&filename) {
+        Ok(x) => x,
+        Err(err) => throw!("Failed to read file: `{:?}`", err),
+    };
 
     // Parse file
-    let mut draft = try_this!(Draft::from(&file));
+    let mut draft = try_or_throw!(Draft::from(&file));
 
     // Use custom CLI tests if given
     if !args.tests.is_empty() {
@@ -59,11 +86,12 @@ fn main() -> Result<(), String> {
 
     // Minify file
     if args.minify {
-        fs::write(
-            get_min_filename(&filename),
-            draft.minify(args.with_tests).expect("Failed to minify"),
-        )
-        .expect("Could not write minified file");
+        let minified = try_or_throw!(draft.minify(args.with_tests));
+
+        // Write file
+        if let Err(err) = fs::write(get_min_filename(&filename), minified) {
+            throw!("Failed to write minified file: `{:?}`", err);
+        };
     }
 
     // Run tests and display
@@ -82,7 +110,7 @@ fn main() -> Result<(), String> {
         let min = min.min(max);
 
         // Generate words
-        let mut words = try_this!(draft.generator(min..=max));
+        let mut words = try_or_throw!(draft.generator(min..=max));
 
         // Print title
         println!(
@@ -103,13 +131,4 @@ fn main() -> Result<(), String> {
     }
 
     Ok(())
-}
-
-/// Use `stilo::Color` to format text only if `do_color` is true
-fn color(text: &str, style: Style, do_color: bool) -> String {
-    if do_color {
-        style.format(text)
-    } else {
-        text.into()
-    }
 }
