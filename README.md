@@ -331,6 +331,7 @@ They are used as a _reason_ for any proceeding rules, as an explanation if a tes
 _Syntax:_
 
 - `*` _Star_
+- `:` _Colon_ (**Optional**) - Define a 'quiet' note
 - Text to print, and define reason as
 
 _Example:_
@@ -342,7 +343,8 @@ _Example:_
 # This test will NOT match, however it SHOULD (due to the Plus), so it will FAIL, with the above note as the reason
 ?+ tasto
 
-* Must not have two vowels in a row
+# This is a 'quiet' note, it will not display, but it will be used as the reason for the following rule
+*: Must not have two vowels in a row
 ! <V>{2}
 
 ?+ taso
@@ -395,6 +397,8 @@ These formatting tips are not required, but recommended to make the file easier 
 4. Indent rules and tests under note
    - Rules should use 1 intent, tests use 2
 
+### Example File
+
 _Example (this is from [example.phonet](./examples/example.phonet)):_
 
 ```phonet
@@ -423,11 +427,12 @@ $V = [aeiou]          ;# Vowels
     ?+ silo tila
     ?! akka axe
 
-* No repeated letters
+# This is a 'quiet' note - It will not display, unless any following rules fail
+*: No repeated letters
   ! (.)\1             ;# This is an unnamed back-reference
-  ! (?<x> .) \k<x>    ;# This is a named back-reference (NOT a class)
+  ! (?<x> .) \k<x>    ;# (Alternative) This is a named back-reference (NOT a class)
     ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
-    ?! &
+    ?! &              
       taaso
       ttaso
     ;

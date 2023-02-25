@@ -156,14 +156,21 @@ impl Draft {
 
                 // Note
                 '*' => {
-                    let note = chars.as_str().trim();
+                    let mut note = chars.as_str().trim();
 
                     if note.is_empty() {
                         return parse_error!(line, EmptyNote);
                     }
 
-                    // Add message
-                    messages.push(Info(Note(note.to_string())));
+                    // Add note if not quiet reason
+                    if note.starts_with(':') {
+                        // Quiet reason - don't add note
+                        chars.next();
+                        note = chars.as_str().trim();
+                    } else {
+                        // Add note to messages
+                        messages.push(Info(Note(note.to_string())));
+                    }
 
                     // Add note
                     last_note = Some(Note(note.to_string()));

@@ -146,10 +146,7 @@ fn example_outcome_works() {
         })
     );
 
-    assert_eq!(
-        list.next().unwrap(),
-        &Message::Info(Note("No repeated letters".to_string()))
-    );
+    // (quiet note)
     assert_eq!(
         list.next().unwrap(),
         &Message::Test(TestOutcome {

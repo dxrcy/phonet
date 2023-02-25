@@ -23,9 +23,10 @@ $V = [aeiou]          ;# Vowels
     ?+ silo tila
     ?! akka axe
 
-* No repeated letters
+# This is a 'quiet' note - It will not display, unless any following rules fail
+*: No repeated letters
   ! (.)\1             ;# This is an unnamed back-reference
-  ! (?<x> .) \k<x>    ;# This is a named back-reference (NOT a class)
+  ! (?<x> .) \k<x>    ;# (Alternative) This is a named back-reference (NOT a class)
     ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
     ?! &              
       taaso

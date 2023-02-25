@@ -182,10 +182,7 @@ fn example_draft_works() {
         })
     );
 
-    assert_eq!(
-        messages.next().unwrap(),
-        &Message::Info(Note("No repeated letters".to_string()))
-    );
+    // (quiet note)
     assert_eq!(
         messages.next().unwrap(),
         &Message::Test(TestDraft {
