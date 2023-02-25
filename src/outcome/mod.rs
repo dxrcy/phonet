@@ -3,8 +3,6 @@ mod display;
 /// Run function for `Outcome` struct
 mod run;
 
-use clap::{builder::PossibleValue, ValueEnum};
-
 pub(crate) use self::run::{validate_test, Validity};
 
 use crate::draft::{Message, Note};
@@ -109,38 +107,5 @@ impl PassStatus {
 impl Default for DisplayLevel {
     fn default() -> Self {
         Self::ShowAll
-    }
-}
-
-// Custom implementation, for argument aliases
-impl ValueEnum for DisplayLevel {
-    fn to_possible_value(&self) -> Option<clap::builder::PossibleValue> {
-        // `help` values must mirror comments
-        Some(match self {
-            Self::ShowAll => PossibleValue::new("show-all")
-                .aliases(["s", "show", "sa", "showall"])
-                .help("Show everything: passed or failed tests, and notes"),
-
-            Self::IgnorePasses => PossibleValue::new("ignore-passes")
-                .aliases(["i", "ignore-passes", "ignore", "ip"])
-                .help("Show failed tests and notes, but not passes"),
-
-            Self::OnlyFails => PossibleValue::new("only-fails")
-                .aliases(["o", "f", "only", "fails", "of", "onlyfails"])
-                .help("Show only failed tests, not passed tests or notes"),
-
-            Self::HideAll => PossibleValue::new("hide-all")
-                .aliases(["h", "hide", "ha", "hideall"])
-                .help("Show nothing: not passed or failed tests, or notes"),
-        })
-    }
-
-    fn value_variants<'a>() -> &'a [Self] {
-        &[
-            Self::ShowAll,
-            Self::IgnorePasses,
-            Self::OnlyFails,
-            Self::HideAll,
-        ]
     }
 }

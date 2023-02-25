@@ -1,7 +1,5 @@
 use clap::Parser;
 
-use phonet::DisplayLevel::{self, *};
-
 #[derive(Parser)]
 #[clap(author, version)]
 /// A program to validate phonotactic patterns
@@ -21,13 +19,9 @@ pub struct Args {
     #[arg(short, long, default_value_t = String::from("phonet"))]
     pub file: String,
 
-    /// What types of outputs to display
-    ///
-    /// Options can be single letter
-    ///
-    /// Eg. `phonet -d only-fails` or `phonet -do`
-    #[arg(short, long, default_value_t = ShowAll, value_enum)]
-    pub display_level: DisplayLevel,
+    /// Don't display passes and notes, only fails
+    #[arg(short, long)]
+    pub quiet: bool,
 
     /// Minify file and save
     #[arg(short, long)]

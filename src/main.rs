@@ -7,7 +7,7 @@ use stilo::{style, Style};
 
 use phonet::{
     draft::{Message::Test, TestDraft},
-    get_min_filename, Draft,
+    get_min_filename, DisplayLevel, Draft,
 };
 
 use crate::args::Args;
@@ -94,8 +94,15 @@ fn main() -> Result<(), String> {
         };
     }
 
+    // Use display level
+    let display_level = if args.quiet {
+        DisplayLevel::OnlyFails
+    } else {
+        DisplayLevel::ShowAll
+    };
+
     // Run tests and display
-    draft.run().display(args.display_level, !args.no_color);
+    draft.run().display(display_level, !args.no_color);
 
     // Generate and display words
     if let Some(count) = args.generate {

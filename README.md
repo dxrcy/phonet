@@ -23,7 +23,7 @@ Usage: phonet.exe [OPTIONS] [TESTS]...
 
 Arguments:
   [TESTS]...
-          Custom tests (Optional)
+          Custom tests (optional)
 
           This overrides all tests in the file
 
@@ -37,20 +37,8 @@ Options:
 
           [default: phonet]
 
-  -d, --display-level <DISPLAY_LEVEL>
-          What types of outputs to display
-
-          Options can be single letter
-
-          Eg. `phonet -d only-fails` or `phonet -do`
-
-          [default: show-all]
-
-          Possible values:
-          - show-all:      Show everything: passed or failed tests, and notes
-          - ignore-passes: Show failed tests and notes, but not passes
-          - only-fails:    Show only failed tests, not passed tests or notes
-          - hide-all:      Show nothing: not passed or failed tests, or notes
+  -q, --quiet
+          Don't display passes and notes, only fails
 
   -m, --minify
           Minify file and save
@@ -82,6 +70,9 @@ Options:
 
   -h, --help
           Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
 ```
 
 ### Example
@@ -98,16 +89,13 @@ phonet -f myfile.phonet
 phonet -f myfile.phonet some tests
 
 # Runs ./phonet, only showing fails
-phonet -df
-# Alternatives:
-phonet -d only-fails
-phonet -d fails
+phonet -q
 
 # Runs ./phonet, and minifies to ./min.phonet without tests
 phonet -m
 
-# Runs ./myfile.phonet, without outputting any results, and minifies to ./myfile.min.phonet with tests
-phonet -f myfile.phonet -dh -mw
+# Runs ./myfile.phonet, only displaying fails, and minifies to ./myfile.min.phonet with tests
+phonet -f myfile.phonet -q -mw
 
 # Runs ./phonet, and generates 1 random word
 phonet -g
@@ -118,8 +106,8 @@ phonet -g10 -f myfile.phonet
 # Runs ./phonet, with no color, and writes output to ./phonet.txt
 phonet -n > phonet.txt
 
-# Runs ./myfile.phonet, with all test output hidden, and generates 3 random words with length 6-8, writes output to ./phonet.txt (with no color)
-phonet -f myfile.phonet -ndh -g 3 --gmin 6 --gmax 8 > ./phonet.txt
+# Runs ./myfile.phonet, only displaying fails, and generates 3 random words with length 6-8, writes output to ./phonet.txt (with no color)
+phonet -f myfile.phonet -qn -g 3 --gmin 6 --gmax 8 > ./phonet.txt
 ```
 
 ### Create Alias / Path
@@ -145,7 +133,7 @@ $env:Path = "$env:Path;<path_to_file>\phonet.exe"
 
 ## Library use
 
-Add `phonet = "0.9.0"` to your `Crates.toml` file
+Add `phonet = "0.9.3"` to your `Crates.toml` file
 
 - [Docs.rs](https://docs.rs/phonet/latest/phonet)
 - [Crates.io](https://crates.io/crates/phonet)

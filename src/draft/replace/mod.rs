@@ -59,7 +59,7 @@ pub(crate) fn replace_classes(
 
                 // Check if name is valid
                 if !regex!(r"^\w+$").is_match(&name).expect(REGEX_MATCH_FAIL) {
-                    return parse_error!(line, InvalidClassName, name.to_string());
+                    return parse_error!(line, InvalidClassName, name);
                 }
 
                 // Get class value
