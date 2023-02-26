@@ -74,7 +74,7 @@ fn main() -> Result<(), String> {
 
     // Print name before outcome, if given
     if let Some(name) = &draft.name {
-        println!("{}", color(name, style!(Cyan i), do_color));
+        println!("{}", color(name, style!(Cyan italic), do_color));
     }
 
     // Run tests and display

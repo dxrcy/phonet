@@ -156,7 +156,7 @@ impl Outcome {
         // Final print
         if self.fail_count == 0 {
             // All passed
-            writeln!(out, "{}", color("All tests pass!", style!(Green), do_color))?;
+            writeln!(out, "{}", color("All tests pass!", style!(Green bold), do_color))?;
         } else {
             // Some tests failed
             writeln!(
@@ -168,7 +168,7 @@ impl Outcome {
                         count = self.fail_count,
                         s = pluralize(self.fail_count),
                     ),
-                    style!(Red),
+                    style!(Red bold),
                     do_color
                 )
             )?;
