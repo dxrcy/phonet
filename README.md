@@ -33,7 +33,11 @@ Options:
 
           If name ends with a period, the 'phonet' extension is implied
 
-          Eg. `phonet -f ./myfile.phonet` or `phonet -f ./myfile.` (same result)
+          Eg. `phonet -f myfile.phonet` or `phonet -f myfile.` (same result)
+
+          If name ends with a slash, the '/phonet' file name is implied
+
+          Eg. `phonet -f folder/phonet` or `phonet -f folder/` (same result)
 
           [default: phonet]
 
@@ -88,6 +92,13 @@ phonet some tests
 phonet -f myfile.phonet
 phonet -f myfile.phonet some tests
 
+# 'phonet' extension implied
+phonet -f myfile.
+
+# 'phonet' filename implied
+phonet -f src/phonet
+phonet -f src/
+
 # Runs ./phonet, only showing fails
 phonet -q
 
@@ -95,7 +106,7 @@ phonet -q
 phonet -m
 
 # Runs ./myfile.phonet, only displaying fails, and minifies to ./myfile.min.phonet with tests
-phonet -f myfile.phonet -q -mw
+phonet -f myfile. -q -mw
 
 # Runs ./phonet, and generates 1 random word
 phonet -g
@@ -107,7 +118,7 @@ phonet -g10 -f myfile.phonet
 phonet -n > phonet.txt
 
 # Runs ./myfile.phonet, only displaying fails, and generates 3 random words with length 6-8, writes output to ./phonet.txt (with no color)
-phonet -f myfile.phonet -qn -g 3 --gmin 6 --gmax 8 > ./phonet.txt
+phonet -f myfile. -qn -g 3 --gmin 6 --gmax 8 > ./phonet.txt
 ```
 
 ### Create Alias / Path

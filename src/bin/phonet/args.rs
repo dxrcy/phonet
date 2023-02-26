@@ -14,8 +14,12 @@ pub struct Args {
     /// Name and path of file to run and test
     ///
     /// If name ends with a period, the 'phonet' extension is implied
+    /// 
+    /// Eg. `phonet -f myfile.phonet` or `phonet -f myfile.` (same result)
+    /// 
+    /// If name ends with a slash, the '/phonet' file name is implied 
     ///
-    /// Eg. `phonet -f ./myfile.phonet` or `phonet -f ./myfile.` (same result)
+    /// Eg. `phonet -f folder/phonet` or `phonet -f folder/` (same result)
     #[arg(short, long, default_value_t = String::from("phonet"))]
     pub file: String,
 
