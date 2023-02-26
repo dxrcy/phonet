@@ -38,6 +38,7 @@ fn generate_works() {
         messages: vec![],
         rules: rules.clone(),
         mode: Default::default(),
+        name: None,
         test_count: 0,
         raw_rules: vec![],
         raw_classes: classes,

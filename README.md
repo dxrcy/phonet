@@ -374,7 +374,7 @@ This can optionally be specified in a file, although it does not add any functio
 _Syntax:_
 
 - `~` _Tilde_
-- `<.>`, `/./`, or `[.]` - Mode identifier, with `.` being any string, or blank
+- `<.>`, `/./`, or `[.]` - Mode identifier, with `.` being any string for, or blank
 
 _Examples:_
 
@@ -384,8 +384,8 @@ _Examples:_
 ```
 
 ```phonet
-# Specify broad transcription
-~ / this is the mode /
+# Specify broad transcription, with a given name
+~ / My Language /
 ```
 
 ## Examples
@@ -443,7 +443,7 @@ $V = [aeiou]          ;# Vowels
   ! (.)\1             ;# This is an unnamed back-reference
   ! (?<x> .) \k<x>    ;# (Alternative) This is a named back-reference (NOT a class)
     ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
-    ?! &              
+    ?! &
       taaso
       ttaso
     ;

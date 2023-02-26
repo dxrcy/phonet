@@ -14,6 +14,7 @@ fn example_draft_works() {
 
     assert_eq!(draft.mode, Mode::Romanized);
     assert_eq!(draft.test_count, 17);
+    assert_eq!(draft.name, None);
 
     for rule in &draft.rules {
         assert!(

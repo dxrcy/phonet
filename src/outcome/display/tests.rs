@@ -29,6 +29,7 @@ fn max_word_len_works() {
             }),
         ],
         mode: Default::default(),
+        name: None,
         test_count: 2,
         //
         raw_classes: HashMap::new(),

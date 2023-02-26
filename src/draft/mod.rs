@@ -95,6 +95,8 @@ pub struct Draft {
     ///
     /// Each item may be a `Note` and `TestDraft`
     pub messages: Vec<Message<TestDraft>>,
+    /// Name of language (optional)
+    pub name: Option<String>,
     /// Transcription mode of file
     pub mode: Mode,
     /// Amount of tests in `messages` field

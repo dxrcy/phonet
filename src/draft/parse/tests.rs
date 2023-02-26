@@ -90,3 +90,35 @@ fn parse_regex_returns_error() {
         Err(Error::Parse(ParseError::RegexParseFail(..), _))
     ));
 }
+
+
+#[test]
+fn chars_first_middle_last_works() {
+    let mut chars = "abcd".chars();
+    let (first, mid, last) = chars_first_middle_last(&mut chars);
+
+    assert_eq!(first, Some('a'));
+    assert_eq!(mid, "bc");
+    assert_eq!(last, Some('d'));
+
+    let mut chars = "".chars();
+    let (first, mid, last) = chars_first_middle_last(&mut chars);
+
+    assert_eq!(first, None);
+    assert_eq!(mid, "");
+    assert_eq!(last, None);
+
+    let mut chars = "a".chars();
+    let (first, mid, last) = chars_first_middle_last(&mut chars);
+
+    assert_eq!(first, Some('a'));
+    assert_eq!(mid, "");
+    assert_eq!(last, None);
+
+    let mut chars = "ad".chars();
+    let (first, mid, last) = chars_first_middle_last(&mut chars);
+
+    assert_eq!(first, Some('a'));
+    assert_eq!(mid, "");
+    assert_eq!(last, Some('d'));
+}

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use std::collections::HashMap;
+use std::{collections::HashMap, str::Chars};
 
 use fancy_regex::Regex;
 use fancy_regex_macro::regex;
@@ -20,7 +20,7 @@ impl Draft {
 
         // Field builders
         let mut messages = Vec::new();
-        let mut mode: Option<Mode> = None;
+        let mut mode_and_name: Option<(Mode, Option<String>)> = None;
 
         // Field builders without regex parsed
         let mut raw_rules = Vec::new();
@@ -52,7 +52,7 @@ impl Draft {
                 // Mode
                 '~' => {
                     // Fail if mode is already defined
-                    if mode.is_some() {
+                    if mode_and_name.is_some() {
                         return parse_error!(line, ModeAlreadyDefined);
                     }
 
@@ -61,9 +61,19 @@ impl Draft {
                         chars.next();
                     }
 
+                    // Separate mode specifiers and name
+                    let (first, name, last) = chars_first_middle_last(&mut chars);
+
+                    // Use `None` if name is empty
+                    let name = if name.trim().is_empty() {
+                        None
+                    } else {
+                        Some(name.trim().to_string())
+                    };
+
                     // Select mode
-                    mode = Some(match Mode::from_options(chars.next(), chars.last()) {
-                        Some(value) => value,
+                    mode_and_name = Some(match Mode::from_options(first, last) {
+                        Some(value) => (value, name),
                         None => return parse_error!(line, InvalidModeSpecifier),
                     });
                 }
@@ -186,14 +196,15 @@ impl Draft {
         // Get amount of tests in messages
         let test_count = messages.iter().filter(|msg| msg.is_test()).count();
 
-        // Use default mode if none specified
-        let mode = mode.unwrap_or_default();
+        // Use default mode and None name if not specified
+        let (mode, name) = mode_and_name.unwrap_or_default();
 
         Ok(Self {
             rules: parse_rules(&raw_rules, &raw_classes)?,
             raw_rules,
             messages,
             mode,
+            name,
             test_count,
             raw_classes,
         })
@@ -231,4 +242,11 @@ fn parse_regex(pattern: &str, classes: &Classes, line: usize) -> Result<Regex, E
         Ok(regex) => Ok(regex),
         Err(err) => parse_error!(line, RegexParseFail, err),
     }
+}
+
+/// Get first and last character of `Chars`, each as an optional `char`, and remaining (middle) characters, as a `&str`
+fn chars_first_middle_last<'a>(chars: &'a mut Chars) -> (Option<char>, &'a str, Option<char>) {
+    let first = chars.next();
+    let last = chars.next_back();
+    (first, chars.as_str(), last)
 }

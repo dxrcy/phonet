@@ -49,6 +49,7 @@ fn run_all_successful() {
         //
         rules: get_example_rules(),
         mode: Mode::Romanized,
+        name: None,
         test_count: 3,
         //
         raw_classes: HashMap::new(),
@@ -129,6 +130,7 @@ fn run_all_failing() {
         //
         rules: get_example_rules(),
         mode: Mode::Romanized,
+        name: None,
         test_count: 3,
         //
         raw_classes: HashMap::new(),
