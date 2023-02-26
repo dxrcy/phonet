@@ -1,9 +1,11 @@
 mod args;
+#[macro_use]
+mod utils;
 
 use std::{fs, path::Path};
 
 use clap::Parser;
-use stilo::{style, Style};
+use stilo::style;
 
 use phonet::{
     draft::{Message::Test, TestDraft},
@@ -11,56 +13,24 @@ use phonet::{
 };
 
 use crate::args::Args;
-
-/// Unwrap the `Ok` value of a `Result`, or exit with a stringified `Error`
-macro_rules! try_or_throw {
-    ( $result: expr ) => {{
-        match $result {
-            Ok(value) => value,
-
-            Err(err) => {
-                return Err(err.to_string());
-            }
-        }
-    }};
-}
-
-/// Returns an `Err` with a formatted `String`
-macro_rules! throw {
-    () => {
-        return Err(String::new())
-    };
-    ( $str: literal ) => {
-        return Err($str.to_string())
-    };
-    ( $str: literal, $( $arg: tt ),* ) => {
-        return Err(format!($str, $( $arg )*))
-    };
-}
-
-/// Use `stilo::Color` to format text only if `do_color` is true
-fn color(text: &str, style: Style, do_color: bool) -> String {
-    if do_color {
-        style.format(text)
-    } else {
-        text.into()
-    }
-}
+use crate::utils::{color, format_filename};
 
 fn main() -> Result<(), String> {
     let args = Args::parse();
 
-    // Add 'phonet' file extension if file argument ends with a period
-    let filename = if args.file.ends_with('.') {
-        args.file + "phonet"
-    } else {
-        args.file
-    };
+    // Format filename (expand shorthand)
+    let filename = format_filename(args.file);
 
-    // Check if input file exists
-    if !Path::new(&filename).exists() {
+    // File must exist
+    let path = Path::new(&filename);
+    if !path.exists() {
         throw!("File not found '{}'", filename);
     }
+    // File must not be a directory
+    if path.is_dir() {
+        throw!("Filename is a directory '{}'. Tip: End filename with '/' to use 'phonet' file in that directory", filename);
+    }
+
     // Read file
     let file = match fs::read_to_string(&filename) {
         Ok(x) => x,

@@ -6,4 +6,3 @@
 ## Minor / Future Features
 
 - Conditional items? (rules, tests, notes, ect)
-- Change `DisplayLevel` to bool
