@@ -17,6 +17,7 @@ use crate::utils::{color, format_filename};
 
 fn main() -> Result<(), String> {
     let args = Args::parse();
+    let do_color = !args.no_color;
 
     // Format filename (expand shorthand)
     let filename = format_filename(args.file);
@@ -71,8 +72,13 @@ fn main() -> Result<(), String> {
         DisplayLevel::ShowAll
     };
 
+    // Print name before outcome, if given
+    if let Some(name) = &draft.name {
+        println!("{}", color(name, style!(Cyan i), do_color));
+    }
+
     // Run tests and display
-    draft.run().display(display_level, !args.no_color);
+    draft.run().display(display_level, do_color);
 
     // Generate and display words
     if let Some(count) = args.generate {
@@ -92,7 +98,7 @@ fn main() -> Result<(), String> {
         // Print title
         println!(
             "{}",
-            color("Randomly generated words:", style!(Blue), !args.no_color,)
+            color("Randomly generated words:", style!(Blue), do_color,)
         );
 
         // Print words
@@ -101,8 +107,8 @@ fn main() -> Result<(), String> {
 
             println!(
                 " {} {}",
-                color("-", style!(Cyan), !args.no_color),
-                color(&word, style!(-italic), !args.no_color)
+                color("-", style!(Cyan), do_color),
+                color(&word, style!(-italic), do_color)
             );
         }
     }
