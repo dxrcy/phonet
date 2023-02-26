@@ -144,9 +144,18 @@ impl Outcome {
                         space = " ".repeat(max_word_len - word.chars().count()),
                         // Status of test
                         status = if status.is_pass() {
-                            color("pass", style!(Green), do_color)
+                            color(
+                                "pass",
+                                // Dim if some failed
+                                if self.fail_count == 0 {
+                                    style!(Green)
+                                } else {
+                                    style!(Green dim)
+                                },
+                                do_color,
+                            )
                         } else {
-                            color("FAIL", style!(Red), do_color)
+                            color("FAIL", style!(Red bold), do_color)
                         },
                     )?;
                 }
@@ -156,7 +165,11 @@ impl Outcome {
         // Final print
         if self.fail_count == 0 {
             // All passed
-            writeln!(out, "{}", color("All tests pass!", style!(Green bold), do_color))?;
+            writeln!(
+                out,
+                "{}",
+                color("All tests pass!", style!(Green bold), do_color)
+            )?;
         } else {
             // Some tests failed
             writeln!(
