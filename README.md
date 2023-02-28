@@ -150,7 +150,7 @@ $env:Path = "$env:Path;<path_to_file>\phonet.exe"
 
 ## Library use
 
-Add `phonet = "0.9.3"` to your `Crates.toml` file
+Add `phonet = "0.9.6"` to your `Crates.toml` file
 
 - [Docs.rs](https://docs.rs/phonet/latest/phonet)
 - [Crates.io](https://crates.io/crates/phonet)
