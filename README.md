@@ -10,7 +10,7 @@ Words can be randomly generated (see [Argument Syntax](#argument-syntax)).
 
 # Usage
 
-This project can be used as a rust library crate, or as a binary executable.
+This project may be used as a rust library crate, or as a binary executable.
 
 ## Binary use
 
@@ -234,7 +234,7 @@ The file should either be called `phonet`, or end in `.phonet`
 
 The syntax is a statements, each separated by a semicolon `;` or a linebreak.
 
-Use a _Ampersand_ `&` to denote a multi-line statement. This can only be ended with a semicolon `;`.
+Use a _Ampersand_ `&` to denote a multi-line statement. This may only be ended with a semicolon `;`.
 
 Comments will end with a linebreak or a semicolon `;`.
 
@@ -283,6 +283,9 @@ $V = [iueoa]
 
 # Only sibilant consonants
 $C_s = [sz]
+
+# Every letter
+$_ = ⟨C⟩ | <V>
 ```
 
 ## Rules
@@ -305,7 +308,7 @@ _Example (with predefined [*classes*](#classes)):_
 
 ```phonet
 # Must be (C)V syllable structure
-+ ^ (<C>? <V>)+ $
++ ^ (<C>? ⟨V⟩)+ $
 
 # Must not have two vowels in a row
 ! <V>{2}
@@ -369,13 +372,13 @@ _Example:_
 
 ## Mode
 
-The mode of a _Phonet_ file can be one of these:
+The mode of a _Phonet_ file may be one of these:
 
 - _Romanized_: Using `<>` (not `⟨⟩`)
 - _Broad transcription_: Using `//`
 - _Narrow transcription_: Using `[]`
 
-This can optionally be specified in a file, although it does not add any functionality.
+This may optionally be specified in a file, although it does not add any functionality.
 
 _Syntax:_
 
