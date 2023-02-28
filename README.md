@@ -157,7 +157,7 @@ Add `phonet = "0.9.6"` to your `Crates.toml` file
 
 ### Short Example
 
-```rs
+```rust
 use phonet::Draft;
 
 fn main() {
@@ -174,7 +174,7 @@ fn main() {
 
 ### Long Example
 
-```rs
+```rust
 use std::fs;
 
 use phonet::{
