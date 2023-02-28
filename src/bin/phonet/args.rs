@@ -46,14 +46,14 @@ pub struct Args {
     /// Use with the `--generate` or `-g` flag
     ///
     /// Note: This increases generation time exponentially
-    #[arg(long = "gmin")]
-    pub generate_min_len: Option<usize>,
+    #[arg(long = "gmin", default_value_t = 3)]
+    pub generate_min_len: usize,
 
     /// Set maximum length (inclusive) for generated words
     ///
     /// Use with the `--generate` or `-g` flag
-    #[arg(long = "gmax")]
-    pub generate_max_len: Option<usize>,
+    #[arg(long = "gmax", default_value_t = 20)]
+    pub generate_max_len: usize,
 
     /// Display output in default color
     ///

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use std::ops::{RangeInclusive};
+use std::ops::RangeInclusive;
 
 use fancy_regex_macro::regex;
 use rand::{rngs::ThreadRng, seq::SliceRandom, Rng};
@@ -39,12 +39,13 @@ impl Generator {
     /// Generate a random word, with a random length, that is valid against rules
     pub fn next(&mut self) -> String {
         loop {
-            let word = random_word(
-                &self.letters,
-                self.rng.gen_range(self.length.clone()),
-                &mut self.rng,
-            );
+            // Choose length for word
+            let length = self.rng.gen_range(self.length.clone());
 
+            // Generate possibly invalid word
+            let word = random_word(&self.letters, length, &mut self.rng);
+
+            // Check if it is valid
             if matches!(validate_test(&word, &self.rules), Valid) {
                 return word;
             }

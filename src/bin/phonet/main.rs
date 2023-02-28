@@ -86,8 +86,8 @@ fn main() -> Result<(), String> {
         let count = count.unwrap_or(1);
 
         // Min and max length
-        let min = args.generate_min_len.unwrap_or(3);
-        let max = args.generate_max_len.unwrap_or(14);
+        let min = args.generate_min_len;
+        let max = args.generate_max_len;
         // Ensure min and max are not invalid
         let max = max.max(min);
         let min = min.min(max);
