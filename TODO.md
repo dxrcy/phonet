@@ -1,7 +1,10 @@
 # TODO
 
-- Add `display` to integration tests
 - Only use `clap` dependency for binary (How??)
+
+- Integration tests
+- - Add `display`
+- - Add `minify`
 
 ## Minor / Future Features
 
