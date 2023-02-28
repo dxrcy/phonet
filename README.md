@@ -244,12 +244,12 @@ All whitespace is ignored, except to separate words in [_tests_](#tests).
 
 Each statement must begin with an operator:
 
-- `#` _Hashtag_: A whole line comment. A linebreak (not a semicolon) ends the comment
-- `$` _Dollar_: Define a [_class_](#classes)
+- `#` **Hashtag**: A whole line comment. A linebreak (not a semicolon) ends the comment
+- `$` **Dollar**: Define a [_class_](#classes)
 - `+` **_Plus_** or `!` **_Bang_**: Define a [_rule_](#rule)
-- `*` _Star_: Create a test [_note_](#notes), and define a _reason_ if a test fails
-- `?` _Question_: Create a [_test_](#tests)
-- `~` _Tilde_: Define the [_mode_](#mode) of the file
+- `*` **Star**: Create a test [_note_](#notes), and define a _reason_ if a test fails
+- `?` **Question mark**: Create a [_test_](#tests)
+- `~` **Tilde**: Define the [_mode_](#mode) of the file
 
 ## Classes
 
@@ -265,9 +265,9 @@ Classes are used as shorthand Regular Expressions, substituted into [_rules_](#r
 
 _Syntax:_
 
-- `$` _Dollar_
+- `$` **Dollar**
 - Name - Must be only characters from [a-zA-Z0-9_]
-- `=` _Equals_
+- `=` **Equals**
 - Value - Regular Expression, may contain other _classes_ in angle brackets `<>` or `⟨⟩` (as with [_rules_](#rules))
 
 The _'any'_ class, defined with `$_ = ...`, is used for random word generation.
@@ -324,7 +324,7 @@ Like [_rules_](#rules), tests must have a defined _intent_, either `+` for _posi
 
 _Syntax:_
 
-- `?` _Question mark_
+- `?` **Question mark**
 - `+` **_Plus_** or `!` **_Bang_** - Plus for _positive_ test, Bang for _negative_ test
 - Tests - A word, or multiple words separated by a space
 
@@ -347,8 +347,8 @@ They are used as a _reason_ for any proceeding rules, as an explanation if a tes
 
 _Syntax:_
 
-- `*` _Star_
-- `:` _Colon_ (**Optional**) - Define a 'quiet' note
+- `*` **Star**
+- `:` **Colon** (_Optional_) - Define a 'quiet' note
 - Text to print, and define reason as
 
 _Example:_
@@ -379,7 +379,7 @@ This can optionally be specified in a file, although it does not add any functio
 
 _Syntax:_
 
-- `~` _Tilde_
+- `~` **Tilde**
 - `<.>`, `/./`, or `[.]` - Mode identifier, with `.` being any string for, or blank
 
 _Examples:_
