@@ -1,4 +1,4 @@
-# Phoner
+# Phonet
 
 _Phonet_ is a CLI tool and library to validate phonotactic patterns for constructed languages.
 It is compatible with either romanization and phonetic transcription.
