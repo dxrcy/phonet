@@ -138,7 +138,7 @@ impl Outcome {
                         intent = if *intent {
                             color("✔", style!(Cyan), do_color)
                         } else {
-                            color("✗", style!(Magenta), do_color)
+                            color("✘", style!(Magenta), do_color)
                         },
                         // Spacing after word
                         space = " ".repeat(max_word_len - word.chars().count()),
