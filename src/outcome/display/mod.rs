@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use stilo::{style, stylize, Style};
+use stilo::{style, stylize, writeln_styles, Style};
 
 use super::Outcome;
 use crate::{
@@ -68,19 +68,16 @@ impl Outcome {
 
         // No tests
         if self.test_count() == 0 {
-            writeln!(out, "{}", stylize!("No tests ran": Yellow if do_color))?;
+            writeln_styles!(out, "No tests ran": Yellow if do_color)?;
             return Ok(());
         }
 
         // Initial print
-        writeln!(
+        writeln_styles!(
             out,
-            "{}",
-            stylize!(
-                "Running {} test{}...":
-                Yellow if do_color,
-                test_count, pluralize(test_count)
-            )
+            "Running {} test{}...":
+            Yellow if do_color,
+            test_count, pluralize(test_count)
         )?;
 
         // Get maximum length of all test words
@@ -93,7 +90,7 @@ impl Outcome {
                 Info(Note(note)) => match display_level {
                     // Always show - Print note
                     ShowAll | IgnorePasses => {
-                        writeln!(out, "{}", stylize!("{}": Blue if do_color, note))?;
+                        writeln_styles!(out, "{}": Blue if do_color, note)?;
                     }
 
                     // Else skip
@@ -161,17 +158,13 @@ impl Outcome {
         }
 
         // Final print
-        writeln!(
-            out,
-            "{}",
-            if self.fail_count == 0 {
-                // All passed
-                stylize!("All tests pass!": Green + bold if do_color)
-            } else {
-                // Some tests failed
-                stylize!("{} test{} failed": Red + bold if do_color, self.fail_count, pluralize(self.fail_count))
-            }
-        )?;
+        if self.fail_count == 0 {
+            // All passed
+            writeln_styles!(out, "All tests pass!": Green + bold if do_color)?;
+        } else {
+            // Some tests failed
+            writeln_styles!(out, "{} test{} failed": Red + bold if do_color, self.fail_count, pluralize(self.fail_count))?;
+        }
 
         Ok(())
     }
