@@ -199,7 +199,7 @@ checksum = "9b7820b9daea5457c9f21c69448905d723fbd21136ccf521748f23fd49e723ee"
 
 [[package]]
 name = "phonet"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "clap",
  "fancy-regex",
@@ -320,9 +320,9 @@ dependencies = [
 
 [[package]]
 name = "stilo"
-version = "0.1.1"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4b297fd42fed8fa87d4a8c0ba3f57a07ed7829643006262a864387ac570d1a45"
+checksum = "b793f55dd37c7d000222cea0f7f13da26a5f7674e79a45128679110a207047ef"
 
 [[package]]
 name = "strsim"

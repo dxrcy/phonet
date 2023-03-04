@@ -29,7 +29,7 @@ macro_rules! throw {
 }
 
 /// Use `stilo::Color` to format text only if `do_color` is true
-pub fn color(text: &str, style: Style, do_color: bool) -> String {
+pub fn _color(text: &str, style: Style, do_color: bool) -> String {
     if do_color {
         style.format(text)
     } else {

@@ -5,7 +5,7 @@ mod utils;
 use std::{fs, path::Path};
 
 use clap::Parser;
-use stilo::style;
+use stilo::println_styles;
 
 use phonet::{
     draft::{Message::Test, TestDraft},
@@ -13,7 +13,7 @@ use phonet::{
 };
 
 use crate::args::Args;
-use crate::utils::{color, format_filename};
+use crate::utils::format_filename;
 
 fn main() -> Result<(), String> {
     let args = Args::parse();
@@ -74,7 +74,7 @@ fn main() -> Result<(), String> {
 
     // Print name before outcome, if given
     if let Some(name) = &draft.name {
-        println!("{}", color(name, style!(Cyan italic), do_color));
+        println_styles!("{}": Cyan + italic if do_color, name);
     }
 
     // Run tests and display
@@ -96,19 +96,15 @@ fn main() -> Result<(), String> {
         let mut words = try_or_throw!(draft.generator(min..=max));
 
         // Print title
-        println!(
-            "{}",
-            color("Randomly generated words:", style!(Blue), do_color,)
-        );
+        println_styles!("Randomly generated words:":Blue if do_color);
 
         // Print words
         for _ in 0..count {
             let word = words.next();
 
-            println!(
-                " {} {}",
-                color("-", style!(Cyan), do_color),
-                color(&word, style!(-italic), do_color)
+            println_styles!(
+                " -": Cyan if do_color;
+                " {}": +italic if do_color, word;
             );
         }
     }

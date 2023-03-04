@@ -1,6 +1,6 @@
 [package]
 name = "phonet"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 description = "A CLI tool and library to validate phonotactic patterns for constructed languages"
 license = "MIT"
@@ -15,7 +15,7 @@ fancy-regex = "0.11.0"
 fancy-regex-macro = "0.1.0"
 thiserror = "1.0.38"
 rand = "0.8.5"
-stilo = "0.1.1"
+stilo = "0.3.0"
 clap = { version = "4.1.6", features = ["derive"] }
 
 [[bin]]

@@ -10,7 +10,7 @@ use crate::{
 };
 
 /// Use `stilo::Color` to format text only if `do_color` is true
-fn color(text: &str, style: Style, do_color: bool) -> String {
+fn _color(text: &str, style: Style, do_color: bool) -> String {
     if do_color {
         style.format(text)
     } else {
@@ -68,7 +68,7 @@ impl Outcome {
 
         // No tests
         if self.test_count() == 0 {
-            writeln!(out, "{}", color("No tests ran", style!(Yellow), do_color))?;
+            writeln!(out, "{}", stylize!("No tests ran": Yellow if do_color))?;
             return Ok(());
         }
 
@@ -76,15 +76,11 @@ impl Outcome {
         writeln!(
             out,
             "{}",
-            color(
-                &format!(
-                    "Running {count} test{s}...",
-                    count = test_count,
-                    s = pluralize(test_count)
-                ),
-                style!(Yellow),
-                do_color
-            ),
+            stylize!(
+                "Running {} test{}...":
+                Yellow if do_color,
+                test_count, pluralize(test_count)
+            )
         )?;
 
         // Get maximum length of all test words
@@ -97,7 +93,7 @@ impl Outcome {
                 Info(Note(note)) => match display_level {
                     // Always show - Print note
                     ShowAll | IgnorePasses => {
-                        writeln!(out, "{}", color(note, style!(Blue), do_color))?;
+                        writeln!(out, "{}", stylize!("{}": Blue if do_color, note))?;
                     }
 
                     // Else skip
@@ -124,9 +120,9 @@ impl Outcome {
                     let reason = match status {
                         Pass => String::new(),
                         Fail(ShouldBeInvalid) => {
-                            color("Valid, but should be invalid", style!(Yellow), do_color)
+                            stylize!("Valid, but should be invalid": Yellow if do_color)
                         }
-                        Fail(NoReasonGiven) => stylize!("No reason given", -italic),
+                        Fail(NoReasonGiven) => stylize!("No reason given": + italic),
                         Fail(CustomReason(Note(reason))) => String::from(reason),
                     };
 
@@ -136,26 +132,28 @@ impl Outcome {
                         "  {intent} {word}{space}  {status} {reason}",
                         // Intent
                         intent = if *intent {
-                            color("✔", style!(Cyan), do_color)
+                            stylize!("✔": Cyan if do_color)
                         } else {
-                            color("✘", style!(Magenta), do_color)
+                            stylize!("✘": Magenta if do_color)
                         },
                         // Spacing after word
                         space = " ".repeat(max_word_len - word.chars().count()),
                         // Status of test
                         status = if status.is_pass() {
-                            color(
-                                "pass",
-                                // Dim if some failed
-                                if self.fail_count == 0 {
-                                    style!(Green)
-                                } else {
-                                    style!(Green dim)
-                                },
-                                do_color,
+                            stylize!(
+                                "pass":
+                                {
+                                    // Dim if some failed
+                                    if self.fail_count == 0 {
+                                        style!(Green)
+                                    } else {
+                                        style!(Green + dim)
+                                    }
+                                }
+                                if do_color
                             )
                         } else {
-                            color("FAIL", style!(Red bold), do_color)
+                            stylize!("FAIL": Red + bold if do_color)
                         },
                     )?;
                 }
@@ -163,29 +161,17 @@ impl Outcome {
         }
 
         // Final print
-        if self.fail_count == 0 {
-            // All passed
-            writeln!(
-                out,
-                "{}",
-                color("All tests pass!", style!(Green bold), do_color)
-            )?;
-        } else {
-            // Some tests failed
-            writeln!(
-                out,
-                "{}",
-                color(
-                    &format!(
-                        "{count} test{s} failed",
-                        count = self.fail_count,
-                        s = pluralize(self.fail_count),
-                    ),
-                    style!(Red bold),
-                    do_color
-                )
-            )?;
-        };
+        writeln!(
+            out,
+            "{}",
+            if self.fail_count == 0 {
+                // All passed
+                stylize!("All tests pass!": Green + bold if do_color)
+            } else {
+                // Some tests failed
+                stylize!("{} test{} failed": Red + bold if do_color, self.fail_count, pluralize(self.fail_count))
+            }
+        )?;
 
         Ok(())
     }
