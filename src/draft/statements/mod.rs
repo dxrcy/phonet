@@ -16,11 +16,18 @@ pub(super) fn split_statements(file: &str) -> Vec<(String, usize)> {
     // Multiline uses line number of beginning of statement
     let mut current_line_number = 1;
 
+    // Current statement is a comment
+    // Discard before pushing to list
+    let mut is_comment = false;
+
     // Loop characters of file
     for ch in file.chars() {
         match ch {
             // Newline or semicolon without multiline
             '\n' | ';' if build_multiline.is_none() => {
+                // Clear comment
+                is_comment = false;
+
                 // If single line is not empty
                 if !build_line.is_empty() {
                     // Push single line to statement
@@ -35,6 +42,9 @@ pub(super) fn split_statements(file: &str) -> Vec<(String, usize)> {
 
             // Semicolon with multiline
             ';' => {
+                // Clear comment
+                is_comment = false;
+
                 // Multiline is active
                 // Unwrap should not fail due to above match guard
                 let (multiline, number) = build_multiline.unwrap();
@@ -55,7 +65,8 @@ pub(super) fn split_statements(file: &str) -> Vec<(String, usize)> {
             }
 
             // Start multiline
-            '&' => match &mut build_multiline {
+            // Only if not a comment
+            '&' if !is_comment => match &mut build_multiline {
                 // Multiline is not already active
                 None => {
                     // Start multiline, with current line number
@@ -68,6 +79,14 @@ pub(super) fn split_statements(file: &str) -> Vec<(String, usize)> {
                     build_line.push(ch);
                 }
             },
+
+            // Comment at start of statement
+            '#' if build_line.trim().is_empty() => {
+                is_comment = true;
+            }
+
+            // Statement is a comment, ignore regular characters
+            _ if is_comment => continue,
 
             // Add other character to single line build
             _ => build_line.push(ch),

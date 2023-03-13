@@ -46,8 +46,10 @@ impl Draft {
 
             // Match line operator
             match operator {
-                // Comment
-                '#' => continue,
+                // Comment - this should have been removed in `split_statements` function
+                '#' => unrecoverable_error!(
+                    "A comment statement slipped past the initial statement parser!"
+                ),
 
                 // Mode
                 '~' => {

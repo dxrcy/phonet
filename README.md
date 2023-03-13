@@ -452,10 +452,12 @@ $V = [aeiou]          ;# Vowels
   ! (.)\1             ;# This is an unnamed back-reference
   ! (?<x> .) \k<x>    ;# (Alternative) This is a named back-reference (NOT a class)
     ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
-    ?! &
+    ?! &              
       taaso
       ttaso
     ;
+
+# Comments cannot be multiline, even using '&'
 
 * 2 tests *should* have failed!
 ```

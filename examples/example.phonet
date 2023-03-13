@@ -33,4 +33,6 @@ $V = [aeiou]          ;# Vowels
       ttaso
     ;
 
+# Comments cannot be multiline, even using '&'
+
 * 2 tests *should* have failed!

@@ -12,6 +12,41 @@ macro_rules! example_classes {
     }};
 }
 
+/// An unrecoverable error occurred
+///
+/// Panics with a message
+///
+/// This error should ideally NEVER happen, as long as the code of this crate is working!
+///
+/// Returns a closure, to lazy evaluate
+macro_rules! unrecoverable_error {
+    ( $msg: expr ) => {
+        (|| {
+            let len = $msg.len() as i32;
+            let outer = (len - 49).max(0) as usize;
+            let inner = (49 - len).max(0) as usize;
+            eprintln!(
+                "
+  ┌───────────────────────────────────────────────────────{0}┐
+  │ Phonet broke!                                         {1}│
+  │ This is an issue with the source code, not with you.  {1}│
+  │ ┌───────────────────────────────────────────────────{0}┐ │
+  │ │ {msg} {2}│ │
+  │ └───────────────────────────────────────────────────{0}┘ │
+  │ Please create an issue, and include the problem above {1}│
+  │ https://github.com/darccyy/phonet/issues/new          {1}│
+  └───────────────────────────────────────────────────────{0}┘
+",
+                "─".repeat(outer),
+                " ".repeat(outer),
+                " ".repeat(inner),
+                msg = $msg,
+            );
+            panic!("Unrecoverable error");
+        })()
+    };
+}
+
 /// Parsing of *Phonet* `Draft`
 pub mod draft;
 /// Error type for *Phonet*
@@ -70,5 +105,11 @@ mod tests {
         assert_eq!(get_min_filename("phonet"), "min.phonet");
         assert_eq!(get_min_filename("myfile.phonet"), "myfile.min.phonet");
         assert_eq!(get_min_filename("one.two.phonet"), "one.two.min.phonet");
+    }
+
+    #[test]
+    #[should_panic]
+    fn unrecoverable_error_works() {
+        unrecoverable_error!("whoops!");
     }
 }
