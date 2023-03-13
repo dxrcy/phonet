@@ -1,6 +1,6 @@
 [package]
 name = "phonet"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "A CLI tool and library to validate phonotactic patterns for constructed languages"
 license = "MIT"

@@ -150,7 +150,7 @@ $env:Path = "$env:Path;<path_to_file>\phonet.exe"
 
 ## Library use
 
-Add `phonet = "0.9.6"` to your `Crates.toml` file
+Add `phonet = "1.0.2"` to your `Crates.toml` file
 
 - [Docs.rs](https://docs.rs/phonet/latest/phonet)
 - [Crates.io](https://crates.io/crates/phonet)
@@ -235,10 +235,10 @@ The file should either be called `phonet`, or end in `.phonet`
 The syntax is a statements, each separated by a semicolon `;` or a linebreak.
 
 Use a _Ampersand_ `&` to denote a multi-line statement.
-This may only be ended with a semicolon `;`.
+This may only be ended with a semicolon `;`
 Note that comments cannot be multiline.
 
-Comments will end with a linebreak or a semicolon `;`.
+Comments will end with a linebreak or a semicolon `;`
 
 All whitespace is ignored, except to separate words in [_tests_](#tests).
 
@@ -299,7 +299,7 @@ Rules are defined with an _intent_, either `+` for _positive_, or `!` for _negat
 - A _positive_ rule must be followed for a word to be valid
 - A _negative_ rule must **not** be followed for a word to be valid
 
-To use a [_class_](#classes), use the class name, surrounded by angle brackets `<>` or `⟨⟩`.
+To use a [_class_](#classes), use the class name, surrounded by angle brackets `<>` or `⟨⟩`
 
 _Syntax:_
 
