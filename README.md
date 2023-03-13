@@ -234,7 +234,9 @@ The file should either be called `phonet`, or end in `.phonet`
 
 The syntax is a statements, each separated by a semicolon `;` or a linebreak.
 
-Use a _Ampersand_ `&` to denote a multi-line statement. This may only be ended with a semicolon `;`.
+Use a _Ampersand_ `&` to denote a multi-line statement.
+This may only be ended with a semicolon `;`.
+Note that comments cannot be multiline.
 
 Comments will end with a linebreak or a semicolon `;`.
 
@@ -452,7 +454,7 @@ $V = [aeiou]          ;# Vowels
   ! (.)\1             ;# This is an unnamed back-reference
   ! (?<x> .) \k<x>    ;# (Alternative) This is a named back-reference (NOT a class)
     ?+ taso           ;# An example of multi-line statements on next line (comments cannot be on same line)
-    ?! &              
+    ?! &
       taaso
       ttaso
     ;
