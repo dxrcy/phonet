@@ -17,16 +17,13 @@ macro_rules! example_classes {
 /// Panics with a message
 ///
 /// This error should ideally NEVER happen, as long as the code of this crate is working!
-///
-/// Returns a closure, to lazy evaluate
 macro_rules! unrecoverable_error {
-    ( $msg: expr ) => {
-        (|| {
-            let len = $msg.len() as i32;
-            let outer = (len - 49).max(0) as usize;
-            let inner = (49 - len).max(0) as usize;
-            eprintln!(
-                "
+    ( $msg: expr ) => {{
+        let len = $msg.len() as i32;
+        let outer = (len - 49).max(0) as usize;
+        let inner = (49 - len).max(0) as usize;
+        eprintln!(
+            "
   ┌───────────────────────────────────────────────────────{0}┐
   │ Phonet broke!                                         {1}│
   │ This is an issue with the source code, not with you.  {1}│
@@ -37,14 +34,13 @@ macro_rules! unrecoverable_error {
   │ https://github.com/darccyy/phonet/issues/new          {1}│
   └───────────────────────────────────────────────────────{0}┘
 ",
-                "─".repeat(outer),
-                " ".repeat(outer),
-                " ".repeat(inner),
-                msg = $msg,
-            );
-            panic!("Unrecoverable error");
-        })()
-    };
+            "─".repeat(outer),
+            " ".repeat(outer),
+            " ".repeat(inner),
+            msg = $msg,
+        );
+        panic!("Unrecoverable error");
+    }};
 }
 
 /// Parsing of *Phonet* `Draft`
