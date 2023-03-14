@@ -1,7 +1,3 @@
-use stilo::Style;
-
-// use phonet::Draft;
-
 /// Unwrap the `Ok` value of a `Result`, or exit with a stringified `Error`
 macro_rules! try_or_throw {
     ( $result: expr ) => {{
@@ -26,15 +22,6 @@ macro_rules! throw {
     ( $str: literal, $( $arg: tt ),* ) => {
         return Err(format!($str, $( $arg )*))
     };
-}
-
-/// Use `stilo::Color` to format text only if `do_color` is true
-pub fn _color(text: &str, style: Style, do_color: bool) -> String {
-    if do_color {
-        style.format(text)
-    } else {
-        text.into()
-    }
 }
 
 /// Format filename when used with shorthand

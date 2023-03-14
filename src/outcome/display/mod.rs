@@ -1,22 +1,13 @@
 #[cfg(test)]
 mod tests;
 
-use stilo::{style, stylize, writeln_styles, Style};
+use stilo::{style, stylize, writeln_styles};
 
 use super::Outcome;
 use crate::{
     outcome::{FailKind::*, Message::*, Note, PassStatus::*, TestOutcome},
     DisplayLevel::{self, *},
 };
-
-/// Use `stilo::Color` to format text only if `do_color` is true
-fn _color(text: &str, style: Style, do_color: bool) -> String {
-    if do_color {
-        style.format(text)
-    } else {
-        text.into()
-    }
-}
 
 impl Outcome {
     /// Get maximum length of all test words
