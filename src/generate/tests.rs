@@ -45,7 +45,7 @@ fn generate_works() {
     };
 
     // Generate some random valid words
-    let mut words = draft.generator(length.clone()).unwrap();
+    let mut words = draft.generator(length).unwrap();
 
     // Check some words are valid
     assert!(matches!(validate_test(&words.next(), &rules), Valid));
