@@ -4,10 +4,6 @@ _Phonet_ is a CLI tool and library to validate phonotactic patterns for construc
 It is compatible with either romanization and phonetic transcription.
 Words can be randomly generated (see [Argument Syntax](#argument-syntax)).
 
-[Syntax Highlighting Extension for VSCode](https://github.com/darccyy/phonet-syntax)
-
-<!-- > Formerly named 'Phoner' -->
-
 # Usage
 
 This project may be used as a rust library crate, or as a binary executable.
@@ -228,7 +224,10 @@ A _Phonet_ file is used to define the rules, classes, and tests for the program.
 
 The file should either be called `phonet`, or end in `.phonet`
 
-[Syntax Highlighting Extension for VSCode](https://github.com/darccyy/phonet-syntax)
+## Syntax Highlighting
+
+- [TreeSitter Parser](https://github.com/darccyy/tree-sitter-phonet)
+- [VSCode Extension](https://github.com/darccyy/phonet-syntax) (unmaintained)
 
 ## Statements
 
