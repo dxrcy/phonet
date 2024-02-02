@@ -10,7 +10,7 @@ This project may be used as a rust library crate, or as a binary executable.
 
 ## Binary use
 
-[Download latest version here](https://github.com/darccyy/phonet/releases/latest)
+[Download latest version here](https://github.com/dxrcy/phonet/releases/latest)
 
 ### Argument Syntax
 
@@ -226,8 +226,8 @@ The file should either be called `phonet`, or end in `.phonet`
 
 ## Syntax Highlighting
 
-- [TreeSitter Parser](https://github.com/darccyy/tree-sitter-phonet)
-- [VSCode Extension](https://github.com/darccyy/phonet-syntax) (unmaintained)
+- [TreeSitter Parser](https://github.com/dxrcy/tree-sitter-phonet)
+- [VSCode Extension](https://github.com/dxrcy/phonet-syntax) (unmaintained)
 
 ## Statements
 

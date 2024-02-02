@@ -4,7 +4,7 @@ use clap::Parser;
 #[clap(author, version)]
 /// A program to validate phonotactic patterns
 ///
-/// More information: https://github.com/darccyy/phonet
+/// More information: https://github.com/dxrcy/phonet
 pub struct Args {
     /// Custom tests (optional)
     ///

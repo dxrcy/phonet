@@ -31,7 +31,7 @@ macro_rules! unrecoverable_error {
   │ │ {msg} {2}│ │
   │ └───────────────────────────────────────────────────{0}┘ │
   │ Please create an issue, and include the problem above {1}│
-  │ https://github.com/darccyy/phonet/issues/new          {1}│
+  │ https://github.com/dxrcy/phonet/issues/new            {1}│
   └───────────────────────────────────────────────────────{0}┘
 ",
             "─".repeat(outer),
